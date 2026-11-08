@@ -3,330 +3,200 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0b0a08">
-    <meta
-      name="description"
-      content="Arthur Wang is an Applied AI Engineer building on-device agents, long-term memory systems, and production retrieval infrastructure."
-    >
+    <meta name="theme-color" content="#111111">
+    <meta name="description" content="Arthur Wang is an Applied AI Engineer building on-device agents, long-term memory systems, and production retrieval infrastructure.">
     <meta property="og:title" content="Arthur Wang | Applied AI Engineer">
-    <meta
-      property="og:description"
-      content="On-device agents, evidence-grounded memory, and production RAG systems."
-    >
+    <meta property="og:description" content="On-device agents, evidence-grounded memory, and production RAG systems.">
     <meta property="og:image" content="picture.png">
     <title>Arthur Wang | Applied AI Engineer</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23d9a45f'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-size='24' font-weight='700' fill='%230b0a08'%3EAW%3C/text%3E%3C/svg%3E">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial' font-size='26' font-weight='700' fill='white'%3EAW%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap"
-      rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Noto+Serif+TC:wght@500;600;700;900&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700;8..60,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to resume</a>
-    <div class="page-progress" aria-hidden="true"><span></span></div>
-    <div class="ambient-light" aria-hidden="true"></div>
+    <a class="skip-link" href="#main" data-i18n="skip">Skip to résumé</a>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
 
-    <header class="site-header" aria-label="Primary navigation">
-      <nav class="nav-shell">
-        <a class="brand" href="#top" aria-label="Arthur Wang home">
-          <span class="brand-mark">AW</span>
-          <span class="brand-copy">Arthur Wang<small>Applied AI Engineer</small></span>
-        </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-          <span class="sr-only">Open navigation</span>
-          <span></span><span></span>
-        </button>
-        <div class="nav-links" id="site-nav">
-          <a href="#experience">Experience</a>
-          <a href="#work">Selected work</a>
-          <a href="#publication">Research</a>
-          <a href="#contact">Contact</a>
+    <header class="site-header">
+      <div class="utility-bar">
+        <p data-i18n="utility">TAIPEI · APPLIED AI · PORTFOLIO / 2026</p>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-lang="zh-TW" aria-pressed="false">中文</button>
         </div>
-        <a class="nav-resume" href="arthurwang_cv.pdf">Résumé <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="masthead">
+        <a class="wordmark" href="#top" aria-label="Arthur Wang home">ARTHUR WANG</a>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span data-i18n="menu">Menu</span><i aria-hidden="true"></i>
+        </button>
+      </div>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="#experience" data-i18n="navExperience">Experience</a>
+        <a href="#work" data-i18n="navWork">Selected work</a>
+        <a href="#publication" data-i18n="navResearch">Research</a>
+        <a href="#profile" data-i18n="navProfile">Profile</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
+        <a class="pdf-link" href="arthurwang_cv.pdf" data-i18n="navPdf">PDF résumé ↗</a>
       </nav>
     </header>
 
     <main id="main">
-      <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-index" aria-hidden="true">01 / 05</div>
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span></span> Taiwan · Building production AI systems</p>
-          <h1 id="hero-title">
-            Arthur Wang
-            <span>Applied AI <em>Engineer.</em></span>
-          </h1>
-          <p class="hero-statement">
-            I build AI systems that keep working after the demo—on-device agents,
-            evidence-grounded memory, and retrieval infrastructure designed for real constraints.
-          </p>
-          <div class="hero-actions" aria-label="Resume actions">
-            <a class="button button-primary" href="#work">Explore selected work <span>↓</span></a>
-            <a class="text-link" href="arthurwang_cv.pdf">Download PDF résumé <span>↗</span></a>
-          </div>
-          <ul class="contact-strip" aria-label="Contact details">
-            <li><a href="mailto:yankesswang@gmail.com">yankesswang@gmail.com</a></li>
-            <li><a href="https://linkedin.com/in/arthur-wang0413">LinkedIn</a></li>
-            <li><a href="https://substack.com/@arthurwang0413">Substack</a></li>
-          </ul>
+      <section class="front-page" id="top" aria-labelledby="hero-title">
+        <div class="issue-line">
+          <span data-i18n="issue">THE SYSTEMS ISSUE</span>
+          <span>VOL. 01 — NO. 26</span>
         </div>
-
-        <div class="hero-visual reveal">
-          <div class="portrait-frame">
-            <img src="picture.png" alt="Arthur Wang standing outdoors beside a car">
-            <span class="portrait-caption">AI systems / product engineering</span>
-          </div>
-          <div class="availability-note">
-            <span class="signal" aria-hidden="true"></span>
-            <p>Currently leading applied AI development at GIGABYTE Technology.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="proof-strip" aria-label="Selected outcomes">
-        <article class="proof reveal">
-          <span class="proof-number">22</span>
-          <p>agent skills across a 76-tool on-device ecosystem</p>
-        </article>
-        <article class="proof reveal">
-          <span class="proof-number">97%</span>
-          <p>routing accuracy across 385 agent test cases</p>
-        </article>
-        <article class="proof reveal">
-          <span class="proof-number">86.9%</span>
-          <p>LoCoMo accuracy with evidence-grounded memory</p>
-        </article>
-        <article class="proof reveal">
-          <span class="proof-number">&lt;4GB</span>
-          <p>VRAM target for production local AI deployment</p>
-        </article>
-      </section>
-
-      <section class="section-shell" id="experience" aria-labelledby="experience-title">
-        <div class="section-intro reveal">
-          <p class="section-number">02</p>
-          <div>
-            <p class="eyebrow"><span></span> Experience</p>
-            <h2 id="experience-title">From research ideas to <em>shipped systems.</em></h2>
-          </div>
-          <p class="section-summary">
-            Technical leadership across local inference, agent architecture, enterprise retrieval,
-            and product delivery.
-          </p>
-        </div>
-
-        <div class="experience-list">
-          <article class="experience-row reveal">
-            <div class="experience-period">2024 — now</div>
-            <div class="experience-heading">
-              <p>GIGABYTE Technology</p>
-              <h3>AI Algorithm Deputy Manager <span>/ Technical Lead</span></h3>
-              <p class="location">New Taipei, Taiwan</p>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="kicker" data-i18n="heroKicker">Engineering intelligence under real constraints</p>
+            <h1 id="hero-title">
+              <span data-i18n="heroLine1">AI that works</span>
+              <em data-i18n="heroLine2">after the demo.</em>
+            </h1>
+            <p class="standfirst" data-i18n="heroIntro">Arthur Wang builds on-device agents, evidence-grounded memory, and retrieval infrastructure made for production—not just prototypes.</p>
+            <div class="hero-byline">
+              <span data-i18n="heroByline">BY ARTHUR WANG</span>
+              <span data-i18n="heroRole">APPLIED AI ENGINEER · TECHNICAL LEAD</span>
             </div>
+          </div>
+          <figure class="portrait">
+            <div class="portrait-window"><img src="picture.png" alt="Arthur Wang standing outdoors beside a car" data-i18n-alt="portraitAlt"></div>
+            <figcaption data-i18n="portraitCaption">Currently leading applied AI development at GIGABYTE Technology.</figcaption>
+          </figure>
+        </div>
+        <div class="lead-stories" aria-label="Key outcomes">
+          <article><strong>22 / 76</strong><p data-i18n="metric1">agent skills and tools in one on-device ecosystem</p></article>
+          <article><strong>97%</strong><p data-i18n="metric2">routing accuracy across 385 agent test cases</p></article>
+          <article><strong>86.9%</strong><p data-i18n="metric3">LoCoMo accuracy with evidence-grounded memory</p></article>
+          <article><strong>&lt;4GB</strong><p data-i18n="metric4">VRAM target for local production deployment</p></article>
+        </div>
+      </section>
+
+      <section class="editorial-section" id="experience" aria-labelledby="experience-title">
+        <header class="section-header">
+          <p class="section-label" data-i18n="experienceLabel">FIELD NOTES</p>
+          <h2 id="experience-title" data-i18n="experienceTitle">Experience</h2>
+          <p data-i18n="experienceDeck">From research questions to shipped systems, with technical ownership across inference, agents, retrieval, and product delivery.</p>
+        </header>
+        <div class="timeline">
+          <article class="story-row observe">
+            <div class="story-meta"><time>2024—<span data-i18n="present">Present</span></time><span data-i18n="newTaipei">New Taipei, Taiwan</span></div>
+            <div class="story-heading"><p>GIGABYTE TECHNOLOGY</p><h3 data-i18n="gigabyteRole">AI Algorithm Deputy Manager<br><i>/ Technical Lead</i></h3></div>
             <ul>
-              <li>Lead development of 6+ on-device and enterprise AI applications spanning local agents, hardware Q&amp;A, translation, and meeting intelligence.</li>
-              <li>Architect offline LLM systems with llama.cpp, vLLM, LangChain, and LlamaIndex under a 4GB VRAM production constraint.</li>
-              <li>Build RAG and knowledge graph pipelines over 1,000+ product documents, reducing FAE lookup from 5–10 minutes to under 30 seconds.</li>
-              <li>Design reliable agent workflows with planning, memory, tool invocation, permission control, durable execution, and recovery.</li>
+              <li data-i18n="gigabyte1">Lead 6+ on-device and enterprise AI applications spanning local agents, hardware Q&amp;A, translation, and meeting intelligence.</li>
+              <li data-i18n="gigabyte2">Architect offline LLM systems under a 4GB VRAM production constraint.</li>
+              <li data-i18n="gigabyte3">Built RAG and knowledge graph pipelines over 1,000+ product documents, cutting FAE lookup from 5–10 minutes to under 30 seconds.</li>
+              <li data-i18n="gigabyte4">Design reliable agent workflows with planning, memory, permissions, durable execution, and recovery.</li>
             </ul>
           </article>
-
-          <article class="experience-row reveal">
-            <div class="experience-period">2023</div>
-            <div class="experience-heading">
-              <p>Tarobo Investment</p>
-              <h3>Quantitative Trading Engineer</h3>
-              <p class="location">Taipei, Taiwan</p>
-            </div>
+          <article class="story-row observe">
+            <div class="story-meta"><time>2023</time><span data-i18n="taipei">Taipei, Taiwan</span></div>
+            <div class="story-heading"><p>TAROBO INVESTMENT</p><h3 data-i18n="taroboRole">Quantitative Trading Engineer</h3></div>
             <ul>
-              <li>Developed deep learning models for stock direction prediction, improving directional accuracy by 15%.</li>
-              <li>Reduced strategy evaluation time from 6 hours to 15 minutes with a Python backtesting pipeline.</li>
-              <li>Analyzed market signals, financial indicators, and model outputs to guide strategy iteration.</li>
+              <li data-i18n="tarobo1">Developed deep learning models for stock direction prediction, improving directional accuracy by 15%.</li>
+              <li data-i18n="tarobo2">Reduced strategy evaluation time from 6 hours to 15 minutes with a Python backtesting pipeline.</li>
+              <li data-i18n="tarobo3">Analyzed market signals, financial indicators, and model outputs to guide strategy iteration.</li>
             </ul>
           </article>
         </div>
       </section>
 
-      <section class="section-shell work-section" id="work" aria-labelledby="work-title">
-        <div class="section-intro reveal">
-          <p class="section-number">03</p>
-          <div>
-            <p class="eyebrow"><span></span> Selected work</p>
-            <h2 id="work-title">Systems with measurable <em>consequences.</em></h2>
-          </div>
-          <div class="filter-bar" aria-label="Filter projects">
-            <button class="filter-button active" type="button" data-filter="all">All</button>
-            <button class="filter-button" type="button" data-filter="agent">Agents</button>
-            <button class="filter-button" type="button" data-filter="retrieval">Retrieval</button>
-            <button class="filter-button" type="button" data-filter="research">Research</button>
-          </div>
-        </div>
-
-        <div class="project-list">
-          <article class="project-row reveal" data-tags="agent">
-            <div class="project-no">01</div>
-            <div class="project-title">
-              <p>On-device agent · 2026</p>
-              <h3>GiMATE Agent</h3>
-              <span>Windows AI assistant powered by Qwen3.5-4B</span>
-            </div>
-            <div class="project-copy">
-              <p>Led the Electron and FastAPI product from local inference through standalone Windows packaging.</p>
-              <ul>
-                <li><strong>22 skills / 76 tools</strong> across presentations, analysis, local-file RAG, hardware control, and third-party integrations.</li>
-                <li>Plan-and-Execute, progressive skill discovery, and deterministic tool execution for constrained devices.</li>
-                <li>Self-correcting engine with dynamic replanning, SQLite persistence, cross-session memory, and human approval.</li>
-              </ul>
-              <div class="project-stat"><span>97%</span> routing accuracy · 385 test cases</div>
-            </div>
+      <section class="editorial-section projects-section" id="work" aria-labelledby="work-title">
+        <header class="section-header">
+          <p class="section-label" data-i18n="workLabel">SELECTED WORK</p>
+          <h2 id="work-title" data-i18n="workTitle">Five systems,<br>built to hold up.</h2>
+          <p data-i18n="workDeck">Select a story to open the technical details. Every result below came with a real product, benchmark, or operating constraint.</p>
+        </header>
+        <div class="project-index">
+          <article class="project-story observe is-open">
+            <button class="project-trigger" type="button" aria-expanded="true" aria-controls="project-gimate">
+              <span class="project-number">01</span><span class="project-headline"><small data-i18n="gimateType">ON-DEVICE AGENT · 2026</small><strong>GiMATE Agent</strong><em data-i18n="gimateSub">A Windows assistant with 22 skills and 76 tools</em></span><span class="project-result"><b>97%</b><small data-i18n="routingAccuracy">routing accuracy</small></span><span class="plus" aria-hidden="true"></span>
+            </button>
+            <div class="project-details" id="project-gimate"><div>
+              <p data-i18n="gimateIntro">Led the Electron and FastAPI product from local inference through standalone Windows packaging.</p>
+              <ul><li data-i18n="gimate1">Qwen3.5-4B powers presentations, data analysis, local-file RAG, hardware control, and third-party integrations.</li><li data-i18n="gimate2">Plan-and-Execute, progressive skill discovery, and deterministic tool execution run on constrained devices.</li><li data-i18n="gimate3">Dynamic replanning, SQLite persistence, cross-session memory, and human approval make failures recoverable.</li></ul>
+            </div></div>
           </article>
-
-          <article class="project-row reveal" data-tags="agent retrieval research">
-            <div class="project-no">02</div>
-            <div class="project-title">
-              <p>Long-term memory · 2025–2026</p>
-              <h3>GRACE-Mem</h3>
-              <span>Evidence-grounded conversational memory</span>
-            </div>
-            <div class="project-copy">
-              <p>Architected a source-evidence-centric memory system that keeps compressed summaries from becoming final evidence.</p>
-              <ul>
-                <li>Hybrid BM25 and dense entity/relation search with two-hop spreading activation and hierarchical reranking.</li>
-                <li>Instruction-conditioned reranking lifted gold-evidence recall from 34.5% to 63.4%.</li>
-                <li>Bounded Evidence Curation Agent with provenance validation and additive coverage recovery.</li>
-              </ul>
-              <div class="project-stat"><span>86.9%</span> LoCoMo · <span>80.2%</span> LongMemEval</div>
-            </div>
+          <article class="project-story observe">
+            <button class="project-trigger" type="button" aria-expanded="false" aria-controls="project-grace">
+              <span class="project-number">02</span><span class="project-headline"><small data-i18n="graceType">LONG-TERM MEMORY · 2025–2026</small><strong>GRACE-Mem</strong><em data-i18n="graceSub">Evidence-grounded conversational memory</em></span><span class="project-result"><b>86.9%</b><small>LoCoMo</small></span><span class="plus" aria-hidden="true"></span>
+            </button>
+            <div class="project-details" id="project-grace"><div>
+              <p data-i18n="graceIntro">Architected a source-evidence-centric memory system that keeps compressed summaries from becoming final evidence.</p>
+              <ul><li data-i18n="grace1">Hybrid BM25 and dense retrieval with two-hop spreading activation and hierarchical reranking.</li><li data-i18n="grace2">Instruction-conditioned reranking lifted gold-evidence recall from 34.5% to 63.4%.</li><li data-i18n="grace3">A bounded Evidence Curation Agent validates provenance and recovers missing coverage.</li></ul>
+            </div></div>
           </article>
-
-          <article class="project-row reveal" data-tags="retrieval">
-            <div class="project-no">03</div>
-            <div class="project-title">
-              <p>Enterprise RAG · 2026</p>
-              <h3>FAE Support System</h3>
-              <span>Hybrid hardware knowledge infrastructure</span>
-            </div>
-            <div class="project-copy">
-              <p>Built hardware Q&amp;A across GIGABYTE motherboards, GPUs, and laptops for specification, compatibility, and troubleshooting workflows.</p>
-              <ul>
-                <li>Standardized 1,000+ product documents into a Neo4j hardware knowledge graph.</li>
-                <li>Combined graph retrieval, BM25, embeddings, fuzzy matching, and BERT-based entity linking.</li>
-                <li>Reduced manual lookup effort by approximately 70%.</li>
-              </ul>
-              <div class="project-stat"><span>92%</span> Q&amp;A accuracy · <span>97%</span> Top-3 entity hit rate</div>
-            </div>
+          <article class="project-story observe">
+            <button class="project-trigger" type="button" aria-expanded="false" aria-controls="project-fae">
+              <span class="project-number">03</span><span class="project-headline"><small data-i18n="faeType">ENTERPRISE RAG · 2026</small><strong>FAE Support System</strong><em data-i18n="faeSub">Hybrid hardware knowledge infrastructure</em></span><span class="project-result"><b>92%</b><small data-i18n="qaAccuracy">Q&amp;A accuracy</small></span><span class="plus" aria-hidden="true"></span>
+            </button>
+            <div class="project-details" id="project-fae"><div>
+              <p data-i18n="faeIntro">Built hardware Q&amp;A across motherboards, GPUs, and laptops for specification, compatibility, and troubleshooting workflows.</p>
+              <ul><li data-i18n="fae1">Standardized 1,000+ product documents into a Neo4j hardware knowledge graph.</li><li data-i18n="fae2">Combined graph retrieval, BM25, embeddings, fuzzy matching, and BERT entity linking.</li><li data-i18n="fae3">Reached a 97% Top-3 entity hit rate and reduced manual lookup effort by roughly 70%.</li></ul>
+            </div></div>
           </article>
-
-          <article class="project-row reveal" data-tags="agent research">
-            <div class="project-no">04</div>
-            <div class="project-title">
-              <p>Equity intelligence · 2025</p>
-              <h3>StockRadar</h3>
-              <span>Autonomous equity research agent</span>
-            </div>
-            <div class="project-copy">
-              <p>A 24/7 AI analyst that moves from quantitative screening to evidence-backed trading recommendations.</p>
-              <ul>
-                <li>Cross-analyzes news, earnings, technical charts, DCF valuation, market conditions, and portfolio exposure.</li>
-                <li>Tracks research history and sends real-time opportunity alerts through Telegram.</li>
-              </ul>
-              <div class="project-stat"><span>18</span> sectors · <span>60+</span> metrics · <span>32</span> indicators</div>
-            </div>
+          <article class="project-story observe">
+            <button class="project-trigger" type="button" aria-expanded="false" aria-controls="project-stock">
+              <span class="project-number">04</span><span class="project-headline"><small data-i18n="stockType">EQUITY INTELLIGENCE · 2025</small><strong>StockRadar</strong><em data-i18n="stockSub">Autonomous equity research agent</em></span><span class="project-result"><b>60+</b><small data-i18n="metrics">metrics</small></span><span class="plus" aria-hidden="true"></span>
+            </button>
+            <div class="project-details" id="project-stock"><div>
+              <p data-i18n="stockIntro">A 24/7 AI analyst that moves from quantitative screening to evidence-backed trading recommendations.</p>
+              <ul><li data-i18n="stock1">Cross-analyzes news, earnings, technical charts, DCF valuation, market conditions, and portfolio exposure.</li><li data-i18n="stock2">Tracks research history and sends real-time opportunity alerts through Telegram.</li></ul>
+            </div></div>
           </article>
-
-          <article class="project-row reveal" data-tags="agent research">
-            <div class="project-no">05</div>
-            <div class="project-title">
-              <p>Knowledge intelligence · 2026</p>
-              <h3>Alpha Note</h3>
-              <span>Autonomous research and knowledge agent</span>
-            </div>
-            <div class="project-copy">
-              <p>Monitors technical sources and turns high-value material into structured, source-linked research memos.</p>
-              <ul>
-                <li>Screening → Deep Research → Cross-Source Synthesis with explicit agreement and conflict analysis.</li>
-                <li>Podcast and YouTube pipeline using Whisper ASR and long-context analysis, organized into Obsidian.</li>
-              </ul>
-              <div class="project-stat"><span>90+</span> technology sources monitored</div>
-            </div>
+          <article class="project-story observe">
+            <button class="project-trigger" type="button" aria-expanded="false" aria-controls="project-alpha">
+              <span class="project-number">05</span><span class="project-headline"><small data-i18n="alphaType">KNOWLEDGE INTELLIGENCE · 2026</small><strong>Alpha Note</strong><em data-i18n="alphaSub">Autonomous research and knowledge agent</em></span><span class="project-result"><b>90+</b><small data-i18n="sources">sources</small></span><span class="plus" aria-hidden="true"></span>
+            </button>
+            <div class="project-details" id="project-alpha"><div>
+              <p data-i18n="alphaIntro">Monitors technical sources and turns high-value material into structured, source-linked research memos.</p>
+              <ul><li data-i18n="alpha1">Screening → Deep Research → Cross-Source Synthesis with explicit agreement and conflict analysis.</li><li data-i18n="alpha2">Processes podcasts and YouTube through Whisper ASR and long-context analysis, then organizes findings in Obsidian.</li></ul>
+            </div></div>
           </article>
         </div>
       </section>
 
-      <section class="research-section" id="publication" aria-labelledby="publication-title">
-        <div class="research-inner reveal">
-          <p class="section-number">04</p>
-          <div class="research-label">
-            <p class="eyebrow"><span></span> Publication</p>
-            <p>EMNLP 2026 · AKBC Workshop</p>
-          </div>
-          <div class="research-copy">
+      <section class="cover-story" id="publication" aria-labelledby="publication-title">
+        <div class="cover-label"><span data-i18n="publicationLabel">COVER STORY</span><span>EMNLP 2026 · AKBC</span></div>
+        <div class="cover-grid">
+          <p class="drop-cap" aria-hidden="true">G</p>
+          <div class="cover-copy">
             <h2 id="publication-title">GRACE-Mem: Graph Retrieval with Agentic Curation of Evidence for Long-Term Conversational Memory</h2>
-            <p>
-              Heng (Arthur) Wang <strong>— first author</strong>, X.-N. Chen, P.-Y. Chang,
-              C.-H. Chen, H.-Y. Huang, C. Lin, I-L. Chung.
-            </p>
-            <div class="recognition">
-              <span>Featured Paper</span>
-              <span>3 selected</span>
-              <span>Best Paper Award Candidate</span>
-            </div>
+            <p class="authors" data-i18n="authors">Heng (Arthur) Wang — first author, X.-N. Chen, P.-Y. Chang, C.-H. Chen, H.-Y. Huang, C. Lin, I-L. Chung.</p>
+            <p class="cover-deck" data-i18n="publicationDeck">A memory architecture that retrieves source evidence before composing an answer—designed to stay accurate across long conversations.</p>
+            <div class="awards"><span data-i18n="featured">Featured Paper · 3 selected</span><span data-i18n="candidate">Best Paper Award Candidate</span></div>
           </div>
         </div>
       </section>
 
-      <section class="section-shell profile-section" id="skills" aria-labelledby="skills-title">
-        <div class="section-intro reveal">
-          <p class="section-number">05</p>
-          <div>
-            <p class="eyebrow"><span></span> Capabilities</p>
-            <h2 id="skills-title">Research depth. <em>Product discipline.</em></h2>
-          </div>
+      <section class="editorial-section profile-section" id="profile" aria-labelledby="profile-title">
+        <header class="section-header compact">
+          <p class="section-label" data-i18n="profileLabel">THE TOOLBOX</p>
+          <h2 id="profile-title" data-i18n="profileTitle">Research depth.<br>Product discipline.</h2>
+        </header>
+        <div class="profile-grid">
+          <article><span>01</span><h3 data-i18n="cap1Title">Agentic AI &amp; retrieval</h3><p data-i18n="cap1">Agent harness engineering, MCP, skills, context engineering, long-term memory, Agentic RAG, GraphRAG, hybrid search, reranking, and evaluation.</p></article>
+          <article><span>02</span><h3 data-i18n="cap2Title">Models &amp; frameworks</h3><p data-i18n="cap2">llama.cpp, vLLM, LangChain, LlamaIndex, PyTorch, Hugging Face, quantization, QLoRA, GRPO, OCR, ASR, and VLM.</p></article>
+          <article><span>03</span><h3 data-i18n="cap3Title">Engineering</h3><p data-i18n="cap3">Python, React, FastAPI, Electron, REST APIs, SQLite, application packaging, and evaluation infrastructure.</p></article>
         </div>
-
-        <div class="capability-grid">
-          <article class="capability reveal">
-            <p>01 / Agentic AI &amp; retrieval</p>
-            <h3>Agent harness engineering, MCP, skills, context engineering, long-term memory, Agentic RAG, GraphRAG, hybrid search, reranking, and evaluation.</h3>
-          </article>
-          <article class="capability reveal">
-            <p>02 / Models &amp; frameworks</p>
-            <h3>llama.cpp, vLLM, LangChain, LlamaIndex, PyTorch, Hugging Face, quantization, QLoRA, GRPO, OCR, ASR, and VLM.</h3>
-          </article>
-          <article class="capability reveal">
-            <p>03 / Engineering</p>
-            <h3>Python, React, FastAPI, Electron, REST APIs, SQLite, application packaging, and evaluation infrastructure.</h3>
-          </article>
-        </div>
-
-        <div class="education-row reveal">
-          <div>
-            <p class="eyebrow"><span></span> Education</p>
-            <h3>National Chiao Tung University</h3>
-            <p>B.S. in Computer Science · 2017–2021 · Hsinchu, Taiwan</p>
-          </div>
-          <div>
-            <p class="eyebrow"><span></span> Languages</p>
-            <h3>Mandarin Chinese · English</h3>
-          </div>
+        <div class="facts">
+          <div><b data-i18n="education">EDUCATION</b><p data-i18n="educationValue">National Chiao Tung University<br>B.S. in Computer Science · 2017–2021</p></div>
+          <div><b data-i18n="languages">LANGUAGES</b><p data-i18n="languagesValue">Mandarin Chinese · English</p></div>
+          <div><b data-i18n="basedIn">BASED IN</b><p data-i18n="basedInValue">Taiwan · GMT+8</p></div>
         </div>
       </section>
     </main>
 
     <footer class="footer" id="contact">
-      <div class="footer-kicker">Have a difficult AI system to build?</div>
-      <h2>Let’s make it <em>work.</em></h2>
-      <div class="footer-links">
-        <a href="mailto:yankesswang@gmail.com">yankesswang@gmail.com <span>↗</span></a>
-        <a href="https://linkedin.com/in/arthur-wang0413">LinkedIn <span>↗</span></a>
-        <a href="arthurwang_cv.pdf">PDF résumé <span>↗</span></a>
-      </div>
-      <div class="footer-base">
-        <span>Arthur Wang · Taiwan</span>
-        <a href="#top">Back to top ↑</a>
-      </div>
+      <p class="footer-label" data-i18n="footerLabel">CONTACT / OPEN CHANNEL</p>
+      <h2 data-i18n="footerTitle">Have a difficult AI system to build?</h2>
+      <a class="email" href="mailto:yankesswang@gmail.com">yankesswang@gmail.com <span>↗</span></a>
+      <div class="footer-links"><a href="https://linkedin.com/in/arthur-wang0413">LinkedIn ↗</a><a href="https://substack.com/@arthurwang0413">Substack ↗</a><a href="arthurwang_cv.pdf" data-i18n="footerPdf">PDF résumé ↗</a><a href="#top" data-i18n="backTop">Back to top ↑</a></div>
+      <p class="copyright">© 2026 ARTHUR WANG · <span data-i18n="footerBuilt">BUILT IN TAIWAN</span></p>
     </footer>
 
     <script src="script.js"></script>
