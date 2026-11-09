@@ -104,26 +104,61 @@
         <header class="section-heading reveal">
           <p class="section-kicker" data-i18n="workKicker">Selected work</p>
           <h2 id="work-title" data-i18n="workTitle">Selected projects</h2>
-          <p data-i18n="workIntro">On-device deployment, retrieval quality, and measurable evaluation.</p>
+          <p data-i18n="workIntro">Role, architecture, implementation decisions, and measured outcomes.</p>
         </header>
         <div class="project-list">
           <article class="project reveal">
             <div class="project-index">01</div>
-            <div class="project-main"><p class="project-type" data-i18n="gimateType">On-device agent · 2026</p><h3>GiMATE Agent</h3><p data-i18n="gimateSummary">Led a Windows AI assistant from local inference to standalone packaging, with progressive skill discovery and recoverable execution.</p><ul class="tags"><li>Qwen3.5-4B</li><li>Electron</li><li>FastAPI</li><li>SQLite</li></ul></div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="gimateType">On-device agent · 2026</p>
+              <h3>GiMATE Agent</h3>
+              <p data-i18n="gimateSummary">Led a Windows AI assistant from local inference to standalone packaging, with progressive skill discovery and recoverable execution.</p>
+              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="gimateRole">Technical lead · Agent architecture and deployment</strong></p>
+              <ul class="project-details"><li data-i18n="gimateDetail1">Delivered 22 skills and 76 tools for presentations, data analysis, local-file RAG, hardware control, and third-party integrations.</li><li data-i18n="gimateDetail2">Designed a Plan-and-Execute workflow with progressive skill discovery and deterministic tool execution for constrained devices.</li><li data-i18n="gimateDetail3">Added dynamic replanning, SQLite persistence, cross-session memory, and human approval for recoverable execution.</li></ul>
+              <ul class="tags"><li>Qwen3.5-4B</li><li>Electron</li><li>FastAPI</li><li>SQLite</li></ul>
+            </div>
             <div class="project-proof"><strong>22 / 76</strong><span data-i18n="gimateProof1">skills / tools</span><strong>97%</strong><span data-i18n="gimateProof2">routing accuracy</span></div>
           </article>
           <article class="project reveal">
             <div class="project-index">02</div>
-            <div class="project-main"><p class="project-type" data-i18n="graceType">Long-term memory · 2025–2026</p><h3>GRACE-Mem</h3><p data-i18n="graceSummary">Designed an evidence-first memory system combining hybrid retrieval, hierarchical reranking, and bounded agentic curation.</p><ul class="tags"><li>BM25 + Dense</li><li>Graph Retrieval</li><li>Evidence Curation</li></ul></div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="graceType">Long-term memory · 2025–2026</p>
+              <h3>GRACE-Mem</h3>
+              <p data-i18n="graceSummary">Designed an evidence-first memory system combining hybrid retrieval, hierarchical reranking, and bounded agentic curation.</p>
+              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="graceRole">Research lead · Retrieval and evaluation</strong></p>
+              <ul class="project-details"><li data-i18n="graceDetail1">Kept source evidence authoritative while using compressed summaries only for navigation and retrieval.</li><li data-i18n="graceDetail2">Combined BM25, dense entity/relation retrieval, two-hop spreading activation, and hierarchical reranking.</li><li data-i18n="graceDetail3">Instruction-conditioned reranking raised gold-evidence recall from 34.5% to 63.4%; a bounded curation agent validates provenance and coverage.</li></ul>
+              <ul class="tags"><li>BM25 + Dense</li><li>Graph Retrieval</li><li>Evidence Curation</li></ul>
+            </div>
             <div class="project-proof"><strong>86.9%</strong><span>LoCoMo</span><strong>80.2%</strong><span>LongMemEval</span></div>
           </article>
           <article class="project reveal">
             <div class="project-index">03</div>
-            <div class="project-main"><p class="project-type" data-i18n="faeType">Enterprise RAG · 2026</p><h3>FAE Support System</h3><p data-i18n="faeSummary">Built hybrid hardware knowledge infrastructure for specifications, compatibility, and troubleshooting across motherboards, GPUs, and laptops.</p><ul class="tags"><li>Neo4j</li><li>GraphRAG</li><li>BERT</li><li>Hybrid Search</li></ul></div>
-            <div class="project-proof"><strong>92%</strong><span data-i18n="faeProof1">Q&amp;A accuracy</span><strong>&lt;30s</strong><span data-i18n="faeProof2">lookup time</span></div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="faeType">Enterprise RAG · 2026</p>
+              <h3>FAE Support System</h3>
+              <p data-i18n="faeSummary">Built hybrid hardware knowledge infrastructure for specifications, compatibility, and troubleshooting across motherboards, GPUs, and laptops.</p>
+              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="faeRole">System architect · Knowledge graph and retrieval</strong></p>
+              <ul class="project-details"><li data-i18n="faeDetail1">Standardized more than 1,000 product documents into a Neo4j hardware knowledge graph.</li><li data-i18n="faeDetail2">Combined graph retrieval, BM25, embeddings, fuzzy matching, and BERT entity linking for noisy model queries.</li><li data-i18n="faeDetail3">Reached 95% model identification and 97% Top-3 entity hit rate, reducing manual lookup effort by about 70%.</li></ul>
+              <ul class="tags"><li>Neo4j</li><li>GraphRAG</li><li>BERT</li><li>Hybrid Search</li></ul>
+            </div>
+            <div class="project-proof"><strong>92%</strong><span data-i18n="faeProof1">Q&amp;A accuracy</span><strong>&lt;30s</strong><span data-i18n="faeProof2">lookup time</span><strong>97%</strong><span data-i18n="faeProof3">Top-3 entity hit</span></div>
           </article>
         </div>
-        <div class="other-work reveal"><p><span data-i18n="otherWork">Also built</span> <strong>StockRadar</strong> — <span data-i18n="stockDesc">autonomous equity research</span> · <strong>Alpha Note</strong> — <span data-i18n="alphaDesc">technical knowledge intelligence</span></p></div>
+        <div class="other-work reveal">
+          <p class="other-work-label" data-i18n="otherWork">Additional projects</p>
+          <div class="side-projects">
+            <article class="side-project">
+              <div class="side-project-heading"><h3>StockRadar</h3><span>24 / 7</span></div>
+              <p data-i18n="stockSummary">An autonomous equity research workflow that turns quantitative screening into evidence-backed trading recommendations.</p>
+              <ul><li data-i18n="stockDetail1">Cross-analyzes news, earnings, technical charts, DCF valuation, market conditions, and portfolio exposure.</li><li data-i18n="stockDetail2">Tracks 18 sectors, 60+ metrics, and 32 indicators, with research history and real-time Telegram alerts.</li></ul>
+            </article>
+            <article class="side-project">
+              <div class="side-project-heading"><h3>Alpha Note</h3><span>90+</span></div>
+              <p data-i18n="alphaSummary">A source-linked research pipeline that converts high-value technical material into structured knowledge memos.</p>
+              <ul><li data-i18n="alphaDetail1">Runs screening, deep research, and cross-source synthesis with explicit agreement and conflict analysis.</li><li data-i18n="alphaDetail2">Monitors 90+ technical sources and processes podcasts and YouTube with Whisper into an Obsidian knowledge base.</li></ul>
+            </article>
+          </div>
+        </div>
       </section>
 
       <section class="publication shell reveal" aria-labelledby="publication-title">
