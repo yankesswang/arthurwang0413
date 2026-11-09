@@ -125,3 +125,58 @@ function updateProgress() {
 }
 updateProgress();
 window.addEventListener("scroll", updateProgress, { passive: true });
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const finePointer = window.matchMedia("(pointer: fine)");
+const cursorDot = document.querySelector(".cursor-dot");
+const cursorRing = document.querySelector(".cursor-ring");
+const portrait = document.querySelector(".portrait");
+const chromaShapes = document.querySelectorAll(".chroma[data-speed]");
+
+if (finePointer.matches && !reduceMotion.matches && cursorDot && cursorRing) {
+  let pointerX = window.innerWidth / 2;
+  let pointerY = window.innerHeight / 2;
+  let ringX = pointerX;
+  let ringY = pointerY;
+
+  const renderCursor = () => {
+    ringX += (pointerX - ringX) * 0.14;
+    ringY += (pointerY - ringY) * 0.14;
+    cursorDot.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`;
+    cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+    window.requestAnimationFrame(renderCursor);
+  };
+
+  window.addEventListener("pointermove", (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    document.body.classList.add("has-pointer");
+  }, { passive: true });
+
+  document.querySelectorAll(".project-trigger, .portrait, .email, .pdf-link").forEach((element) => {
+    element.addEventListener("pointerenter", () => document.body.classList.add("cursor-view"));
+    element.addEventListener("pointerleave", () => document.body.classList.remove("cursor-view"));
+  });
+
+  portrait?.addEventListener("pointermove", (event) => {
+    const bounds = portrait.getBoundingClientRect();
+    const rotateY = ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
+    const rotateX = ((event.clientY - bounds.top) / bounds.height - 0.5) * -12;
+    portrait.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+  portrait?.addEventListener("pointerleave", () => {
+    portrait.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+  });
+
+  renderCursor();
+}
+
+function updateChroma() {
+  if (reduceMotion.matches) return;
+  chromaShapes.forEach((shape) => {
+    const speed = Number(shape.dataset.speed || 0);
+    shape.style.transform = `translate3d(0, ${window.scrollY * speed}px, 0) rotate(${window.scrollY * speed * 0.02}deg)`;
+  });
+}
+updateChroma();
+window.addEventListener("scroll", updateChroma, { passive: true });

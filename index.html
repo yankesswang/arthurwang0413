@@ -3,30 +3,32 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#111111">
+    <meta name="theme-color" content="#0d0d12">
     <meta name="description" content="Arthur Wang is an Applied AI Engineer building on-device agents, long-term memory systems, and production retrieval infrastructure.">
     <meta property="og:title" content="Arthur Wang | Applied AI Engineer">
     <meta property="og:description" content="On-device agents, evidence-grounded memory, and production RAG systems.">
     <meta property="og:image" content="picture.png">
     <title>Arthur Wang | Applied AI Engineer</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial' font-size='26' font-weight='700' fill='white'%3EAW%3C/text%3E%3C/svg%3E">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff4f9a'/%3E%3Ccircle cx='48' cy='16' r='15' fill='%23b8ff35'/%3E%3Ctext x='31' y='42' text-anchor='middle' font-family='Arial' font-size='25' font-weight='900' fill='%230d0d12'%3EAW%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Noto+Serif+TC:wght@500;600;700;900&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700;8..60,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <a class="skip-link" href="#main" data-i18n="skip">Skip to résumé</a>
     <div class="reading-progress" aria-hidden="true"><span></span></div>
+    <div class="chroma-field" aria-hidden="true">
+      <span class="chroma chroma-pink" data-speed="0.07"></span>
+      <span class="chroma chroma-lime" data-speed="-0.045"></span>
+      <span class="chroma chroma-blue" data-speed="0.035"></span>
+    </div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"><span>VIEW</span></div>
 
     <header class="site-header">
       <div class="utility-bar">
         <p data-i18n="utility">TAIPEI · APPLIED AI · PORTFOLIO / 2026</p>
-        <div class="language-switch" role="group" aria-label="Language">
-          <button type="button" data-lang="en" aria-pressed="true">EN</button>
-          <span aria-hidden="true">/</span>
-          <button type="button" data-lang="zh-TW" aria-pressed="false">中文</button>
-        </div>
       </div>
       <div class="masthead">
         <a class="wordmark" href="#top" aria-label="Arthur Wang home">ARTHUR WANG</a>
@@ -40,6 +42,11 @@
         <a href="#publication" data-i18n="navResearch">Research</a>
         <a href="#profile" data-i18n="navProfile">Profile</a>
         <a href="#contact" data-i18n="navContact">Contact</a>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-lang="zh-TW" aria-pressed="false">中</button>
+        </div>
         <a class="pdf-link" href="arthurwang_cv.pdf" data-i18n="navPdf">PDF résumé ↗</a>
       </nav>
     </header>
@@ -75,6 +82,10 @@
           <article><strong>&lt;4GB</strong><p data-i18n="metric4">VRAM target for local production deployment</p></article>
         </div>
       </section>
+
+      <div class="kinetic-ticker" aria-hidden="true">
+        <div><span>ON-DEVICE AI</span><i>✦</i><span>AGENT SYSTEMS</span><i>✦</i><span>LONG-TERM MEMORY</span><i>✦</i><span>PRODUCTION RAG</span><i>✦</i><span>ON-DEVICE AI</span><i>✦</i><span>AGENT SYSTEMS</span><i>✦</i><span>LONG-TERM MEMORY</span><i>✦</i><span>PRODUCTION RAG</span><i>✦</i></div>
+      </div>
 
       <section class="editorial-section" id="experience" aria-labelledby="experience-title">
         <header class="section-header">
