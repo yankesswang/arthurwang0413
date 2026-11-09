@@ -25,6 +25,15 @@ const root = document.documentElement;
 const progress = document.querySelector(".reading-progress span");
 const languageButtons = document.querySelectorAll("[data-lang]");
 
+let motionReady = root.classList.contains("motion-ready");
+function enableMotion() {
+  if (motionReady) return;
+  motionReady = true;
+  root.classList.add("motion-ready");
+}
+
+window.setTimeout(enableMotion, 1200);
+
 function setLanguage(language) {
   const next = translations[language] ? language : "en";
   document.querySelectorAll("[data-i18n]").forEach((element) => {
@@ -67,3 +76,40 @@ function updateProgress() {
 }
 updateProgress();
 window.addEventListener("scroll", updateProgress, { passive: true });
+
+function attachMagnet(wrapper) {
+  if (!window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches) return;
+  const inner = wrapper.firstElementChild;
+  if (!inner) return;
+
+  let active = false;
+  let frame = 0;
+  let pointerX = 0;
+  let pointerY = 0;
+
+  function updateMagnet() {
+    frame = 0;
+    const bounds = wrapper.getBoundingClientRect();
+    const offsetX = pointerX - (bounds.left + bounds.width / 2);
+    const offsetY = pointerY - (bounds.top + bounds.height / 2);
+    const nearby = Math.abs(offsetX) < bounds.width / 2 + 70 && Math.abs(offsetY) < bounds.height / 2 + 70;
+
+    if (nearby) {
+      active = true;
+      inner.style.transition = "transform 300ms ease-out";
+      inner.style.transform = `translate3d(${offsetX / 8}px, ${offsetY / 8}px, 0)`;
+    } else if (active) {
+      active = false;
+      inner.style.transition = "transform 600ms ease-in-out";
+      inner.style.transform = "translate3d(0, 0, 0)";
+    }
+  }
+
+  window.addEventListener("pointermove", (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    if (!frame) frame = window.requestAnimationFrame(updateMagnet);
+  }, { passive: true });
+}
+
+document.querySelectorAll("[data-magnet]").forEach(attachMagnet);
