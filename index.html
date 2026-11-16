@@ -13,7 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>document.documentElement.classList.add("js", "motion-ready");</script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -23,6 +22,12 @@
     <header class="site-header">
       <nav class="nav-shell" aria-label="Primary navigation">
         <a class="brand" href="#top">Arthur Wang<span>Applied AI Engineer</span></a>
+        <div class="section-nav" aria-label="Résumé sections">
+          <a href="#work" data-i18n="navWork">Work</a>
+          <a href="#experience" data-i18n="navExperience">Experience</a>
+          <a href="#research" data-i18n="navResearch">Research</a>
+          <a href="#contact" data-i18n="navContact">Contact</a>
+        </div>
         <div class="header-actions">
           <div class="language-switch" role="group" aria-label="Language">
             <button type="button" data-lang="en" aria-pressed="true">EN</button>
@@ -40,7 +45,8 @@
           <h1 id="hero-title">Arthur Wang</h1>
           <p class="hero-lead" data-i18n="heroLead">I design and ship on-device agents, long-term memory systems, and production retrieval infrastructure.</p>
           <div class="hero-actions">
-            <a class="button" href="arthurwang_cv.pdf" data-i18n="downloadResume">Download résumé</a>
+            <a class="button" href="#work" data-i18n="viewWork">View selected work</a>
+            <a class="text-link" href="arthurwang_cv.pdf" data-i18n="downloadResume">Download résumé</a>
             <a class="text-link" href="mailto:yankesswang@gmail.com" data-i18n="emailMe">Email me ↗</a>
           </div>
           <ul class="contact-list" aria-label="Contact links">
@@ -57,6 +63,102 @@
         </figure>
       </section>
 
+      <section class="content-section shell" id="work" aria-labelledby="work-title">
+        <header class="section-heading reveal">
+          <p class="section-kicker" data-i18n="workKicker">Selected work</p>
+          <h2 id="work-title" data-i18n="workTitle">Selected projects</h2>
+          <p data-i18n="workIntro">Role, architecture, implementation decisions, and measured outcomes.</p>
+        </header>
+        <div class="project-list">
+          <article class="project reveal">
+            <div class="project-index">01</div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="gimateType">On-device agent · Feb. 2026—Present</p>
+              <h3>GiMATE Agent</h3><p class="project-subtitle">On-Device AI Workflow Assistant</p>
+              <p data-i18n="gimateSummary">Led a Windows AI assistant from local inference to standalone packaging, with progressive skill discovery and recoverable execution.</p>
+              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="gimateRole">Technical lead · Agent architecture and deployment</strong></p>
+              <ul class="project-details">
+                <li data-i18n="gimateDetail1">Built the Electron frontend and FastAPI backend, integrated local inference, and packaged Qwen3.5-4B into a standalone Windows exe.</li>
+                <li data-i18n="gimateDetail2">Developed a skill and tool architecture for desktop workflows; prototyped Gmail email summarization, Outlook scheduling, and Notion knowledge retrieval.</li>
+                <li data-i18n="gimateDetail3">Combined Plan-and-Execute, progressive skill discovery, and deterministic tool execution to reduce unnecessary LLM calls on constrained devices.</li>
+                <li data-i18n="gimateDetail4">Built SQLite-backed task persistence, approval gates, bounded repair/replanning, and regression tests for skill routing, multi-step tool sequences, and failure recovery.</li>
+              </ul>
+              <ul class="tags"><li>Qwen3.5-4B</li><li>Electron</li><li>FastAPI</li><li>SQLite</li></ul>
+            </div>
+            <div class="project-proof project-proof-text"><strong>Plan &amp; Execute</strong><span data-i18n="gimateProof1">Execution model</span><strong>Bounded repair</strong><span data-i18n="gimateProof2">Recovery strategy</span></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-index">02</div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="graceType">Long-term memory · Oct. 2025—Jul. 2026</p>
+              <h3>GRACE-Mem</h3><p class="project-subtitle">Evidence-Centric Conversational Memory</p>
+              <p data-i18n="graceSummary">Designed an evidence-first memory system combining hybrid retrieval, hierarchical reranking, and bounded agentic curation.</p>
+              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="graceRole">Research lead · Retrieval and evaluation</strong></p>
+              <ul class="project-details">
+                <li data-i18n="graceDetail1">Separated graph candidate discovery, compressed-record reranking, and provenance-linked raw-dialogue reconstruction so summaries never become final evidence.</li>
+                <li data-i18n="graceDetail2">Combined BM25, dense entity/relation search, two-hop query-conditioned spreading activation, and hierarchical reranking.</li>
+                <li data-i18n="graceDetail3">Instruction-conditioned reranking raised gold-evidence recall from 34.5% to 63.4% (+28.9 points) and answer accuracy by 3.0 points.</li>
+                <li data-i18n="graceDetail4">Built a bounded 10-call GREP / READ / VEC curation loop with trajectory-level provenance validation, additive coverage recovery, and identity fallback.</li>
+                <li data-i18n="graceDetail5">Best reported results reached 86.9% on LoCoMo and 80.2% on LongMemEval across evaluated configurations.</li>
+              </ul>
+              <ul class="tags"><li>BM25 + Dense</li><li>Graph Retrieval</li><li>Evidence Curation</li></ul>
+            </div>
+            <div class="project-proof"><strong>86.9%</strong><span>LoCoMo</span><strong>80.2%</strong><span>LongMemEval</span></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-index">03</div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="faeType">Enterprise RAG · Jan. 2026—Present</p>
+              <h3>Enterprise Knowledge Assistant</h3><p class="project-subtitle">Company-Wide Chatbot</p>
+              <p data-i18n="faeSummary">Built a company-wide internal chatbot giving product, engineering, FAE, and customer-service teams access to product specifications and technical support knowledge.</p>
+              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="faeRole">System architect · Knowledge graph and retrieval</strong></p>
+              <ul class="project-details">
+                <li data-i18n="faeDetail1">Gave product, engineering, FAE, and customer-service teams a unified interface to product specifications and technical support knowledge.</li>
+                <li data-i18n="faeDetail2">Unified 1,000+ product documents into a structured knowledge base, standardizing product models, categories, and specification fields.</li>
+                <li data-i18n="faeDetail3">Combined exact/fuzzy product matching, BM25, dense embeddings, and graph-based retrieval to resolve ambiguous model references.</li>
+                <li data-i18n="faeDetail4">Evaluated product identification, entity linking, and answer quality separately: approximately 95% model identification, 97% Top-3 entity-linking hit rate, and 92% Q&amp;A accuracy on internal test sets.</li>
+                <li data-i18n="faeDetail5">Reduced FAE specification and compatibility lookup time from 5–10 minutes to under 30 seconds.</li>
+              </ul>
+              <ul class="tags"><li>Neo4j</li><li>GraphRAG</li><li>Product Matching</li><li>Hybrid Search</li></ul>
+            </div>
+            <div class="project-proof"><strong>92%</strong><span data-i18n="faeProof1">Q&amp;A accuracy</span><strong>&lt;30s</strong><span data-i18n="faeProof2">lookup time</span><strong>97%</strong><span data-i18n="faeProof3">Top-3 entity hit</span></div>
+          </article>
+          <article class="project reveal" id="laptop-specification-assistant">
+            <div class="project-index">04</div>
+            <div class="project-main">
+              <p class="project-type" data-i18n="laptopType">Data pipeline · Retrieval &amp; evaluation</p>
+              <h3>Laptop Specification Assistant</h3>
+              <p class="project-subtitle">Data Generation &amp; RAG Evaluation</p>
+              <p data-i18n="laptopSummary">Built a specification-to-answer pipeline combining bilingual data generation, hybrid retrieval, structured fact queries, and answer evaluation.</p>
+              <ul class="project-details">
+                <li data-i18n="laptopDetail1">Transformed laptop specifications into structured product data and bilingual Q&amp;A datasets for retrieval and evaluation.</li>
+                <li data-i18n="laptopDetail2">Combined dense/BM25 retrieval, model-specific filtering, and batch answer generation for laptop specification questions.</li>
+                <li data-i18n="laptopDetail3">Implemented LLM-as-a-Judge evaluation with strict/lenient grading, per-question reports, and error analysis.</li>
+                <li data-i18n="laptopDetail4">Separated exact specification values and SKU options into a structured fact-query path, with RAG reserved for explanatory answers.</li>
+              </ul>
+              <ul class="tags"><li>Structured Facts</li><li>BM25 + Dense</li><li>LLM Evaluation</li></ul>
+            </div>
+            <aside class="project-design"><span data-i18n="designLabel">Key design decision</span><p data-i18n="laptopDecision">Exact hardware values come from structured facts; explanations use retrieved context.</p></aside>
+          </article>
+        </div>
+        <div class="other-work reveal">
+          <p class="other-work-label" data-i18n="otherWork">Additional projects</p>
+          <div class="side-projects">
+            <article class="side-project">
+              <div class="side-project-heading"><h3>StockRadar</h3><a class="text-link" href="https://github.com/yankesswang/Stock-Radar">GitHub ↗</a></div>
+              <p class="project-subtitle">Agentic Equity Research Platform</p>
+              <p data-i18n="stockSummary">A research platform connecting quantitative screening, financial statements, valuation, and tool-enabled research agents.</p>
+              <ul>
+                <li data-i18n="stockDetail1">Combines 60+ financial metrics, SEC/XBRL financial statements, and scenario-based and reverse DCF valuation in a React/FastAPI dashboard.</li>
+                <li data-i18n="stockDetail2">Screens and ranks candidates before agents investigate news, earnings, valuation, and catalysts to generate portfolio-aware research briefings.</li>
+                <li data-i18n="stockDetail3">Adds event-triggered analysis, adversarial review, decision tracking, Telegram alerts, and checks for stale data and unsupported execution claims.</li>
+              </ul>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
       <section class="snapshot shell reveal" aria-labelledby="snapshot-title">
         <header class="section-heading compact">
           <p class="section-kicker" data-i18n="snapshotKicker">Expertise</p>
@@ -66,12 +168,6 @@
           <article class="capability blue"><span>01</span><h3 data-i18n="capAgentsTitle">Agent systems</h3><p data-i18n="capAgentsText">Plan-and-Execute workflows, tool use, permissions, memory, recovery, and human approval for dependable agents.</p></article>
           <article class="capability green"><span>02</span><h3 data-i18n="capRetrievalTitle">Retrieval &amp; memory</h3><p data-i18n="capRetrievalText">Production RAG, GraphRAG, hybrid search, reranking, evidence grounding, and long-term conversational memory.</p></article>
           <article class="capability red"><span>03</span><h3 data-i18n="capProductTitle">AI product engineering</h3><p data-i18n="capProductText">Local inference, FastAPI, Electron, evaluation infrastructure, packaging, and cross-functional technical leadership.</p></article>
-        </div>
-        <div class="outcomes" aria-label="Selected outcomes">
-          <article><strong>6+</strong><p data-i18n="outcome1">AI applications led from architecture to delivery</p></article>
-          <article><strong>97%</strong><p data-i18n="outcome2">agent routing accuracy across 385 tests</p></article>
-          <article><strong>1,000+</strong><p data-i18n="outcome3">product documents indexed for enterprise retrieval</p></article>
-          <article><strong>&lt;4GB</strong><p data-i18n="outcome4">VRAM target for offline production inference</p></article>
         </div>
       </section>
 
@@ -104,98 +200,14 @@
         </div>
       </section>
 
-      <section class="content-section shell" id="work" aria-labelledby="work-title">
-        <header class="section-heading reveal">
-          <p class="section-kicker" data-i18n="workKicker">Selected work</p>
-          <h2 id="work-title" data-i18n="workTitle">Selected projects</h2>
-          <p data-i18n="workIntro">Role, architecture, implementation decisions, and measured outcomes.</p>
-        </header>
-        <div class="project-list">
-          <article class="project reveal">
-            <div class="project-index">01</div>
-            <div class="project-main">
-              <p class="project-type" data-i18n="gimateType">On-device agent · Feb. 2026—Present</p>
-              <h3>GiMATE Agent</h3>
-              <p data-i18n="gimateSummary">Led a Windows AI assistant from local inference to standalone packaging, with progressive skill discovery and recoverable execution.</p>
-              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="gimateRole">Technical lead · Agent architecture and deployment</strong></p>
-              <ul class="project-details">
-                <li data-i18n="gimateDetail1">Built the Electron frontend and FastAPI backend, integrated local inference, and packaged Qwen3.5-4B into a standalone Windows exe.</li>
-                <li data-i18n="gimateDetail2">Delivered 22 skills and 76 tools for PowerPoint, data analysis, local-file RAG, hardware control, Web Search, Gmail, Notion, and Outlook.</li>
-                <li data-i18n="gimateDetail3">Combined Plan-and-Execute, progressive skill discovery, and deterministic tool execution to reduce unnecessary LLM calls on constrained devices.</li>
-                <li data-i18n="gimateDetail4">Built dynamic replanning, SQLite task persistence, cross-session memory, and human approval; achieved 97% routing accuracy across 385 tests.</li>
-              </ul>
-              <ul class="tags"><li>Qwen3.5-4B</li><li>Electron</li><li>FastAPI</li><li>SQLite</li></ul>
-            </div>
-            <div class="project-proof"><strong>22 / 76</strong><span data-i18n="gimateProof1">skills / tools</span><strong>97%</strong><span data-i18n="gimateProof2">routing accuracy</span></div>
-          </article>
-          <article class="project reveal">
-            <div class="project-index">02</div>
-            <div class="project-main">
-              <p class="project-type" data-i18n="graceType">Long-term memory · Oct. 2025—Jul. 2026</p>
-              <h3>GRACE-Mem</h3>
-              <p data-i18n="graceSummary">Designed an evidence-first memory system combining hybrid retrieval, hierarchical reranking, and bounded agentic curation.</p>
-              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="graceRole">Research lead · Retrieval and evaluation</strong></p>
-              <ul class="project-details">
-                <li data-i18n="graceDetail1">Separated graph candidate discovery, compressed-record reranking, and provenance-linked raw-dialogue reconstruction so summaries never become final evidence.</li>
-                <li data-i18n="graceDetail2">Combined BM25, dense entity/relation search, two-hop query-conditioned spreading activation, and hierarchical reranking.</li>
-                <li data-i18n="graceDetail3">Instruction-conditioned reranking raised gold-evidence recall from 34.5% to 63.4% (+28.9 points) and answer accuracy by 3.0 points.</li>
-                <li data-i18n="graceDetail4">Built a bounded 10-call GREP / READ / VEC curation loop with trajectory-level provenance validation, additive coverage recovery, and identity fallback.</li>
-                <li data-i18n="graceDetail5">Reached 86.9% LoCoMo and 80.2% LongMemEval, beating AMA by 7.9 / 3.4 points; ablations isolated gains from graph retrieval and raw-dialogue reconstruction.</li>
-              </ul>
-              <ul class="tags"><li>BM25 + Dense</li><li>Graph Retrieval</li><li>Evidence Curation</li></ul>
-            </div>
-            <div class="project-proof"><strong>86.9%</strong><span>LoCoMo</span><strong>80.2%</strong><span>LongMemEval</span></div>
-          </article>
-          <article class="project reveal">
-            <div class="project-index">03</div>
-            <div class="project-main">
-              <p class="project-type" data-i18n="faeType">Enterprise RAG · Jan. 2026—Present</p>
-              <h3>FAE Support System</h3>
-              <p data-i18n="faeSummary">Built hybrid hardware knowledge infrastructure for specifications, compatibility, and troubleshooting across motherboards, GPUs, and laptops.</p>
-              <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="faeRole">System architect · Knowledge graph and retrieval</strong></p>
-              <ul class="project-details">
-                <li data-i18n="faeDetail1">Covered specifications, compatibility, and troubleshooting across GIGABYTE motherboards, GPUs, and laptops.</li>
-                <li data-i18n="faeDetail2">Parsed and standardized more than 1,000 product documents into a Neo4j hardware knowledge graph.</li>
-                <li data-i18n="faeDetail3">Deployed BERT query classification and entity linking for product models, categories, and ambiguous hardware references.</li>
-                <li data-i18n="faeDetail4">Combined graph retrieval, BM25, embeddings, and fuzzy matching for exact models, fuzzy descriptions, and natural-language troubleshooting.</li>
-                <li data-i18n="faeDetail5">Reached 95% model identification, 97% Top-3 entity hit, and 92% Q&amp;A accuracy; cut lookup from 5–10 minutes to under 30 seconds and manual search by about 70%.</li>
-              </ul>
-              <ul class="tags"><li>Neo4j</li><li>GraphRAG</li><li>BERT</li><li>Hybrid Search</li></ul>
-            </div>
-            <div class="project-proof"><strong>92%</strong><span data-i18n="faeProof1">Q&amp;A accuracy</span><strong>&lt;30s</strong><span data-i18n="faeProof2">lookup time</span><strong>97%</strong><span data-i18n="faeProof3">Top-3 entity hit</span></div>
-          </article>
-        </div>
-        <div class="other-work reveal">
-          <p class="other-work-label" data-i18n="otherWork">Additional projects</p>
-          <div class="side-projects">
-            <article class="side-project">
-              <div class="side-project-heading"><h3>StockRadar</h3><span>24 / 7</span></div>
-              <p data-i18n="stockSummary">An autonomous equity research workflow that turns quantitative screening into evidence-backed trading recommendations.</p>
-              <ul>
-                <li data-i18n="stockDetail1">Generates buy, add, hold, or short recommendations with entry ranges, targets, stops, and risk/reward ratios.</li>
-                <li data-i18n="stockDetail2">Cross-analyzes news, earnings, technical charts, DCF valuation, market conditions, and portfolio exposure.</li>
-                <li data-i18n="stockDetail3">Tracks 18 sectors, 60+ financial metrics, and 32 indicators, with research history and real-time Telegram alerts.</li>
-              </ul>
-            </article>
-            <article class="side-project">
-              <div class="side-project-heading"><h3>Alpha Note</h3><span>90+</span></div>
-              <p data-i18n="alphaSummary">A source-linked research pipeline that converts high-value technical material into structured knowledge memos.</p>
-              <ul>
-                <li data-i18n="alphaDetail1">Monitors 90+ AI/ML, software, security, arXiv, GitHub, and Hugging Face sources; selects the Top 3 stories and 2–3 cross-source trends.</li>
-                <li data-i18n="alphaDetail2">Runs Screening → Deep Research → Cross-Source Synthesis with explicit agreement and conflict analysis.</li>
-                <li data-i18n="alphaDetail3">Uses Whisper and long-context analysis to turn podcasts and YouTube into source- and timestamp-linked Obsidian research memos.</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
 
-      <section class="publication shell reveal" aria-labelledby="publication-title">
+
+      <section class="publication shell reveal" id="research" aria-labelledby="publication-title">
         <div>
           <p class="section-kicker" data-i18n="publicationKicker">Research publication</p>
           <h2 id="publication-title">GRACE-Mem: Graph Retrieval with Agentic Curation of Evidence for Long-Term Conversational Memory</h2>
           <p class="authors" data-i18n="authors">Heng (Arthur) Wang — first author, X.-N. Chen, P.-Y. Chang, C.-H. Chen, H.-Y. Huang, C. Lin, I-L. Chung.</p>
-          <div class="publication-meta"><span>EMNLP 2026 · AKBC</span><span data-i18n="featured">Featured Paper · 3 selected</span><span data-i18n="candidate">Best Paper Award Candidate</span></div>
+          <div class="publication-meta"><span>EMNLP 2026 · AKBC</span><span data-i18n="award">Runner-Up Award</span></div>
         </div>
       </section>
 
@@ -206,8 +218,8 @@
         </header>
         <div class="skills-layout reveal">
           <div class="skill-groups">
-            <article><h3 data-i18n="skillAgentTitle">Agents &amp; retrieval</h3><p data-i18n="skillAgentText">Agent harness engineering, MCP, skills, context engineering, long-term memory, Agentic RAG, GraphRAG, hybrid search, reranking, evaluation.</p></article>
-            <article><h3 data-i18n="skillModelTitle">Models &amp; frameworks</h3><p>llama.cpp, vLLM, LangChain, LlamaIndex, PyTorch, Hugging Face, Quantization, QLoRA, GRPO, OCR, ASR, VLM.</p></article>
+            <article><h3 data-i18n="skillAgentTitle">Agents &amp; retrieval</h3><p data-i18n="skillAgentText">Agentic workflows, RAG/GraphRAG, long-term memory, synthetic data generation, LLM evaluation.</p></article>
+            <article><h3 data-i18n="skillModelTitle">Models &amp; frameworks</h3><p>llama.cpp, vLLM, PyTorch, Hugging Face, LangChain, LlamaIndex.</p></article>
             <article><h3 data-i18n="skillEngineeringTitle">Engineering</h3><p>Python, React, FastAPI, Electron, REST APIs, SQLite, application packaging, evaluation infrastructure.</p></article>
           </div>
           <aside class="education"><p class="meta-label" data-i18n="education">Education</p><h3 data-i18n="university">National Chiao Tung University</h3><p data-i18n="degree">B.S. in Computer Science · 2017–2021</p><hr><p class="meta-label" data-i18n="languages">Languages</p><p data-i18n="languageValue">Mandarin Chinese · English</p></aside>
