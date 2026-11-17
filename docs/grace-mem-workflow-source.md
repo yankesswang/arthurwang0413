@@ -17,3 +17,12 @@ Source: user-supplied `Mem_KG.pdf`, 22-page GRACE-Mem research manuscript. Text 
 The ordinary curated path reconstructs raw evidence. Fallback preserves compressed seeds; the site avoids claiming that raw reconstruction always succeeds or that compressed text can never become answer context.
 
 The native expandable panels are available in English and Traditional Chinese. CLI workflow answers read the same panel content from the DOM and include the manuscript section/figure attribution. Queries can target retrieval, ingestion, or validation/fallback. These are architecture explanations, not live execution of GRACE-Mem or a connection to the research corpus.
+
+## Embedded original figures
+
+- Figure 1, PDF p. 4: extract the original embedded image (xref 6), 1401 × 739, to lossless WebP.
+- Figure 2, PDF p. 6: extract the original embedded image (xref 15), 2094 × 709, to lossless WebP.
+- Figure 3, PDF p. 12: render the original vector plot at 4×, clip rectangle (105, 190, 485, 410) PDF points, 1520 × 880.
+- Figure 4, PDF p. 13: render the original vector plot at 4×, clip rectangle (105, 72, 485, 292) PDF points, 1520 × 880.
+
+All plot labels, legends, colors, axes, and values remain as in the original. Figures 3 and 4 are presented together to preserve the contrast between LongMemEval gains and model-dependent LoCoMo behavior; the captions do not claim universal improvements. Each figure links to the corresponding page of the original PDF. Bilingual alt text provides the plotted values for readers who cannot inspect the images. The original manuscript remains unchanged.
