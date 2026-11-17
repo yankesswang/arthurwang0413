@@ -25,7 +25,7 @@
   // Print the complete résumé, including progressively disclosed implementation details.
   let expandedBeforePrint = [];
   window.addEventListener("beforeprint", () => {
-    expandedBeforePrint = [...document.querySelectorAll(".project-deep-dive:not([open])")];
+    expandedBeforePrint = [...document.querySelectorAll(".project-deep-dive:not([open]), .memory-panel:not([open])")];
     expandedBeforePrint.forEach(detail => { detail.open = true; });
   });
   window.addEventListener("afterprint", () => {

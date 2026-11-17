@@ -107,3 +107,10 @@
 }
 @media (prefers-reduced-motion: reduce) { .cli * { scroll-behavior: auto; } }
 @media print { .terminal-dialog { display: none !important; } }
+
+.cli-workflow { padding-left: 1.4rem; color: var(--body); }
+.cli-workflow li { padding-left: .3rem; margin-bottom: 1rem; }
+.cli-workflow li::marker { color: var(--blue); font: .75rem var(--mono); }
+.cli-workflow strong { display: block; color: var(--ink); font-weight: 500; }
+.cli-workflow li p { margin: .35rem 0 0; }
+.cli-answer .cli-workflow-source { color: var(--muted); font-size: .72rem; }

@@ -8,7 +8,7 @@
       cliSend: "Send ↵", cliEnter: "send", cliNewline: "new line", cliCommands: "/ commands",
       cliNote: "Local résumé search · no model connected", cliReady: "Ready", cliSearching: "Searching résumé…",
       cliWelcome: "Get to know the work.", cliWelcomeText: "Ask about a project, explore the technical stack, or find relevant experience. Every answer points to the résumé.",
-      cliTry: "TRY A QUESTION", cliExampleAgent: "Explain GiMATE’s architecture", cliExampleMemory: "Show retrieval and memory experience", cliExampleAbout: "Summarize Arthur’s experience",
+      cliTry: "TRY A QUESTION", cliExampleAgent: "Explain GiMATE’s architecture", cliExampleMemory: "Explain GRACE-Mem’s evidence workflow", cliExampleAbout: "Summarize Arthur’s experience",
       cliPlaceholder: "Ask about my work, or type / for commands", cliTools: "Source activity", cliSearched: "Searched project descriptions", cliRead: "Read résumé section",
       cliAnswer: "arthur / portfolio", cliSources: "Read full project ↗", cliRelevant: "Here’s the relevant work from my résumé.",
       cliNoHits: "I couldn’t find that topic in this résumé. Try a project name, RAG, agents, or evaluation.",
@@ -24,7 +24,7 @@
       cliSend: "送出 ↵", cliEnter: "送出", cliNewline: "換行", cliCommands: "/ 指令",
       cliNote: "本機履歷檢索 · 未串接語言模型", cliReady: "就緒", cliSearching: "正在查閱履歷…",
       cliWelcome: "從一個問題開始。", cliWelcomeText: "了解專案架構、查看技術能力，或尋找相關經驗。每個回答都能追溯到履歷內容。",
-      cliTry: "試著問問", cliExampleAgent: "說明 GiMATE 的系統架構", cliExampleMemory: "有哪些檢索與記憶相關經驗？", cliExampleAbout: "整理 Arthur 的工作經驗",
+      cliTry: "試著問問", cliExampleAgent: "說明 GiMATE 的系統架構", cliExampleMemory: "說明 GRACE-Mem 的證據處理流程", cliExampleAbout: "整理 Arthur 的工作經驗",
       cliPlaceholder: "詢問我的工作，或輸入 / 查看指令", cliTools: "來源查閱紀錄", cliSearched: "搜尋專案介紹", cliRead: "閱讀履歷段落",
       cliAnswer: "arthur / portfolio", cliSources: "閱讀完整專案 ↗", cliRelevant: "以下是履歷中與問題相關的實作。",
       cliNoHits: "這份履歷中沒有找到相關內容。可以試試專案名稱、RAG、Agent 或評估。",
@@ -66,7 +66,7 @@
   const projectKeys = query => {
     const lower = query.toLowerCase();
     return Object.entries(projects).filter(([key, p]) => keywordPresent(lower, key) || lower.includes(p.name.toLowerCase()) ||
-      ({gimate: /gimate/, grace: /grace/, enterprise: /企業|enterprise|fae/, laptop: /筆電|laptop/, stock: /股票|stockradar|stock radar/}[key]).test(lower)).map(([key]) => key);
+      ({gimate: /gimate/, grace: /grace|mem[_-]?kg/, enterprise: /企業|enterprise|fae/, laptop: /筆電|laptop/, stock: /股票|stockradar|stock radar/}[key]).test(lower)).map(([key]) => key);
   };
   function resolve(query) {
     const trimmed = query.trim();
@@ -79,7 +79,12 @@
     // Support familiar project-oriented legacy commands while leading with natural language.
     const goal = ["run", "search", "cat", "architecture"].includes(command) && args ? args : trimmed;
     const explicit = projectKeys(goal);
-    if (explicit.length) return { type: "evidence", keys: explicit, query: goal, architecture: /架構|architecture|how.*work/i.test(trimmed), explicit: true };
+    if (explicit.length) return {
+      type: "evidence", keys: explicit, query: goal,
+      architecture: /架構|流程|寫入|回退|驗證|architecture|workflow|pipeline|ingestion|fallback|validation|how.*work/i.test(trimmed),
+      flow: /寫入|建構|ingestion|ingest|write/i.test(trimmed) ? "ingestion" : /回退|驗證|fallback|validation|guard/i.test(trimmed) ? "guards" : "retrieval",
+      explicit: true
+    };
     if (/\b(skills?|stack|technologies)\b|技術能力|技能|技術棧|技術堆疊/i.test(goal)) return { type: "skills", keys: [], query: goal };
     if (/\b(contact|email|linkedin)\b|聯絡|聯繫|信箱/i.test(goal)) return { type: "contact", keys: [], query: goal };
     if (/\b(paper|publication|research)\b|論文|發表/i.test(goal)) return { type: "research", keys: [], query: goal };
@@ -145,12 +150,25 @@
       keys.forEach(key => {
         const project = projects[key], article = document.getElementById(project.id), section = node("section", "cli-project-answer");
         section.append(node("h3", "", project.name), node("p", "", t(project.summary)));
+        const workflow = record.architecture && article.querySelector(".memory-workflow");
         if (record.architecture) {
           const map = article.querySelector(".architecture-strip p"); if (map) section.appendChild(node("p", "cli-flow", map.textContent));
         }
+        if (workflow) {
+          const source = workflow.querySelector(`[data-flow="${record.flow || "retrieval"}"]`);
+          const list = node("ol", "cli-workflow");
+          [...source.children].forEach(item => {
+            const li = node("li", "");
+            li.append(node("strong", "", item.querySelector("h5").textContent), node("p", "", item.querySelector("p").textContent));
+            list.appendChild(li);
+          });
+          section.appendChild(list);
+          if (record.flow !== "guards") section.appendChild(node("p", "cli-excerpt", t("memoryFallbackText")));
+          section.appendChild(node("p", "cli-workflow-source", workflow.querySelector(".memory-source-note").textContent));
+        }
         const evidence = record.evidence?.find(item => item.key === key);
         if (evidence) section.appendChild(node("p", "cli-excerpt", t(evidence.excerptKey)));
-        else if (record.explicit) {
+        else if (record.explicit && !workflow) {
           const list = node("ul", "cli-bullets"); [...article.querySelectorAll(".project-details li, :scope > ul > li")].slice(0, 2).forEach(li => list.appendChild(node("li", "", li.textContent))); if (list.children.length) section.appendChild(list);
         }
         link(section, t("cliSources"), `#${project.id}`); parent.appendChild(section);

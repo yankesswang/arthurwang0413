@@ -216,6 +216,34 @@ a, button, summary { transition: color 180ms ease, background-color 180ms ease, 
   .guide-intro { font-size: 1rem; }
 }
 
+/* Research-grounded architecture: source-linked steps, not simulated execution. */
+.memory-workflow { margin: 1.8rem 0; }
+.memory-workflow h4 { margin: 0 0 1rem; color: var(--ink); font: 500 1.15rem/1.5 var(--sans); letter-spacing: -.02em; }
+.memory-workflow .architecture-strip { margin: 0 0 1rem; }
+.memory-workflow .architecture-caption { display: block; font: .82rem/1.8 var(--sans); }
+.memory-panel { border-top: 1px solid var(--line); }
+.memory-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: 56px; padding: .8rem 0; list-style: none; color: var(--ink); font-size: .9rem; font-weight: 500; }
+.memory-panel > summary::-webkit-details-marker { display: none; }
+.memory-panel-mark { display: grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--blue); font: 1rem var(--mono); transition: transform 180ms ease; }
+.memory-panel[open] .memory-panel-mark { transform: rotate(45deg); }
+.memory-steps { counter-reset: memory-step; list-style: none; padding: .5rem 0 .5rem; margin: 0; }
+.memory-steps > li { counter-increment: memory-step; position: relative; margin-left: 15px; padding: 0 0 1.4rem 2rem; border-left: 1px solid var(--line-strong); }
+.memory-steps > li:last-child { border-left-color: transparent; padding-bottom: .75rem; }
+.memory-steps > li::before { position: absolute; left: -15px; top: 0; display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--blue); background: var(--surface); content: counter(memory-step, decimal-leading-zero); font: .6rem var(--mono); }
+.memory-workflow h5 { margin: 0 0 .4rem; padding-top: .1rem; color: var(--ink); font: 500 .95rem/1.6 var(--sans); }
+.memory-workflow li p { margin: 0; color: var(--body); font-size: .9rem; line-height: 1.85; }
+.memory-guards { padding: 0; margin: 0; list-style: none; }
+.memory-guards li { padding: 1rem; margin-bottom: .75rem; border: 1px solid var(--line); border-radius: .5rem; background: var(--surface-soft); }
+.memory-defaults { padding-top: 1rem; border-top: 1px solid var(--line); margin-bottom: .7rem; color: var(--blue); font: .7rem/1.9 var(--mono); }
+.memory-source-note { margin-bottom: 0; color: var(--muted); font-size: .72rem; line-height: 1.8; }
+@media (max-width: 600px) {
+  .memory-workflow h4 { font-size: 1.1rem; }
+  .memory-workflow h5, .memory-panel > summary { font-size: 1rem; }
+  .memory-workflow li p { font-size: 1rem; }
+  .memory-steps > li { padding-left: 1.6rem; }
+  .memory-workflow .architecture-caption { font-size: .9rem; }
+}
+
 /* Warm neutral surfaces also cover the original interactive components. */
 .project-type, .project-main .project-subtitle { color: var(--muted); }
 .project-proof strong { color: var(--ink); }
