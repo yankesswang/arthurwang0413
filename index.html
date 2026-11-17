@@ -41,13 +41,14 @@
     <main id="main">
       <section class="hero shell" id="top" aria-labelledby="hero-title">
         <div class="hero-copy reveal">
-          <p class="eyebrow" data-i18n="heroEyebrow">Applied AI Engineer · Technical Lead · Taiwan</p>
+          <p class="eyebrow" data-i18n="heroEyebrow">Agent systems · Retrieval &amp; memory · Taiwan</p>
           <h1 id="hero-title" aria-label="Arthur Wang">Arthur<br><span>Wang<span class="name-period">.</span></span></h1>
-          <p class="hero-lead" data-i18n="heroLead">I design and ship on-device agents, long-term memory systems, and production retrieval infrastructure.</p>
+          <p class="hero-lead" data-i18n="heroLead">I build agents that plan, use tools, and recover — with retrieval and memory grounded in traceable evidence.</p>
+          <div class="agent-principles" aria-label="Engineering approach"><span>Plan</span><span>Execute</span><span>Verify</span></div>
           <div class="hero-actions">
-            <a class="button" href="#work" data-i18n="viewWork">View selected work</a>
+            <a class="button" href="#portfolio-agent-session" data-i18n="askPortfolio">Explore with my agent</a>
             <a class="text-link" href="arthurwang_cv.pdf" data-i18n="downloadResume">Download résumé</a>
-            <a class="text-link" href="mailto:yankesswang@gmail.com" data-i18n="emailMe">Email me ↗</a>
+            <a class="text-link" href="#work" data-i18n="viewWork">View selected work</a>
           </div>
           <div class="hero-signature"><img src="picture.png" alt="Arthur Wang" width="44" height="44"><span><strong>Arthur Wang</strong><span data-i18n="portraitRole">AI Algorithm Deputy Manager / Technical Lead</span></span></div>
           <ul class="contact-list" aria-label="Contact links">
@@ -59,15 +60,31 @@
         <aside class="agent-workspace" aria-labelledby="workspace-title">
           <header class="workspace-bar">
             <span class="window-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span id="workspace-title">arthur / workspace</span>
-            <span class="workspace-local" data-i18n="labLocal">In your browser</span>
+            <span id="workspace-title">arthur / agent.session</span>
+            <span class="workspace-local" data-i18n="labLocal">Local execution</span>
           </header>
           <div class="workspace-switch" role="group" aria-label="Workspace views" data-i18n-aria="labViews">
-            <button type="button" data-view="agent" aria-pressed="true" aria-controls="view-agent"><span aria-hidden="true">◎</span> <span data-i18n="labAgent">Agent</span></button>
+            <button type="button" data-view="agent" aria-pressed="true" aria-controls="view-agent"><span aria-hidden="true">◎</span> <span data-i18n="labAgent">Agent session</span></button>
             <button type="button" data-view="projects" aria-pressed="false" aria-controls="view-projects"><span aria-hidden="true">▤</span> <span data-i18n="labProjects">Projects</span></button>
             <button type="button" data-view="terminal" aria-pressed="false" aria-controls="view-terminal"><span aria-hidden="true">›_</span> <span>Terminal</span></button>
           </div>
-          <div class="workspace-view" id="view-agent">
+          <div class="workspace-view agent-session" id="view-agent">
+            <section id="portfolio-agent-session" aria-labelledby="session-title">
+              <div class="session-header"><div><p class="session-eyebrow">PORTFOLIO AGENT / 01</p><h2 id="session-title" data-i18n="sessionTitle">Give me a goal.</h2></div><span class="session-state" role="status" aria-live="polite" data-state="idle">Ready</span></div>
+              <div class="session-prompts" role="group" aria-label="Example tasks" data-i18n-aria="sessionExamples">
+                <button type="button" data-intent="agents" data-i18n="sessionAgents">Agent engineering</button><button type="button" data-intent="memory" data-i18n="sessionMemory">Retrieval &amp; memory</button><button type="button" data-intent="evaluation" data-i18n="sessionEvaluation">Data &amp; evaluation</button>
+              </div>
+              <form class="session-form" autocomplete="off"><label class="sr-only" for="session-query" data-i18n="sessionQueryLabel">What would you like to know about Arthur's work?</label><input id="session-query" name="goal" type="text" maxlength="180" placeholder="Find evidence of agent engineering" required><button type="submit" data-i18n="sessionRun">Run ↗</button><button type="button" class="session-stop" hidden data-i18n="sessionStop">Stop</button></form>
+              <div class="session-run-body">
+                <ol class="session-pipeline" aria-label="Task progress" data-i18n-aria="sessionProgress"><li data-step="plan"><span>01</span><span data-i18n="sessionPlan">Plan</span></li><li data-step="search"><span>02</span><span data-i18n="sessionSearch">Search</span></li><li data-step="read"><span>03</span><span data-i18n="sessionRead">Read</span></li><li data-step="brief"><span>04</span><span data-i18n="sessionBrief">Brief</span></li></ol>
+                <div class="session-plan"><span data-i18n="sessionPlanLabel">Task plan</span><p data-i18n="sessionPlanText">Match the goal to project capabilities, read the relevant descriptions, and return linked evidence.</p></div>
+                <details class="session-trace" open><summary><span data-i18n="sessionTrace">Tool activity</span><span class="session-tool-count">0 calls</span></summary><ol class="session-tool-log"></ol></details>
+                <section class="session-result" aria-labelledby="session-result-title"><div class="session-result-heading"><span data-i18n="sessionEvidence">Source-linked evidence</span><span class="session-source-count"></span></div><h3 id="session-result-title" data-i18n="sessionWelcome">Choose a goal to explore my work.</h3><div class="session-evidence-list"></div><p class="session-feedback"></p></section>
+              </div>
+              <p class="session-disclosure" data-i18n="sessionDisclosure">Runs locally · keyword matching and excerpts from this résumé</p>
+              <noscript><p class="session-noscript">Enable JavaScript to explore tasks, or read all project details below.</p></noscript>
+            </section>
+            <details class="agent-companion"><summary data-i18n="sessionCompanion">Meet the companion ↗</summary><div>
             <div class="agent-stage">
               <div class="stage-axis axis-x" aria-hidden="true"></div><div class="stage-axis axis-y" aria-hidden="true"></div>
               <span class="stage-coordinate" aria-hidden="true">01 / INTERACTION STUDY</span>
@@ -89,6 +106,7 @@
               <div class="stage-status"><span class="status-dot" aria-hidden="true"></span><span id="agent-status" data-i18n="labReady">Ready to explore</span></div>
             </div>
             <div class="agent-instructions"><p id="agent-hint" data-i18n="labHint">Drag a little. Let go. Watch it return.</p><button type="button" class="lab-reset" data-i18n="labReset">Reset ↺</button></div>
+            </div></details>
           </div>
           <div class="workspace-view" id="view-projects" hidden>
             <div class="lab-project-layout">
@@ -107,7 +125,7 @@
             <form class="terminal-form" autocomplete="off"><label for="terminal-command"><span aria-hidden="true">›</span><span class="sr-only" data-i18n="labCommandLabel">Portfolio command</span></label><input id="terminal-command" name="command" type="text" spellcheck="false" autocapitalize="off" maxlength="120" placeholder="help" aria-describedby="terminal-note"><button type="submit" data-i18n="labRun">Run ↵</button></form>
             <p id="terminal-note" class="terminal-note" data-i18n="labTerminalNote">Local navigation only · no AI requests or shell execution</p>
           </div>
-          <footer class="workspace-footer"><span>AW / PERSONAL LAB</span><span data-i18n="labFooter">A little play. A lot of engineering.</span></footer>
+          <footer class="workspace-footer"><span>AW / PERSONAL LAB</span><span data-i18n="labFooter">Plan. Execute. Verify.</span></footer>
           <noscript><p class="lab-noscript">Interactive views need JavaScript. All projects and résumé details are available below.</p></noscript>
         </aside>
       </section>
