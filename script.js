@@ -230,6 +230,7 @@ function setLanguage(language) {
   root.lang = next === "zh-TW" ? "zh-Hant" : "en";
   languageButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.lang === next)));
   try { localStorage.setItem("resume-language", next); } catch { /* Storage may be unavailable. */ }
+  document.dispatchEvent(new CustomEvent("resume:language", { detail: next }));
 }
 
 languageButtons.forEach((button) => button.addEventListener("click", () => setLanguage(button.dataset.lang)));
@@ -263,39 +264,275 @@ function updateProgress() {
 updateProgress();
 window.addEventListener("scroll", updateProgress, { passive: true });
 
-function attachMagnet(wrapper) {
-  if (!window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches) return;
-  const inner = wrapper.firstElementChild;
-  if (!inner) return;
-
-  let active = false;
-  let frame = 0;
-  let pointerX = 0;
-  let pointerY = 0;
-
-  function updateMagnet() {
-    frame = 0;
-    const bounds = wrapper.getBoundingClientRect();
-    const offsetX = pointerX - (bounds.left + bounds.width / 2);
-    const offsetY = pointerY - (bounds.top + bounds.height / 2);
-    const nearby = Math.abs(offsetX) < bounds.width / 2 + 70 && Math.abs(offsetY) < bounds.height / 2 + 70;
-
-    if (nearby) {
-      active = true;
-      inner.style.transition = "transform 300ms ease-out";
-      inner.style.transform = `translate3d(${offsetX / 8}px, ${offsetY / 8}px, 0)`;
-    } else if (active) {
-      active = false;
-      inner.style.transition = "transform 600ms ease-in-out";
-      inner.style.transform = "translate3d(0, 0, 0)";
-    }
+// Original interaction design: a small portfolio workspace, with no backend or runtime dependencies.
+const labCopy = {
+  en: {
+    labLocal: "In your browser", labViews: "Workspace views", labAgent: "Agent", labProjects: "Projects",
+    labAvatar: "Interactive agent. Drag and release, or use arrow keys. Escape resets.",
+    labReady: "Ready to explore", labDragging: "A little outside the box", labReturning: "Finding my balance",
+    labHint: "Drag a little. Let go. Watch it return.", labReset: "Reset ↺",
+    labChooseProject: "Choose a project", labReadCase: "Read the project ↗",
+    labTerminalHint: "Explore this résumé with local commands. Try help, projects, skills, paper, or contact.",
+    labCommandOutput: "Command output", labCommandLabel: "Portfolio command", labRun: "Run ↵",
+    labTerminalNote: "Local navigation only · no AI requests or shell execution",
+    labFooter: "A little play. A lot of engineering.", labArchitecture: "Architecture overview",
+    labMapAgent: "Task → Plan → Validated tools → Result",
+    labMapMemory: "Query → Graph candidates → Reranking → Raw evidence",
+    labMapKnowledge: "Product query → Model matching → Hybrid retrieval → Answer",
+    labMapData: "Specifications → Structured facts / RAG → Answer → Evaluation",
+    labUnknown: "Unknown command. Type help to see the available commands.",
+    labHelp: "help · projects · skills · paper · contact · clear. Use ↑ / ↓ for command history.",
+    labSkills: "Agentic workflows · RAG / GraphRAG · Long-term memory · LLM evaluation · Python / FastAPI / Electron",
+    labPaper: "GRACE-Mem — first-author research · EMNLP 2026 AKBC · Runner-Up Award",
+    labPaperLink: "Read publication details ↗", labSkillsLink: "View technical skills ↗"
+  },
+  "zh-TW": {
+    labLocal: "在你的瀏覽器中運作", labViews: "工作台檢視", labAgent: "互動角色", labProjects: "作品",
+    labAvatar: "互動代理角色。拖拉後放開，或用方向鍵移動；Escape 重設。",
+    labReady: "準備好一起探索", labDragging: "試著跳出框架", labReturning: "正在找回平衡",
+    labHint: "拉一下，放開，看它彈回原位。", labReset: "重設 ↺",
+    labChooseProject: "選擇專案", labReadCase: "閱讀專案 ↗",
+    labTerminalHint: "用本機指令探索履歷。試試 help、projects、skills、paper 或 contact。",
+    labCommandOutput: "指令輸出", labCommandLabel: "履歷導覽指令", labRun: "執行 ↵",
+    labTerminalNote: "僅供本機導覽 · 不呼叫 AI、不執行系統指令",
+    labFooter: "一點玩心，更多工程實作。", labArchitecture: "架構概覽",
+    labMapAgent: "任務 → 規劃 → 驗證工具參數 → 執行結果",
+    labMapMemory: "問題 → 圖候選探索 → 重排序 → 原始證據",
+    labMapKnowledge: "產品問題 → 型號匹配 → 混合檢索 → 回答",
+    labMapData: "規格資料 → 結構化事實／RAG → 回答 → 評估",
+    labUnknown: "找不到這個指令。輸入 help 查看可用指令。",
+    labHelp: "help · projects · skills · paper · contact · clear。可用 ↑ / ↓ 瀏覽指令紀錄。",
+    labSkills: "代理工作流程 · RAG／GraphRAG · 長期記憶 · LLM 評估 · Python／FastAPI／Electron",
+    labPaper: "GRACE-Mem — 第一作者研究 · EMNLP 2026 AKBC · Runner-Up Award",
+    labPaperLink: "閱讀論文資訊 ↗", labSkillsLink: "查看技術能力 ↗"
   }
+};
+Object.keys(labCopy).forEach((lang) => Object.assign(translations[lang], labCopy[lang]));
 
-  window.addEventListener("pointermove", (event) => {
-    pointerX = event.clientX;
-    pointerY = event.clientY;
-    if (!frame) frame = window.requestAnimationFrame(updateMagnet);
-  }, { passive: true });
+const workspace = document.querySelector(".agent-workspace");
+const projectSources = {
+  gimate: { id: "gimate-agent", name: "GiMATE Agent", summary: "gimateSummary", index: "01" },
+  grace: { id: "grace-mem", name: "GRACE-Mem", summary: "graceSummary", index: "02" },
+  enterprise: { id: "enterprise-knowledge-assistant", name: "Enterprise Knowledge Assistant", summary: "faeSummary", index: "03" },
+  laptop: { id: "laptop-specification-assistant", name: "Laptop Specification Assistant", summary: "laptopSummary", index: "04" }
+};
+let selectedLabProject = "gimate";
+const labLanguage = () => root.lang === "zh-Hant" ? "zh-TW" : "en";
+const labText = (key) => translations[labLanguage()][key];
+
+function showLabView(view, focusInput = false) {
+  if (!["agent", "projects", "terminal"].includes(view)) return;
+  workspace.querySelectorAll("[data-view]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.view === view));
+  });
+  workspace.querySelectorAll(".workspace-view").forEach((panel) => {
+    panel.hidden = panel.id !== `view-${view}`;
+  });
+  if (focusInput && view === "terminal") document.querySelector("#terminal-command").focus();
 }
 
-document.querySelectorAll("[data-magnet]").forEach(attachMagnet);
+workspace.querySelectorAll("[data-view]").forEach((button) => {
+  button.addEventListener("click", () => showLabView(button.dataset.view, true));
+});
+
+function selectLabProject(key) {
+  const project = projectSources[key];
+  if (!project) return;
+  selectedLabProject = key;
+  workspace.querySelectorAll("[data-project]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.project === key));
+  });
+  workspace.querySelector(".lab-file-label").textContent = `README / ${project.index}`;
+  workspace.querySelector(".lab-project-name").textContent = project.name;
+  workspace.querySelector(".lab-project-description").textContent = labText(project.summary);
+  workspace.querySelector(".lab-case-link").href = `#${project.id}`;
+}
+workspace.querySelectorAll("[data-project]").forEach((button) => {
+  button.addEventListener("click", () => selectLabProject(button.dataset.project));
+});
+
+const terminalForm = workspace.querySelector(".terminal-form");
+const terminalInput = workspace.querySelector("#terminal-command");
+const terminalOutput = workspace.querySelector(".terminal-output");
+const commandHistory = [];
+let historyPosition = 0;
+const commandRecords = [];
+
+function addTerminalLink(parent, text, href) {
+  const link = document.createElement("a");
+  link.textContent = text;
+  link.setAttribute("href", href);
+  parent.appendChild(link);
+}
+
+function renderTerminal() {
+  const fragment = document.createDocumentFragment();
+  commandRecords.forEach(({ input, command }) => {
+    const entry = document.createElement("div");
+    entry.className = "terminal-entry";
+    const prompt = document.createElement("p");
+    prompt.className = "terminal-prompt";
+    prompt.textContent = `› ${input}`;
+    entry.appendChild(prompt);
+    const result = document.createElement("div");
+    result.className = "terminal-result";
+    if (command === "projects") {
+      Object.values(projectSources).forEach((project) => addTerminalLink(result, `${project.index} ${project.name} ↗`, `#${project.id}`));
+      addTerminalLink(result, "StockRadar ↗", "https://github.com/yankesswang/Stock-Radar");
+    } else if (command === "contact") {
+      addTerminalLink(result, "yankesswang@gmail.com ↗", "mailto:yankesswang@gmail.com");
+      addTerminalLink(result, "LinkedIn ↗", "https://linkedin.com/in/arthur-wang0413");
+    } else if (command === "skills" || command === "paper") {
+      const text = document.createElement("p");
+      text.textContent = labText(command === "skills" ? "labSkills" : "labPaper");
+      result.appendChild(text);
+      addTerminalLink(result, labText(command === "skills" ? "labSkillsLink" : "labPaperLink"), command === "skills" ? "#skills" : "#research");
+    } else {
+      result.textContent = labText(command === "help" ? "labHelp" : "labUnknown");
+    }
+    entry.appendChild(result);
+    fragment.appendChild(entry);
+  });
+  terminalOutput.replaceChildren(fragment);
+  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+}
+
+terminalForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = terminalInput.value.trim().slice(0, 120);
+  if (!input) return;
+  const command = input.toLowerCase();
+  commandHistory.push(input);
+  if (commandHistory.length > 30) commandHistory.shift();
+  historyPosition = commandHistory.length;
+  if (command === "clear") commandRecords.length = 0;
+  else {
+    commandRecords.push({ input, command });
+    if (commandRecords.length > 15) commandRecords.shift();
+  }
+  terminalInput.value = "";
+  renderTerminal();
+});
+terminalInput.addEventListener("keydown", (event) => {
+  if (!["ArrowUp", "ArrowDown"].includes(event.key)) return;
+  event.preventDefault();
+  historyPosition = Math.max(0, Math.min(commandHistory.length, historyPosition + (event.key === "ArrowUp" ? -1 : 1)));
+  terminalInput.value = commandHistory[historyPosition] || "";
+});
+
+const stage = workspace.querySelector(".agent-stage");
+const avatar = workspace.querySelector(".elastic-agent");
+const agentStatus = workspace.querySelector("#agent-status");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let agentStatusKey = "labReady";
+let agentX = 0, agentY = 0, velocityX = 0, velocityY = 0;
+let pointerStart = null;
+let agentFrame = 0;
+let lastFrame = 0;
+const limit = (value, max) => Math.max(-max, Math.min(max, value));
+
+function setAgentStatus(key) {
+  agentStatusKey = key;
+  agentStatus.textContent = labText(key);
+}
+function paintAgent() {
+  avatar.style.setProperty("--agent-x", `${agentX}px`);
+  avatar.style.setProperty("--agent-y", `${agentY}px`);
+  avatar.style.setProperty("--agent-rotation", `${agentX * .12}deg`);
+  avatar.style.setProperty("--agent-stretch", String(1 + Math.abs(agentX) / 350));
+  avatar.style.setProperty("--agent-squash", String(1 - Math.abs(agentX) / 650));
+}
+function returnAgent(timestamp) {
+  const dt = Math.min((timestamp - (lastFrame || timestamp)) / 16.67, 2) || 1;
+  lastFrame = timestamp;
+  const damping = Math.pow(.76, dt);
+  velocityX = (velocityX - agentX * .11 * dt) * damping;
+  velocityY = (velocityY - agentY * .11 * dt) * damping;
+  agentX += velocityX * dt;
+  agentY += velocityY * dt;
+  paintAgent();
+  if (Math.abs(agentX) + Math.abs(agentY) + Math.abs(velocityX) + Math.abs(velocityY) > .12) {
+    agentFrame = window.requestAnimationFrame(returnAgent);
+  } else {
+    agentFrame = 0;
+    lastFrame = 0;
+    agentX = agentY = velocityX = velocityY = 0;
+    paintAgent();
+    setAgentStatus("labReady");
+  }
+}
+function releaseAgent() {
+  if (pointerStart && avatar.hasPointerCapture(pointerStart.id)) avatar.releasePointerCapture(pointerStart.id);
+  pointerStart = null;
+  avatar.classList.remove("is-grabbed");
+  if (agentFrame) window.cancelAnimationFrame(agentFrame);
+  agentFrame = 0;
+  lastFrame = 0;
+  if (reducedMotion.matches) {
+    agentX = agentY = velocityX = velocityY = 0;
+    paintAgent();
+    setAgentStatus("labReady");
+  } else {
+    setAgentStatus("labReturning");
+    agentFrame = window.requestAnimationFrame(returnAgent);
+  }
+}
+avatar.addEventListener("pointerdown", (event) => {
+  if (!event.isPrimary || event.button !== 0) return;
+  if (agentFrame) window.cancelAnimationFrame(agentFrame);
+  agentFrame = 0;
+  velocityX = velocityY = 0;
+  pointerStart = { x: event.clientX - agentX, y: event.clientY - agentY, id: event.pointerId };
+  avatar.setPointerCapture(event.pointerId);
+  avatar.classList.add("is-grabbed");
+  setAgentStatus("labDragging");
+});
+avatar.addEventListener("pointermove", (event) => {
+  if (!pointerStart || pointerStart.id !== event.pointerId) return;
+  agentX = limit((event.clientX - pointerStart.x) * .65, 48);
+  agentY = limit((event.clientY - pointerStart.y) * .5, 32);
+  paintAgent();
+});
+["pointerup", "pointercancel", "lostpointercapture"].forEach((name) => avatar.addEventListener(name, () => { if (pointerStart) releaseAgent(); }));
+avatar.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") { event.preventDefault(); releaseAgent(); return; }
+  const offsets = { ArrowLeft: [-22, 0], ArrowRight: [22, 0], ArrowUp: [0, -22], ArrowDown: [0, 22] };
+  if (!offsets[event.key]) return;
+  event.preventDefault();
+  if (agentFrame) window.cancelAnimationFrame(agentFrame);
+  agentX = offsets[event.key][0]; agentY = offsets[event.key][1];
+  velocityX = velocityY = 0;
+  paintAgent();
+  releaseAgent();
+});
+avatar.addEventListener("blur", () => { if (pointerStart) releaseAgent(); });
+workspace.querySelector(".lab-reset").addEventListener("click", releaseAgent);
+stage.addEventListener("pointermove", (event) => {
+  if (pointerStart || reducedMotion.matches) return;
+  const box = stage.getBoundingClientRect();
+  stage.style.setProperty("--eye-x", `${limit((event.clientX - box.left - box.width / 2) / 35, 4)}px`);
+  stage.style.setProperty("--eye-y", `${limit((event.clientY - box.top - box.height / 2) / 35, 3)}px`);
+});
+stage.addEventListener("pointerleave", () => { stage.style.setProperty("--eye-x", "0px"); stage.style.setProperty("--eye-y", "0px"); });
+window.addEventListener("blur", () => { if (pointerStart) releaseAgent(); });
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) return;
+  if (pointerStart) releaseAgent();
+  if (agentFrame) window.cancelAnimationFrame(agentFrame);
+  agentFrame = 0; lastFrame = 0;
+  agentX = agentY = velocityX = velocityY = 0;
+  paintAgent(); setAgentStatus("labReady");
+});
+if (reducedMotion.addEventListener) reducedMotion.addEventListener("change", releaseAgent);
+
+function refreshLabLanguage() {
+  document.querySelectorAll("[data-i18n-aria]").forEach((element) => element.setAttribute("aria-label", labText(element.dataset.i18nAria)));
+  selectLabProject(selectedLabProject);
+  setAgentStatus(agentStatusKey);
+  renderTerminal();
+}
+document.addEventListener("resume:language", refreshLabLanguage);
+workspace.classList.add("lab-enabled");
+// Apply newly registered translations after the base résumé has initialized.
+setLanguage(labLanguage());
+refreshLabLanguage();
