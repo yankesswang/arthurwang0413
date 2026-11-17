@@ -42,25 +42,74 @@
       <section class="hero shell" id="top" aria-labelledby="hero-title">
         <div class="hero-copy reveal">
           <p class="eyebrow" data-i18n="heroEyebrow">Applied AI Engineer · Technical Lead · Taiwan</p>
-          <h1 id="hero-title">Arthur Wang</h1>
+          <h1 id="hero-title" aria-label="Arthur Wang">Arthur<br><span>Wang<span class="name-period">.</span></span></h1>
           <p class="hero-lead" data-i18n="heroLead">I design and ship on-device agents, long-term memory systems, and production retrieval infrastructure.</p>
           <div class="hero-actions">
             <a class="button" href="#work" data-i18n="viewWork">View selected work</a>
             <a class="text-link" href="arthurwang_cv.pdf" data-i18n="downloadResume">Download résumé</a>
             <a class="text-link" href="mailto:yankesswang@gmail.com" data-i18n="emailMe">Email me ↗</a>
           </div>
+          <div class="hero-signature"><img src="picture.png" alt="Arthur Wang" width="44" height="44"><span><strong>Arthur Wang</strong><span data-i18n="portraitRole">AI Algorithm Deputy Manager / Technical Lead</span></span></div>
           <ul class="contact-list" aria-label="Contact links">
             <li><a href="mailto:yankesswang@gmail.com">yankesswang@gmail.com</a></li>
             <li><a href="https://linkedin.com/in/arthur-wang0413">LinkedIn ↗</a></li>
             <li><a href="https://substack.com/@arthurwang0413">Substack ↗</a></li>
           </ul>
         </div>
-        <figure class="portrait-card reveal" data-magnet>
-          <div class="portrait-inner">
-            <img src="picture.png" alt="Arthur Wang standing outdoors beside a car" data-i18n-alt="portraitAlt">
-            <figcaption><strong>Arthur Wang</strong><span data-i18n="portraitRole">AI Algorithm Deputy Manager / Technical Lead</span></figcaption>
+        <aside class="agent-workspace" aria-labelledby="workspace-title">
+          <header class="workspace-bar">
+            <span class="window-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span id="workspace-title">arthur / workspace</span>
+            <span class="workspace-local" data-i18n="labLocal">In your browser</span>
+          </header>
+          <div class="workspace-switch" role="group" aria-label="Workspace views" data-i18n-aria="labViews">
+            <button type="button" data-view="agent" aria-pressed="true" aria-controls="view-agent"><span aria-hidden="true">◎</span> <span data-i18n="labAgent">Agent</span></button>
+            <button type="button" data-view="projects" aria-pressed="false" aria-controls="view-projects"><span aria-hidden="true">▤</span> <span data-i18n="labProjects">Projects</span></button>
+            <button type="button" data-view="terminal" aria-pressed="false" aria-controls="view-terminal"><span aria-hidden="true">›_</span> <span>Terminal</span></button>
           </div>
-        </figure>
+          <div class="workspace-view" id="view-agent">
+            <div class="agent-stage">
+              <div class="stage-axis axis-x" aria-hidden="true"></div><div class="stage-axis axis-y" aria-hidden="true"></div>
+              <span class="stage-coordinate" aria-hidden="true">01 / INTERACTION STUDY</span>
+              <span class="orbit-label orbit-input" aria-hidden="true">input</span><span class="orbit-label orbit-output" aria-hidden="true">output</span>
+              <button type="button" class="elastic-agent" aria-describedby="agent-hint" data-i18n-aria="labAvatar" aria-label="Interactive agent. Drag and release, or use arrow keys. Escape resets.">
+                <svg class="agent-art" viewBox="0 0 260 260" aria-hidden="true" focusable="false">
+                  <defs><linearGradient id="agent-shell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c5e2ef"/><stop offset="1" stop-color="#6da0b6"/></linearGradient></defs>
+                  <ellipse class="agent-shadow" cx="130" cy="234" rx="65" ry="9" fill="#050a0e" opacity=".5"/>
+                  <g class="agent-body">
+                    <path d="M67 55Q130 24 193 55Q220 76 216 142Q212 198 174 216Q130 238 86 216Q48 198 44 142Q40 76 67 55Z" fill="url(#agent-shell)"/>
+                    <path d="M67 55Q130 24 193 55M52 91Q130 56 208 91M45 135Q130 104 215 135M52 176Q130 154 208 176M86 216Q130 202 174 216M87 47Q65 127 86 216M130 39V227M173 47Q195 127 174 216" fill="none" stroke="#335a6d" stroke-width="1" opacity=".36"/>
+                    <rect x="69" y="90" width="122" height="82" rx="34" fill="#14222a"/>
+                    <g class="agent-eyes" fill="#d9edf4"><rect x="92" y="113" width="17" height="24" rx="8.5"/><rect x="151" y="113" width="17" height="24" rx="8.5"/></g>
+                    <path class="agent-mouth" d="M117 148Q130 156 143 148" fill="none" stroke="#92c4da" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="130" cy="65" r="4" fill="#ecf4d0"/>
+                  </g>
+                </svg>
+              </button>
+              <div class="stage-status"><span class="status-dot" aria-hidden="true"></span><span id="agent-status" data-i18n="labReady">Ready to explore</span></div>
+            </div>
+            <div class="agent-instructions"><p id="agent-hint" data-i18n="labHint">Drag a little. Let go. Watch it return.</p><button type="button" class="lab-reset" data-i18n="labReset">Reset ↺</button></div>
+          </div>
+          <div class="workspace-view" id="view-projects" hidden>
+            <div class="lab-project-layout">
+              <div class="lab-project-list" role="group" aria-label="Choose a project" data-i18n-aria="labChooseProject">
+                <button type="button" data-project="gimate" aria-pressed="true">01 <span>GiMATE Agent</span></button>
+                <button type="button" data-project="grace" aria-pressed="false">02 <span>GRACE-Mem</span></button>
+                <button type="button" data-project="enterprise" aria-pressed="false">03 <span>Enterprise Knowledge Assistant</span></button>
+                <button type="button" data-project="laptop" aria-pressed="false">04 <span>Laptop Specification Assistant</span></button>
+              </div>
+              <div class="lab-project-preview" aria-live="polite" aria-atomic="true"><span class="lab-file-label">README / 01</span><p class="lab-project-name">GiMATE Agent</p><p class="lab-project-description"></p><a class="lab-case-link" href="#gimate-agent" data-i18n="labReadCase">Read the project ↗</a></div>
+            </div>
+          </div>
+          <div class="workspace-view" id="view-terminal" hidden>
+            <div class="terminal-intro"><span>arthur@portfolio:~</span><p data-i18n="labTerminalHint">Explore this résumé with local commands. Try help, projects, skills, paper, or contact.</p></div>
+            <div class="terminal-output" role="log" aria-label="Command output" data-i18n-aria="labCommandOutput" aria-live="polite" aria-relevant="additions"></div>
+            <form class="terminal-form" autocomplete="off"><label for="terminal-command"><span aria-hidden="true">›</span><span class="sr-only" data-i18n="labCommandLabel">Portfolio command</span></label><input id="terminal-command" name="command" type="text" spellcheck="false" autocapitalize="off" maxlength="120" placeholder="help" aria-describedby="terminal-note"><button type="submit" data-i18n="labRun">Run ↵</button></form>
+            <p id="terminal-note" class="terminal-note" data-i18n="labTerminalNote">Local navigation only · no AI requests or shell execution</p>
+          </div>
+          <footer class="workspace-footer"><span>AW / PERSONAL LAB</span><span data-i18n="labFooter">A little play. A lot of engineering.</span></footer>
+          <noscript><p class="lab-noscript">Interactive views need JavaScript. All projects and résumé details are available below.</p></noscript>
+        </aside>
       </section>
 
       <section class="content-section shell" id="work" aria-labelledby="work-title">
@@ -70,13 +119,14 @@
           <p data-i18n="workIntro">Role, architecture, implementation decisions, and measured outcomes.</p>
         </header>
         <div class="project-list">
-          <article class="project reveal">
+          <article class="project reveal" id="gimate-agent">
             <div class="project-index">01</div>
             <div class="project-main">
               <p class="project-type" data-i18n="gimateType">On-device agent · Feb. 2026—Present</p>
               <h3>GiMATE Agent</h3><p class="project-subtitle">On-Device AI Workflow Assistant</p>
               <p data-i18n="gimateSummary">Led a Windows AI assistant from local inference to standalone packaging, with progressive skill discovery and recoverable execution.</p>
               <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="gimateRole">Technical lead · Agent architecture and deployment</strong></p>
+              <figure class="architecture-strip"><figcaption>Plan → Validate → Execute</figcaption><p data-i18n="labMapAgent">Task → Plan → Validated tools → Result</p><span class="architecture-caption" data-i18n="labArchitecture">Architecture overview</span></figure>
               <ul class="project-details">
                 <li data-i18n="gimateDetail1">Built the Electron frontend and FastAPI backend, integrated local inference, and packaged Qwen3.5-4B into a standalone Windows exe.</li>
                 <li data-i18n="gimateDetail2">Developed a skill and tool architecture for desktop workflows; prototyped Gmail email summarization, Outlook scheduling, and Notion knowledge retrieval.</li>
@@ -87,13 +137,14 @@
             </div>
             <div class="project-proof project-proof-text"><strong>Plan &amp; Execute</strong><span data-i18n="gimateProof1">Execution model</span><strong>Bounded repair</strong><span data-i18n="gimateProof2">Recovery strategy</span></div>
           </article>
-          <article class="project reveal">
+          <article class="project reveal" id="grace-mem">
             <div class="project-index">02</div>
             <div class="project-main">
               <p class="project-type" data-i18n="graceType">Long-term memory · Oct. 2025—Jul. 2026</p>
               <h3>GRACE-Mem</h3><p class="project-subtitle">Evidence-Centric Conversational Memory</p>
               <p data-i18n="graceSummary">Designed an evidence-first memory system combining hybrid retrieval, hierarchical reranking, and bounded agentic curation.</p>
               <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="graceRole">Research lead · Retrieval and evaluation</strong></p>
+              <figure class="architecture-strip"><figcaption>Retrieve → Rerank → Reconstruct</figcaption><p data-i18n="labMapMemory">Query → Graph candidates → Reranking → Raw evidence</p><span class="architecture-caption" data-i18n="labArchitecture">Architecture overview</span></figure>
               <ul class="project-details">
                 <li data-i18n="graceDetail1">Separated graph candidate discovery, compressed-record reranking, and provenance-linked raw-dialogue reconstruction so summaries never become final evidence.</li>
                 <li data-i18n="graceDetail2">Combined BM25, dense entity/relation search, two-hop query-conditioned spreading activation, and hierarchical reranking.</li>
@@ -105,13 +156,14 @@
             </div>
             <div class="project-proof"><strong>86.9%</strong><span>LoCoMo</span><strong>80.2%</strong><span>LongMemEval</span></div>
           </article>
-          <article class="project reveal">
+          <article class="project reveal" id="enterprise-knowledge-assistant">
             <div class="project-index">03</div>
             <div class="project-main">
               <p class="project-type" data-i18n="faeType">Enterprise RAG · Jan. 2026—Present</p>
               <h3>Enterprise Knowledge Assistant</h3><p class="project-subtitle">Company-Wide Chatbot</p>
               <p data-i18n="faeSummary">Built a company-wide internal chatbot giving product, engineering, FAE, and customer-service teams access to product specifications and technical support knowledge.</p>
               <p class="project-role"><span data-i18n="projectRoleLabel">Role</span> — <strong data-i18n="faeRole">System architect · Knowledge graph and retrieval</strong></p>
+              <figure class="architecture-strip"><figcaption>Identify → Retrieve → Answer</figcaption><p data-i18n="labMapKnowledge">Product query → Model matching → Hybrid retrieval → Answer</p><span class="architecture-caption" data-i18n="labArchitecture">Architecture overview</span></figure>
               <ul class="project-details">
                 <li data-i18n="faeDetail1">Gave product, engineering, FAE, and customer-service teams a unified interface to product specifications and technical support knowledge.</li>
                 <li data-i18n="faeDetail2">Unified 1,000+ product documents into a structured knowledge base, standardizing product models, categories, and specification fields.</li>
@@ -130,6 +182,7 @@
               <h3>Laptop Specification Assistant</h3>
               <p class="project-subtitle">Data Generation &amp; RAG Evaluation</p>
               <p data-i18n="laptopSummary">Built a specification-to-answer pipeline combining bilingual data generation, hybrid retrieval, structured fact queries, and answer evaluation.</p>
+              <figure class="architecture-strip"><figcaption>Structure → Query → Evaluate</figcaption><p data-i18n="labMapData">Specifications → Structured facts / RAG → Answer → Evaluation</p><span class="architecture-caption" data-i18n="labArchitecture">Architecture overview</span></figure>
               <ul class="project-details">
                 <li data-i18n="laptopDetail1">Transformed laptop specifications into structured product data and bilingual Q&amp;A datasets for retrieval and evaluation.</li>
                 <li data-i18n="laptopDetail2">Combined dense/BM25 retrieval, model-specific filtering, and batch answer generation for laptop specification questions.</li>
@@ -239,3 +292,4 @@
     <script src="script.js"></script>
   </body>
 </html>
+
