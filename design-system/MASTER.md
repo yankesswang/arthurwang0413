@@ -31,4 +31,8 @@ The hero no longer displays Plan / Execute / Verify or an automatic execution wa
 
 ## Interactive project concepts
 
-Four embedded product experiences use charcoal surfaces (#171a1e / #121519), near-white text (#f0f1f2), readable secondary text (#a7afb9), and restrained peach highlights (#ffb38c). The portfolio canvas retains the selected warm-white palette. Each concept has a distinct information layout: agent session with plan/output, knowledge answer with source inspector, structured specs with evaluation, and research watchlist with scenario chart. Native dialogs provide larger workspaces. Sample scope is visible, controls remain usable on mobile, and no real integrations are implied. Implementation lives in system-demos.js and system-demos.css.
+The portfolio canvas retains the selected warm-white palette. GiMATE and StockRadar use charcoal surfaces (#171a1e / #121519), near-white text (#f0f1f2), readable secondary text (#a7afb9), and peach highlights (#ffb38c).
+
+E-Support is a product workspace based on the original application: a pale navigation rail, white conversational surface, teal actions (#235d72), and a source/review inspector. FAE/FAQ/specification views use real table structures and filter bars. NB Spec pairs a white model-scoped chat with a graphite diagnostic inspector (#1a2433), then switches to a dense evaluation report with derived metrics and verdict details. Prefer operational headings, useful forms, and restrained status treatment over explanatory slogan cards. Preserve a subtle preview-data boundary in the chrome/footer.
+
+Native dialogs retain state and restore focus. Inputs and touch controls are at least 44px tall; mobile tables scroll inside a labeled region. Implementation lives in system-demos.js/css and project-workspaces.js/css; source mappings are documented in docs/project-workspace-sources.md.
