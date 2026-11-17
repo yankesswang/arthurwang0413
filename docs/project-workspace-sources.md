@@ -2,6 +2,8 @@
 
 These are newly designed portfolio frontends, informed by the actual local projects. They are not screenshots of production systems and do not connect to the original services. Source repositories were read without modifying them or running their pipelines.
 
+The current visual direction follows the user's preference for a mature enterprise product: restrained neutral surfaces, readable typography, clearer operational hierarchy, and dedicated full-page workspaces. `workspace.html` hosts the same logic used in the portfolio preview; `workspace-page.js` selects the app and handles page-level language/title/accessibility setup. Embedded workspace entrances use ordinary links, so visitors can open them in a new tab. The standalone page includes an explicit route back to the relevant portfolio project.
+
 ## E-Support
 
 Reference checkout: `e-support`, commit `d659de9bdf1edc0a0452a42af443e3a21fb844a8`.
@@ -38,3 +40,4 @@ The evaluation questions, generated answers and verdicts are authored demonstrat
 - Evaluation filters update rows, selected verdict and aggregate metrics together. Empty subsets have an explicit state.
 - A downloaded sample CSV was inspected for its expected header, selected language/category and row contents.
 - Browser checks cover keyboard submission, dialog Escape/focus restoration, both UI languages, mobile touch heights, and document/component overflow across five widths.
+- The full-page refinement was checked separately: support query/review/library/filter behavior, page-level language switching, notebook model/source changes, evaluation verdict/inclusion filtering, and component/document overflow at 320/375/768/1024/1440px. Native dialogs remain only for the agent/research concepts.

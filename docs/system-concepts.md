@@ -13,7 +13,7 @@ Four local, bilingual frontend concepts illustrate the portfolio projects. Suppo
 
 `system-demos.js` manages the agent/research concepts and shared native dialogs. `project-workspaces.js` owns the E-Support and NB Spec product interfaces. No framework, new runtime dependencies, model calls, shell commands, messages, or external-service operations are used. Support records and evaluation verdicts are authored fixtures. Notebook answers retain dated source text rather than inventing model responses. Scenario curves are synthetic, not price forecasts.
 
-`system-demos.css` scopes the agent/research surfaces; `project-workspaces.css` provides a light technical support desk and a light notebook chat with a graphite diagnostic panel. Every concept expands into a native dialog while retaining state and returns focus when closed. Controls support keyboard input, visible focus, mobile layouts, and reduced-motion preferences. The GiMATE reset cancels pending sample steps.
+`system-demos.css` scopes the agent/research surfaces; `project-workspaces.css` and `workspace-polish.css` provide the enterprise product presentation. GiMATE/StockRadar expand into native dialogs. E-Support/NB Spec open full-page workspaces at `workspace.html?app=knowledge` and `workspace.html?app=laptop`, with portfolio return links and a language switch. Both embedded and dedicated screens share the same renderers and interaction handlers. Controls support keyboard input, visible focus, mobile layouts, and reduced-motion preferences. The GiMATE reset cancels pending sample steps.
 
 ## Verification
 
