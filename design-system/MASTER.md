@@ -28,3 +28,7 @@ The hero no longer displays Plan / Execute / Verify or an automatic execution wa
 - All replies are extracts or deterministic views of the published résumé. Label the scope as local résumé search with no connected model. Show actual source reads in collapsed details; do not fabricate shell execution, tokens, model names, or staged progress.
 - Retain session history until reset/reload, Arrow Up/Down recall, Shift+Enter newlines, slash/mention autocomplete with Tab or Enter, Escape dismissal, and modal focus restoration. Use textContent for visitor input and response data.
 - Implementation is isolated in terminal.js and terminal.css; it replaces the original 21-command console and decorative Matrix mode. No runtime dependency or API integration.
+
+## Interactive project concepts
+
+Four embedded product experiences use charcoal surfaces (#171a1e / #121519), near-white text (#f0f1f2), readable secondary text (#a7afb9), and restrained peach highlights (#ffb38c). The portfolio canvas retains the selected warm-white palette. Each concept has a distinct information layout: agent session with plan/output, knowledge answer with source inspector, structured specs with evaluation, and research watchlist with scenario chart. Native dialogs provide larger workspaces. Sample scope is visible, controls remain usable on mobile, and no real integrations are implied. Implementation lives in system-demos.js and system-demos.css.
