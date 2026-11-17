@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="design.css">
+    <link rel="stylesheet" href="terminal.css">
   </head>
   <body>
     <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
@@ -120,14 +121,16 @@
               <div class="lab-project-preview" aria-live="polite" aria-atomic="true"><span class="lab-file-label">README / 01</span><p class="lab-project-name">GiMATE Agent</p><p class="lab-project-description"></p><a class="lab-case-link" href="#gimate-agent" data-i18n="labReadCase">Read the project ↗</a></div>
             </div>
           </div>
-          <div class="workspace-view" id="view-terminal" hidden>
-            <header class="console-header"><div><span class="console-kicker">ARTHUR / TOOL CONSOLE</span><p>portfolio<span class="console-path">:~/work</span><span class="console-cursor" aria-hidden="true">_</span></p></div><button type="button" class="terminal-expand" data-i18n="termExpand">Expand ↗</button></header>
-            <div class="console-toolbar" role="group" aria-label="Quick commands" data-i18n-aria="termQuick"><button type="button" data-command="help">help</button><button type="button" data-command="run agents">run agents</button><button type="button" data-command="projects">projects</button><button type="button" data-command="matrix">matrix</button></div>
-            <div class="terminal-output" role="log" tabindex="0" aria-label="Command output" data-i18n-aria="labCommandOutput" aria-live="off"></div>
-            <form class="terminal-form" autocomplete="off"><label for="terminal-command"><span aria-hidden="true">❯</span><span class="sr-only" data-i18n="labCommandLabel">Portfolio command</span></label><input id="terminal-command" name="command" type="text" spellcheck="false" autocapitalize="off" maxlength="180" placeholder="help" aria-describedby="terminal-shortcuts terminal-note"><button type="submit" data-i18n="labRun">Run ↵</button></form>
-            <div class="terminal-suggestions" role="group" aria-label="Command suggestions" data-i18n-aria="termSuggestions" hidden></div>
-            <div class="console-bottom"><p id="terminal-shortcuts"><kbd>Tab</kbd> <span data-i18n="termComplete">complete</span> · <kbd>↑↓</kbd> <span data-i18n="termHistory">history</span> · <kbd>Ctrl K</kbd> <span data-i18n="termFocus">focus</span></p><span class="console-state">LOCAL</span></div>
-            <p id="terminal-note" class="terminal-note" data-i18n="termNote">Portfolio tools run locally. Matrix is a visual effect; no shell or AI service is connected.</p>
+          <div class="workspace-view cli" id="view-terminal" hidden>
+            <header class="cli-topbar"><span class="cli-wordmark"><span aria-hidden="true">&gt;_</span> arthur cli <small>v1.0</small></span><div><button type="button" class="cli-new" data-i18n="cliNew">New session</button><button type="button" class="terminal-expand" data-i18n="cliExpand">Expand ↗</button></div></header>
+            <div class="cli-context"><span><span class="cli-dot" aria-hidden="true"></span><span data-i18n="cliContext">portfolio / local</span></span><span data-i18n="cliScope">5 projects · read-only</span></div>
+            <div class="terminal-output cli-transcript" role="region" tabindex="0" aria-label="Session transcript" data-i18n-aria="cliTranscript"></div>
+            <div class="cli-composer">
+              <div class="terminal-suggestions cli-suggestions" role="group" aria-label="Suggestions" data-i18n-aria="cliSuggestions" hidden></div>
+              <form class="terminal-form cli-form" autocomplete="off"><label for="terminal-command" class="sr-only" data-i18n="cliInputLabel">Ask about Arthur's work or enter a slash command</label><span class="cli-prompt-symbol" aria-hidden="true">❯</span><textarea id="terminal-command" name="command" rows="2" spellcheck="false" maxlength="500" aria-describedby="terminal-shortcuts terminal-note" placeholder="Ask about my work, or type / for commands"></textarea><button type="submit" class="cli-send" data-i18n="cliSend">Send ↵</button></form>
+              <div class="cli-shortcuts" id="terminal-shortcuts"><span><kbd>↵</kbd> <span data-i18n="cliEnter">send</span> · <kbd>Shift ↵</kbd> <span data-i18n="cliNewline">new line</span></span><button type="button" data-cli-fill="/" data-i18n="cliCommands">/ commands</button></div>
+            </div>
+            <footer class="cli-footer"><span id="terminal-note" data-i18n="cliNote">Local résumé search · no model connected</span><span class="cli-session-state" role="status" aria-live="polite" data-i18n="cliReady">Ready</span></footer>
             <div class="terminal-announcer sr-only" role="status" aria-live="polite"></div>
           </div>
           <footer class="workspace-footer"><span>AW / PERSONAL LAB</span><span data-i18n="labFooter">Plan. Execute. Verify.</span></footer>
@@ -321,6 +324,7 @@
 
     <dialog class="terminal-dialog" aria-label="Expanded portfolio terminal"><div class="terminal-portal"></div></dialog>
     <script src="script.js"></script>
+    <script src="terminal.js"></script>
     <script src="design.js"></script>
   </body>
 </html>

@@ -18,4 +18,13 @@ Implementation lives in design.css and design.js, layered after the original sty
 
 ## Project discovery revision
 
-The hero no longer displays Plan / Execute / Verify or an automatic execution walkthrough. The guide presents three independent topic cards with plain-language outcomes and descriptive icons. Clicking a topic searches the local project descriptions and shows linked excerpts immediately. No artificial stage delays or auto-run on page load. Custom keyword search and source matching details use progressive disclosure. Selected topics expose aria-pressed; the hero guide link focuses the first topic. Terminal remains a secondary view with its existing commands.
+The hero no longer displays Plan / Execute / Verify or an automatic execution walkthrough. The guide presents three independent topic cards with plain-language outcomes and descriptive icons. Clicking a topic searches the local project descriptions and shows linked excerpts immediately. No artificial stage delays or auto-run on page load. Custom keyword search and source matching details use progressive disclosure. Selected topics expose aria-pressed; the hero guide link focuses the first topic. Terminal remains a secondary view for focused résumé exploration.
+
+## Arthur CLI revision
+
+- Reference interaction patterns: Claude Code interactive mode (https://code.claude.com/docs/en/interactive-mode) and Codex CLI (https://learn.chatgpt.com/docs/codex/cli). Adapt the welcome, transcript, prompt, slash-command discovery, project mentions, and keyboard navigation to this portfolio.
+- Keep the selected warm-white/orange theme. Use a quiet monospace session header, compact scope line, flat transcript, and anchored composer.
+- Start with three useful résumé questions rather than a command catalog. Support plain-language keyword/intent matching and eight focused slash commands. Project mentions narrow scope; every project result links to its actual résumé section.
+- All replies are extracts or deterministic views of the published résumé. Label the scope as local résumé search with no connected model. Show actual source reads in collapsed details; do not fabricate shell execution, tokens, model names, or staged progress.
+- Retain session history until reset/reload, Arrow Up/Down recall, Shift+Enter newlines, slash/mention autocomplete with Tab or Enter, Escape dismissal, and modal focus restoration. Use textContent for visitor input and response data.
+- Implementation is isolated in terminal.js and terminal.css; it replaces the original 21-command console and decorative Matrix mode. No runtime dependency or API integration.
