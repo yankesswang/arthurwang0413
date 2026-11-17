@@ -10,7 +10,7 @@
     root.querySelectorAll("h5").forEach(heading => {
       heading.setAttribute("aria-level", heading.closest(".ws-page-heading,.nb-report-heading") ? "2" : "3");
     });
-    root.querySelectorAll("h6").forEach(heading => heading.setAttribute("aria-level", "4"));
+    root.querySelectorAll("h6").forEach(heading => heading.setAttribute("aria-level", heading.closest(".ws-product-copy") ? (key === "laptop" ? "2" : "3") : "4"));
     document.title = `${key === "knowledge" ? "E-Support" : "NB Spec"} | Arthur Wang`;
     const link = document.querySelector(".workspace-skip");
     link.textContent = document.documentElement.lang === "en" ? "Skip to workspace" : "跳至工作台";
