@@ -536,3 +536,236 @@ workspace.classList.add("lab-enabled");
 // Apply newly registered translations after the base résumé has initialized.
 setLanguage(labLanguage());
 refreshLabLanguage();
+
+// A small, inspectable local workflow over the published portfolio. No generated claims.
+const sessionCopy = {
+  en: {
+    heroEyebrow: "Agent systems · Retrieval & memory · Taiwan",
+    heroLead: "I build agents that plan, use tools, and recover — with retrieval and memory grounded in traceable evidence.",
+    labAgent: "Agent session", labLocal: "Local execution", labFooter: "Plan. Execute. Verify.",
+    askPortfolio: "Explore with my agent", sessionCompanion: "Meet the companion ↗",
+    sessionTitle: "Give me a goal.", sessionExamples: "Example tasks", sessionAgents: "Agent engineering", sessionMemory: "Retrieval & memory", sessionEvaluation: "Data & evaluation",
+    sessionQueryLabel: "What would you like to know about Arthur's work?", sessionRun: "Run ↗", sessionStop: "Stop",
+    sessionProgress: "Task progress", sessionPlan: "Plan", sessionSearch: "Search", sessionRead: "Read", sessionBrief: "Brief",
+    sessionPlanLabel: "Task plan", sessionPlanText: "Match the goal to project capabilities, read the relevant descriptions, and return linked evidence.",
+    sessionTrace: "Tool activity", sessionEvidence: "Source-linked evidence", sessionWelcome: "Choose a goal to explore my work.",
+    sessionDisclosure: "Runs locally · keyword matching and excerpts from this résumé",
+    sessionReady: "Ready", sessionRunning: "Running", sessionComplete: "Complete", sessionStopped: "Stopped", sessionNoMatch: "Needs a clearer goal", sessionError: "Could not finish",
+    sessionResults: "Matching projects", sessionNoResultTitle: "No matching evidence found.",
+    sessionNoResult: "Try a focused topic: agent execution, retrieval, memory, or evaluation. All projects are available below.",
+    sessionPending: "Reading the project evidence…", sessionStoppedText: "Task stopped. Edit the goal or choose an example to start again.",
+    sessionErrorText: "This task could not finish. Try again, or read the projects below.",
+    sessionSources: "sources", sessionCalls: "calls", sessionReadSource: "Read source ↗", sessionMatches: "matches",
+    sessionGoalAgents: "Find evidence of agent planning and tool execution",
+    sessionGoalMemory: "Show retrieval and conversational memory projects",
+    sessionGoalEvaluation: "Find data pipelines and evaluation experience",
+    sessionWorking: "Working through your goal…"
+  },
+  "zh-TW": {
+    heroEyebrow: "Agent 系統 · 檢索與記憶 · 台灣",
+    heroLead: "打造能規劃、使用工具與恢復執行的 Agent，讓檢索與記憶建立在可追溯的證據上。",
+    labAgent: "Agent 任務", labLocal: "本機執行", labFooter: "規劃。執行。驗證。",
+    askPortfolio: "讓 Agent 帶你探索", sessionCompanion: "認識互動角色 ↗",
+    sessionTitle: "交給我一個目標。", sessionExamples: "任務範例", sessionAgents: "Agent 工程", sessionMemory: "檢索與記憶", sessionEvaluation: "資料與評估",
+    sessionQueryLabel: "你想了解 Arthur 的哪些專案能力？", sessionRun: "執行 ↗", sessionStop: "中止",
+    sessionProgress: "任務進度", sessionPlan: "規劃", sessionSearch: "搜尋", sessionRead: "讀取", sessionBrief: "整理",
+    sessionPlanLabel: "執行計畫", sessionPlanText: "比對目標與專案能力，讀取相關介紹，再整理附來源的證據。",
+    sessionTrace: "工具執行紀錄", sessionEvidence: "附來源的專案證據", sessionWelcome: "選擇目標，探索我的工作。",
+    sessionDisclosure: "在本機執行 · 以關鍵字比對與履歷原文摘錄呈現",
+    sessionReady: "待命", sessionRunning: "執行中", sessionComplete: "已完成", sessionStopped: "已中止", sessionNoMatch: "需要更明確的目標", sessionError: "未能完成",
+    sessionResults: "符合目標的專案", sessionNoResultTitle: "找不到對應的專案證據。",
+    sessionNoResult: "試試更聚焦的主題：Agent 執行、檢索、記憶或評估。也可以直接閱讀下方所有作品。",
+    sessionPending: "正在讀取專案證據…", sessionStoppedText: "任務已中止。可以修改目標，或選擇範例重新開始。",
+    sessionErrorText: "這次任務未能完成。請再試一次，或直接閱讀下方專案。",
+    sessionSources: "個來源", sessionCalls: "次呼叫", sessionReadSource: "閱讀原始介紹 ↗", sessionMatches: "筆結果",
+    sessionGoalAgents: "找出 Agent 規劃與工具執行的專案證據",
+    sessionGoalMemory: "了解檢索與對話記憶專案",
+    sessionGoalEvaluation: "查看資料流程與評估經驗",
+    sessionWorking: "正在處理你的目標…"
+  }
+};
+Object.keys(sessionCopy).forEach((lang) => Object.assign(translations[lang], sessionCopy[lang]));
+
+const portfolioSession = document.querySelector("#portfolio-agent-session");
+const sessionForm = portfolioSession.querySelector(".session-form");
+const sessionInput = portfolioSession.querySelector("#session-query");
+const sessionStop = portfolioSession.querySelector(".session-stop");
+const sessionState = portfolioSession.querySelector(".session-state");
+const sessionEvidence = portfolioSession.querySelector(".session-evidence-list");
+const sessionLog = portfolioSession.querySelector(".session-tool-log");
+const sessionAliases = {
+  gimate: ["agent", "agents", "tool", "tools", "execution", "planning", "orchestration", "repair", "recovery", "local", "desktop", "electron", "sqlite", "代理", "工具", "執行", "規劃", "恢復", "桌面", "本機"],
+  grace: ["memory", "conversational", "retrieval", "graph", "reranking", "provenance", "curation", "agent", "evaluation", "記憶", "檢索", "溯源", "重排序", "圖譜", "評估"],
+  enterprise: ["rag", "retrieval", "hybrid", "bm25", "product", "knowledge", "support", "enterprise", "檢索", "混合", "規格", "產品", "知識", "企業", "客服"],
+  laptop: ["data", "pipeline", "pipelines", "evaluation", "evaluate", "judge", "fact", "facts", "sku", "bilingual", "rag", "資料", "流程", "評估", "事實", "規格", "雙語", "正確率"]
+};
+const sessionPresets = { agents: "sessionGoalAgents", memory: "sessionGoalMemory", evaluation: "sessionGoalEvaluation" };
+const sessionModel = { status: "idle", phase: -1, query: "", calls: [], results: [], matchCount: 0, controller: null, preset: null };
+const sessionSteps = ["plan", "search", "read", "brief"];
+const keywordPresent = (text, term) => /[^\x00-\x7F]/.test(term)
+  ? text.includes(term)
+  : new RegExp(`\\b${term}\\b`, "i").test(text);
+
+function portfolioSearch(query) {
+  const normalized = query.toLowerCase();
+  const generic = new Set(["find", "show", "evidence", "work", "experience", "arthur", "projects", "project", "the", "and", "with", "for", "how", "what", "does", "this", "that", "from", "engineering"]);
+  const terms = [...new Set((normalized.match(/[a-z0-9]+/g) || []).filter((term) => term.length > 2 && !generic.has(term)))];
+  return Object.entries(projectSources).map(([key, project]) => {
+    const article = document.getElementById(project.id);
+    if (!article) return null;
+    const text = article.textContent.toLowerCase();
+    const aliases = sessionAliases[key].filter((term) => keywordPresent(normalized, term));
+    const matchedTerms = terms.filter((term) => keywordPresent(text, term));
+    const nameMatch = normalized.includes(project.name.toLowerCase());
+    const score = aliases.length * 3 + matchedTerms.length + (nameMatch ? 20 : 0);
+    return score ? { key, score, terms: [...new Set([...aliases, ...matchedTerms])] } : null;
+  }).filter(Boolean).sort((a, b) => b.score - a.score);
+}
+
+function portfolioRead(hit) {
+  const project = projectSources[hit.key];
+  const article = document.getElementById(project.id);
+  if (!article) throw new Error("Source unavailable");
+  const details = [...article.querySelectorAll(".project-details [data-i18n]")];
+  const ranked = details.map((item) => ({ key: item.dataset.i18n, score: hit.terms.reduce((count, term) => count + (keywordPresent(item.textContent.toLowerCase(), term) ? 1 : 0), 0) }));
+  ranked.sort((a, b) => b.score - a.score);
+  if (!ranked.length) throw new Error("Source has no evidence text");
+  return { key: hit.key, excerptKey: ranked[0].key };
+}
+
+function sessionNode(tag, className, text) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (text !== undefined) element.textContent = text;
+  return element;
+}
+
+function renderPortfolioSession() {
+  const running = sessionModel.status === "running";
+  const statusKeys = { idle: "sessionReady", running: "sessionRunning", complete: "sessionComplete", stopped: "sessionStopped", empty: "sessionNoMatch", error: "sessionError" };
+  sessionState.textContent = labText(statusKeys[sessionModel.status]);
+  sessionState.dataset.state = sessionModel.status;
+  sessionStop.hidden = !running;
+  portfolioSession.querySelector(".session-run-body").setAttribute("aria-busy", String(running));
+  portfolioSession.querySelectorAll("[data-step]").forEach((step, index) => {
+    const done = sessionModel.status === "complete" || sessionModel.status === "empty" || index < sessionModel.phase;
+    step.dataset.state = done ? "done" : index === sessionModel.phase ? (running ? "active" : "paused") : "waiting";
+    if (index === sessionModel.phase && running) step.setAttribute("aria-current", "step");
+    else step.removeAttribute("aria-current");
+  });
+  portfolioSession.querySelector(".session-tool-count").textContent = `${sessionModel.calls.length} ${labText("sessionCalls")}`;
+  portfolioSession.querySelector(".session-source-count").textContent = sessionModel.results.length ? `${sessionModel.results.length} ${labText("sessionSources")}` : "";
+  const title = portfolioSession.querySelector("#session-result-title");
+  title.textContent = sessionModel.status === "complete" ? `${labText("sessionResults")} / ${sessionModel.results.length}`
+    : labText({ idle: "sessionWelcome", running: "sessionWorking", empty: "sessionNoResultTitle", stopped: "sessionStopped", error: "sessionError" }[sessionModel.status]);
+  const feedback = portfolioSession.querySelector(".session-feedback");
+  feedback.textContent = sessionModel.status === "empty" ? labText("sessionNoResult")
+    : sessionModel.status === "stopped" ? labText("sessionStoppedText")
+    : sessionModel.status === "error" ? labText("sessionErrorText") : "";
+  const log = document.createDocumentFragment();
+  sessionModel.calls.forEach((call) => {
+    const entry = sessionNode("li", "session-tool-call");
+    entry.appendChild(sessionNode("code", "", call.name));
+    const argument = sessionNode("span", "session-call-args", call.argument);
+    argument.title = call.argument;
+    entry.appendChild(argument);
+    entry.appendChild(sessionNode("span", "session-call-result", call.name === "portfolio.search" ? `${call.count} ${labText("sessionMatches")}` : "✓"));
+    log.appendChild(entry);
+  });
+  sessionLog.replaceChildren(log);
+  const evidence = document.createDocumentFragment();
+  sessionModel.results.forEach((result, index) => {
+    const project = projectSources[result.key];
+    const card = sessionNode("article", "session-source");
+    const link = sessionNode("a", "session-source-name", `[${index + 1}] ${project.name}`);
+    link.href = `#${project.id}`;
+    card.appendChild(link);
+    card.appendChild(sessionNode("p", "session-source-excerpt", labText(result.excerptKey)));
+    const source = sessionNode("a", "session-source-link", labText("sessionReadSource"));
+    source.href = `#${project.id}`;
+    card.appendChild(source);
+    evidence.appendChild(card);
+  });
+  sessionEvidence.replaceChildren(evidence);
+}
+
+function sessionPause(signal) {
+  if (signal.aborted) return Promise.reject(new DOMException("Aborted", "AbortError"));
+  // Pace the presentation only; tool results and counts come from actual local reads.
+  if (reducedMotion.matches) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const abort = () => { window.clearTimeout(timer); reject(new DOMException("Aborted", "AbortError")); };
+    const timer = window.setTimeout(() => { signal.removeEventListener("abort", abort); resolve(); }, 280);
+    signal.addEventListener("abort", abort, { once: true });
+  });
+}
+
+async function runPortfolioTask(query, preset = null) {
+  const goal = query.trim().slice(0, 180);
+  if (!goal) return;
+  if (sessionModel.controller) sessionModel.controller.abort();
+  const controller = new AbortController();
+  Object.assign(sessionModel, { status: "running", phase: 0, query: goal, calls: [], results: [], matchCount: 0, controller, preset });
+  sessionInput.value = goal;
+  renderPortfolioSession();
+  try {
+    await sessionPause(controller.signal);
+    if (controller.signal.aborted) return;
+    sessionModel.phase = 1;
+    const hits = portfolioSearch(goal);
+    sessionModel.matchCount = hits.length;
+    sessionModel.calls.push({ name: "portfolio.search", argument: goal, count: hits.length });
+    renderPortfolioSession();
+    await sessionPause(controller.signal);
+    if (controller.signal.aborted) return;
+    sessionModel.phase = 2;
+    // Keep the brief focused; all matching cases remain available in the Projects view.
+    for (const hit of hits.slice(0, 2)) {
+      const evidence = portfolioRead(hit);
+      sessionModel.results.push(evidence);
+      sessionModel.calls.push({ name: "portfolio.read", argument: projectSources[hit.key].name });
+    }
+    renderPortfolioSession();
+    await sessionPause(controller.signal);
+    if (controller.signal.aborted) return;
+    sessionModel.phase = 3;
+    renderPortfolioSession();
+    await sessionPause(controller.signal);
+    if (controller.signal.aborted) return;
+    sessionModel.status = hits.length ? "complete" : "empty";
+    sessionModel.controller = null;
+    renderPortfolioSession();
+  } catch (error) {
+    if (error.name === "AbortError" || sessionModel.controller !== controller) return;
+    sessionModel.status = "error";
+    sessionModel.controller = null;
+    renderPortfolioSession();
+  }
+}
+
+sessionForm.addEventListener("submit", (event) => { event.preventDefault(); runPortfolioTask(sessionInput.value); });
+sessionStop.addEventListener("click", () => {
+  if (!sessionModel.controller) return;
+  sessionModel.controller.abort();
+  sessionModel.controller = null;
+  sessionModel.status = "stopped";
+  renderPortfolioSession();
+  sessionInput.focus();
+});
+portfolioSession.querySelectorAll("[data-intent]").forEach((button) => {
+  button.addEventListener("click", () => runPortfolioTask(labText(sessionPresets[button.dataset.intent]), button.dataset.intent));
+});
+document.querySelector('a[href="#portfolio-agent-session"]').addEventListener("click", () => {
+  showLabView("agent");
+  window.requestAnimationFrame(() => sessionInput.focus({ preventScroll: true }));
+});
+document.addEventListener("resume:language", () => {
+  if (sessionModel.preset && [translations.en[sessionPresets[sessionModel.preset]], translations["zh-TW"][sessionPresets[sessionModel.preset]]].includes(sessionInput.value)) {
+    sessionInput.value = labText(sessionPresets[sessionModel.preset]);
+  }
+  sessionInput.placeholder = labText("sessionGoalAgents");
+  renderPortfolioSession();
+});
+setLanguage(labLanguage());
+renderPortfolioSession();
+runPortfolioTask(labText("sessionGoalAgents"), "agents");
