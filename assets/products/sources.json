@@ -1,0 +1,91 @@
+{
+  "retrieved": "2026-11-17",
+  "credit": "GIGABYTE / AORUS; product photography belongs to the respective rights holders.",
+  "assets": {
+    "b550": {
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/d6f5d0f5901b5100a36955a41e4bae8c/ProductRemoveBg/28538",
+      "source_page": "https://www.gigabyte.com/Motherboard/B550M-AORUS-PRO-AX-rev-10",
+      "file": "b550.webp",
+      "bytes": 289760,
+      "dimensions": [
+        990,
+        602
+      ],
+      "sha256": "55c99318c6bd9b154168c2b743474fdd434a1ef44d9c9ca5feb5f8b36efae712",
+      "display_dimensions": [
+        800,
+        486
+      ],
+      "display_bytes": 93116,
+      "display_sha256": "a18c7b7b1d46d40fbeabc4cc6c3a0a77a1b1439744459df08643c1fe63784432"
+    },
+    "x870": {
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/6742038c90b90dbde85a56e33c573323/ProductRemoveBg/44015",
+      "source_page": "https://www.gigabyte.com/Motherboard/X870E-AORUS-MASTER",
+      "file": "x870.webp",
+      "bytes": 2186879,
+      "dimensions": [
+        1877,
+        1197
+      ],
+      "sha256": "163f9565c8329756b4c85535422dcbc3021e7ed5ebafc5ccf2022408d76b6906",
+      "display_dimensions": [
+        800,
+        510
+      ],
+      "display_bytes": 66986,
+      "display_sha256": "83e2cdc4cfc97bccbb71df2f59bea67e8f18c739370f49a17c47a92fe9c173ec"
+    },
+    "z790": {
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/0c6899b3e79329e5c8236fda4441fe0e/ProductRemoveBg/32578",
+      "source_page": "https://www.gigabyte.com/Motherboard/Z790-AORUS-ELITE-AX-rev-10",
+      "file": "z790.webp",
+      "bytes": 1009448,
+      "dimensions": [
+        967,
+        661
+      ],
+      "sha256": "cb5c71ceae80298e394efce4030b5b2320c79092fc6c24a701dcd541412926f6",
+      "display_dimensions": [
+        800,
+        547
+      ],
+      "display_bytes": 95980,
+      "display_sha256": "ba1cb25f69e08c50faa2d676932103e8275ee97d479fd1397074bbaa3f8edf26"
+    },
+    "elite": {
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/96c38efc38e619f8182b1d387631339b/Product/44195/png/300",
+      "source_page": "https://www.gigabyte.com/Laptop/AORUS-ELITE-16-AE6H",
+      "file": "elite.webp",
+      "bytes": 51960,
+      "dimensions": [
+        300,
+        300
+      ],
+      "sha256": "d28803fe766830df8eb80826fa617c3895819a6bfa399dfd7526c8a991384dae",
+      "display_dimensions": [
+        300,
+        300
+      ],
+      "display_bytes": 8064,
+      "display_sha256": "6bfe290d320b3572edb0846e835afdbe919362fc54fb16b8111fe367e07a7eaa"
+    },
+    "master": {
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/2b02867819f7ee747c808a22564e7f53/Product/44021/png/300",
+      "source_page": "https://www.gigabyte.com/Laptop/AORUS-MASTER-16-AM6H",
+      "file": "master.webp",
+      "bytes": 57261,
+      "dimensions": [
+        300,
+        300
+      ],
+      "sha256": "f8e4cb0aedb6018085f7f2864969916b86a809f1e689b865e5a7d41a8b13a69e",
+      "display_dimensions": [
+        300,
+        300
+      ],
+      "display_bytes": 8440,
+      "display_sha256": "e11c2ece1f557f4176d552c734c6003223fd7c4f6c5a843afb20102c0cd809b6"
+    }
+  }
+}

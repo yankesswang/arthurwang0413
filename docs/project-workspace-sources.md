@@ -4,6 +4,12 @@ These are newly designed portfolio frontends, informed by the actual local proje
 
 The current visual direction follows the user's preference for a mature enterprise product: restrained neutral surfaces, readable typography, clearer operational hierarchy, and dedicated full-page workspaces. `workspace.html` hosts the same logic used in the portfolio preview; `workspace-page.js` selects the app and handles page-level language/title/accessibility setup. Embedded workspace entrances use ordinary links, so visitors can open them in a new tab. The standalone page includes an explicit route back to the relevant portfolio project.
 
+## Illustrated product context
+
+`workspace-media.js` adds product photography and localized explanatory graphics to both embedded and standalone interfaces. E-Support's selected motherboard updates its photograph, model name and manufacturer source link together. Topic changes update the support-check diagram. NB Spec updates its notebook-family photograph, model and memory/adapter/battery snapshot summary together. The evidence-path diagram explains the source-to-attribute relationship.
+
+Photographs were retrieved from public GIGABYTE pages/CDN on 2026-11-17. The five local WebP display files preserve the full photographs and transparency, with source/size/checksum metadata under `assets/products/sources.json`. Every visible photograph links to the manufacturer page; family imagery is labeled separately from SKU configuration. SVG diagrams are original illustrations. No private source-project pictures or customer data are used.
+
 ## E-Support
 
 Reference checkout: `e-support`, commit `d659de9bdf1edc0a0452a42af443e3a21fb844a8`.
