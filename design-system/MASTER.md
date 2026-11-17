@@ -35,4 +35,10 @@ The portfolio canvas retains the selected warm-white palette. GiMATE and StockRa
 
 E-Support is a product workspace based on the original application: a pale navigation rail, white conversational surface, teal actions (#235d72), and a source/review inspector. FAE/FAQ/specification views use real table structures and filter bars. NB Spec pairs a white model-scoped chat with a graphite diagnostic inspector (#1a2433), then switches to a dense evaluation report with derived metrics and verdict details. Prefer operational headings, useful forms, and restrained status treatment over explanatory slogan cards. Preserve a subtle preview-data boundary in the chrome/footer.
 
-Native dialogs retain state and restore focus. Inputs and touch controls are at least 44px tall; mobile tables scroll inside a labeled region. Implementation lives in system-demos.js/css and project-workspaces.js/css; source mappings are documented in docs/project-workspace-sources.md.
+GiMATE and StockRadar retain native expanded dialogs. E-Support and NB Spec now open dedicated full-page workspaces from their portfolio previews. Inputs and touch controls are at least 44px tall; mobile tables scroll inside a labeled region. Implementation lives in system-demos.js/css, project-workspaces.js/css, workspace-polish.css and workspace-page.js; source mappings are documented in docs/project-workspace-sources.md.
+
+## Enterprise product refinement
+
+User-selected direction: the restrained product clarity associated with Linear/Intercom. Use a consistent cool neutral family (#202735 / #485261 / #667180), white operational surfaces, pale navigation (#f7f8fa), and ink-colored actions (#29374a). E-Support and NB Spec share this system; NB Spec's diagnostic panel is a purposeful graphite inspector rather than a separate theme.
+
+Raise body type to 14–17px, operational titles to 26–30px, and report numerals to 40px. Use 500/600 weights to establish hierarchy and reserve monospace for IDs/data. Reduce repeated sample badges and implementation labels; scope stays visible in the footer and in the authored evaluation report. The dedicated workspace removes the nested portfolio/modal chrome and gives the chat composer a stable lower position. Product controls and local fixture behavior remain shared between embedded and dedicated views.
