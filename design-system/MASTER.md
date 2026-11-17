@@ -1,9 +1,11 @@
 # Arthur Wang portfolio design system
 
-Based on the UI UX Pro Max design-system search for a sophisticated AI engineer portfolio: exaggerated minimalism, strong typography, clear evidence, and a project-led reading path. Adapted to the existing interactive dark portfolio.
+Based on the UI UX Pro Max design-system search for a sophisticated AI engineer portfolio: exaggerated minimalism, strong typography, clear evidence, and a project-led reading path. Adapted to an editorial, warm-light portfolio. Palette direction A selected by the user, based on the Cursor DESIGN.md in VoltAgent/awesome-design-md.
 
-- Canvas: #101311. Surface: #191e1a. Primary text: #f1f0e8. Body: #c3c9c1. Secondary text: #a0aaa1.
-- Accent and primary action: #c3e8a1 with #172012 text. Borders: #303a32; emphasized borders: #546257.
+- Canvas: #f7f7f4. Surface: #ffffff. Inset surface: #fafaf7. Primary text: #26251e. Body: #5a5852. Secondary text: #69665d.
+- Decorative accent: #f54e00. Text accent: #b63b00. Primary action: #d04200 with #ffffff text (4.71:1); hover: #b63b00. Borders: #e6e5e0; emphasized borders: #cfcdc4. Avoid white small text on the brighter decorative orange.
+- Warm-light surfaces apply to project discovery, project overview, companion, terminal, and expanded terminal dialog. Terminal accent variants remain selectable and use readable colors on light backgrounds.
+- Palette source: https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/cursor/DESIGN.md (canvas, ink, accent, card, border, and active orange); secondary text and pale orange selection colors adapted for readable content.
 - Typography: Outfit / Noto Sans TC for content; DM Mono for indices, technical labels, and terminal tools.
 - Maximum content width: 1280px. Responsive gutters: 20px–80px. Section spacing: 64px mobile, 96px desktop.
 - Large name and clear role lead into selected work. Secondary paths expose the résumé and local portfolio explorer.
