@@ -237,46 +237,6 @@ a, button, summary { transition: color 180ms ease, background-color 180ms ease, 
 .agent-stage::before, .agent-stage::after { border-color: var(--line-strong); }
 .stage-axis { background: var(--line); }
 .stage-coordinate, .orbit-label, .stage-status { color: var(--muted); }
-#view-terminal { --console-accent: var(--blue); color: var(--body); background: var(--surface); }
-.console-header { border-color: var(--line); }
-.console-header p, .console-command-group h4, .console-stack h4, .terminal-result > h4, .console-identity h4, .console-architecture figcaption { color: var(--ink); }
-.console-kicker, .console-help-heading, .console-empty, .console-architecture > p, .console-matrix-heading { color: var(--muted); }
-.terminal-expand { border-color: var(--line-strong); background: var(--surface); color: var(--ink); }
-.console-toolbar { border-color: var(--line); background: var(--surface-soft); }
-.console-toolbar button, .console-action, .terminal-suggestions button { border-color: var(--line-strong); background: var(--surface); }
-.console-toolbar button:hover, .console-action:hover, .terminal-suggestions button:hover { background: var(--accent-soft); }
-#view-terminal .terminal-output { scrollbar-color: var(--line-strong) var(--surface); }
-#view-terminal .terminal-entry + .terminal-entry { border-color: var(--line); }
-#view-terminal .terminal-prompt { color: var(--ink); }
-#view-terminal .terminal-result { color: var(--body); }
-.console-command-card { background: var(--surface-soft); border-color: var(--line); color: var(--ink); }
-.console-command-card:hover { background: var(--accent-soft); }
-.console-command-card span { color: var(--body); }
-.console-project, .console-evidence, .console-stack { border-color: var(--line-strong); }
-.console-project p, .console-evidence p, .console-stack p { color: var(--body); }
-.console-error { border-color: var(--error); color: var(--error); }
-.console-trace li { border-color: var(--line); background: var(--surface-soft); }
-.console-trace span { color: var(--body); }
-.console-trace strong { color: var(--success); }
-.console-run-state { background: var(--surface-soft); border-color: var(--line-strong); }
-.console-run-state[data-state="running"] strong, .console-state[data-state="running"] { color: var(--warning); }
-.console-run-phases span { border-color: var(--line-strong); color: var(--muted); }
-.console-run-phases span[data-state="done"] { color: var(--body); }
-.console-run-phases span[data-state="active"] { border-color: var(--blue); background: var(--accent-soft); }
-.console-flow li { border-color: var(--line); background: var(--surface-soft); }
-.console-flow li strong { color: var(--ink); }
-.console-tree { border-color: var(--line-strong); }
-.console-matrix { background: var(--surface-soft); border-color: var(--line); }
-.console-glyph-column:nth-child(5n) { color: var(--ink); }
-#view-terminal .terminal-form { border-color: var(--line-strong); background: var(--canvas); }
-#view-terminal .terminal-form input { color: var(--ink); }
-#view-terminal .terminal-form button { color: var(--button-ink); background: var(--button-bg); }
-#view-terminal .terminal-form button:hover { background: var(--button-hover); }
-.console-bottom p, #view-terminal .terminal-note { color: var(--muted); }
-.console-bottom kbd { color: var(--ink); }
-.terminal-dialog { border-color: var(--line-strong); background: var(--surface); color: var(--ink); }
-.terminal-dialog::backdrop { background: rgb(38 37 30 / 55%); }
-
 /* Keep content immediately readable; motion is limited to interaction feedback. */
 .motion-ready .reveal, .motion-ready .project .project-details li { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
 .motion-ready .site-header, .motion-ready .hero .eyebrow, .motion-ready .hero h1, .motion-ready .hero-lead, .motion-ready .hero-actions, .motion-ready .contact-list { animation: none; }
