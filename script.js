@@ -777,8 +777,8 @@ const consoleCommands = [
   ["matrix","matrix","Discover","Play a bounded glyph effect","播放字元矩陣效果"],
   ["clear","clear","Discover","Clear console output","清空終端輸出"]
 ].map(([name,example,group,en,zh])=>({name,example,group,en,zh}));
-const consolePalette={ice:"#9bc6e1",mint:"#a3ccb7",amber:"#e5c59a"};
-let consoleAccent="ice";
+const consolePalette={orange:"#b63b00",ice:"#245784",mint:"#26714d",amber:"#8a5715"};
+let consoleAccent="orange";
 let consoleEntryId=0;
 let consoleReturnFocus=null;
 const consoleText=(en,zh)=>labLanguage()==="zh-TW"?zh:en;
@@ -913,7 +913,7 @@ function executeTerminal(input){
   if(command==="run"&&!args)record.error="run <agents|memory|evaluation|your goal>";
   if(command==="trace")record.snapshot=consoleSnapshot();
   if(command==="stop")record.stopped=stopPortfolioTask();
-  if(command==="theme"){const accent=args.toLowerCase()||consoleAccent;if(!consolePalette[accent])record.error="theme <ice|mint|amber>";else{consoleSetAccent(accent);record.accent=accent;}}
+  if(command==="theme"){const accent=args.toLowerCase()||consoleAccent;if(!consolePalette[accent])record.error="theme <orange|ice|mint|amber>";else{consoleSetAccent(accent);record.accent=accent;}}
   if(command==="export"){const format=args.toLowerCase()||"md";if(!["md","json"].includes(format))record.error="export [md|json]";else record.filename=consoleExport(format);}
   if(command==="history")record.history=commandHistory.slice();
   if(command==="matrix"){
