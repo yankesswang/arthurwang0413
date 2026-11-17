@@ -242,6 +242,10 @@ function setLanguage(language) {
     const value = translations[next][element.dataset.i18nAlt];
     if (value) element.setAttribute("alt", value);
   });
+  document.querySelectorAll("[data-i18n-title]").forEach((element) => {
+    const value = translations[next][element.dataset.i18nTitle];
+    if (value) element.setAttribute("title", value);
+  });
   root.lang = next === "zh-TW" ? "zh-Hant" : "en";
   languageButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.lang === next)));
   try { localStorage.setItem("resume-language", next); } catch { /* Storage may be unavailable. */ }
@@ -610,6 +614,12 @@ const memoryWorkflowCopy = {
     "memoryDefaults": "Reported defaults · 2 graph hops · top-16 seeds · 10 evidence-access calls · up to 16 final IDs",
     "memorySource": "Research manuscript: §3.1–3.4, Figures 1–2, Algorithm 1; defaults from Table 9 (p. 14).",
     "memoryProofModel": "Reported with OSS-120B",
+    "paperRead": "Read full paper ↗",
+    "paperCode": "GitHub repository ↗",
+    "paperFileInfo": "Original manuscript · PDF · 22 pages · 1.3 MB",
+    "paperPreview": "Read the paper on this page",
+    "paperReaderHint": "You can also open the PDF in a new tab using the link above.",
+    "paperFrameTitle": "GRACE-Mem original research manuscript",
     "labMapMemory": "Hybrid graph search → Two-stage reranking → Evidence curation → Raw dialogue context",
     "graceDetail1": "Separated graph discovery, compressed-record reranking, and provenance-linked raw-dialogue reconstruction; failed curation preserves the complete compressed seed context."
   },
@@ -649,6 +659,12 @@ const memoryWorkflowCopy = {
     "memoryDefaults": "稿件預設配置 · 圖擴展 2 hops · top-16 種子 · 10 次證據存取呼叫 · 最多 16 個最終 ID",
     "memorySource": "依研究稿 §3.1–3.4、圖 1–2、Algorithm 1 整理；預設值見表 9（第 14 頁）。",
     "memoryProofModel": "OSS-120B 配置結果",
+    "paperRead": "閱讀論文原文 ↗",
+    "paperCode": "GitHub 原始碼 ↗",
+    "paperFileInfo": "原始研究稿 · PDF · 22 頁 · 1.3 MB",
+    "paperPreview": "在頁面閱讀論文",
+    "paperReaderHint": "也可以點選上方連結，在新分頁開啟 PDF 原文。",
+    "paperFrameTitle": "GRACE-Mem 論文原文",
     "labMapMemory": "混合圖檢索 → 兩階段重排序 → 證據策展 → 原始對話上下文",
     "graceDetail1": "分離圖候選探索、壓縮紀錄重排序與來源連結的原始對話重建；策展失敗時保留完整壓縮種子上下文。"
   }

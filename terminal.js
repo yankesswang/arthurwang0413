@@ -140,7 +140,12 @@
     } else if (type === "skills") {
       document.querySelectorAll(".skill-groups article").forEach(article => { parent.append(node("h3", "", article.querySelector("h3").textContent), node("p", "", article.querySelector("p").textContent)); }); link(parent, t("cliSource"), "#skills");
     } else if (type === "research") {
-      parent.append(node("h3", "", textOf("#publication-title")), node("p", "", textOf(".authors")), node("p", "", [...document.querySelectorAll(".publication-meta span")].map(e => e.textContent).join(" · "))); link(parent, t("cliSource"), "#research");
+      parent.append(node("h3", "", textOf("#publication-title")), node("p", "", textOf(".authors")), node("p", "", [...document.querySelectorAll(".publication-meta span")].map(e => e.textContent).join(" · ")));
+      document.querySelectorAll("#research [data-paper-resources] a").forEach(source => {
+        const resource = link(parent, source.textContent, source.getAttribute("href"));
+        resource.target = "_blank"; resource.rel = "noopener noreferrer";
+      });
+      link(parent, t("cliSource"), "#research");
     } else if (type === "resume") link(parent, t("cliOpenPdf"), "arthurwang_cv.pdf");
     else if (type === "contact") { link(parent, "yankesswang@gmail.com", "mailto:yankesswang@gmail.com"); link(parent, "LinkedIn ↗", "https://linkedin.com/in/arthur-wang0413"); }
     else {
@@ -172,6 +177,10 @@
           const list = node("ul", "cli-bullets"); [...article.querySelectorAll(".project-details li, :scope > ul > li")].slice(0, 2).forEach(li => list.appendChild(node("li", "", li.textContent))); if (list.children.length) section.appendChild(list);
         }
         link(section, t("cliSources"), `#${project.id}`); parent.appendChild(section);
+        if (key === "grace") article.querySelectorAll("[data-paper-resources] a").forEach(source => {
+          const resource = link(section, source.textContent, source.getAttribute("href"));
+          resource.target = "_blank"; resource.rel = "noopener noreferrer";
+        });
       });
     }
   }

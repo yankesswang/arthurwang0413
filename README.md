@@ -13,3 +13,7 @@ On-device AI agents · RAG systems · Local LLM applications · Multimodal AI pr
 [Download PDF Resume](arthurwang_cv.pdf)
 
 </div>
+
+### GRACE-Mem research
+
+[Read the original paper](assets/papers/grace-mem.pdf) · [Project source code](https://github.com/gbtailab-tech/GRACE-Mem)

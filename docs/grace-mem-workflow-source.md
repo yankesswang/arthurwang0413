@@ -1,6 +1,6 @@
 # GRACE-Mem workflow provenance
 
-Source: user-supplied `Mem_KG.pdf`, 22-page GRACE-Mem research manuscript. Text and rendered Figures 1–2 were reviewed. The PDF itself is not included in the website. The public UI contains concise process summaries, not a reproduction of the manuscript.
+Source: user-supplied `Mem_KG.pdf`, 22-page GRACE-Mem research manuscript. Text and rendered Figures 1–2 were reviewed. The user subsequently requested the complete original manuscript on the website. An unchanged, SHA-256-verified copy is included at `assets/papers/grace-mem.pdf`. Both the GRACE-Mem card and the research section link to it; the research section also has an expandable embedded PDF reader. The project repository link is the user-confirmed https://github.com/gbtailab-tech/GRACE-Mem. Process summaries remain separate from the full original.
 
 | UI content | Source | Preserved detail |
 | --- | --- | --- |
