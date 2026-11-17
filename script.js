@@ -1,6 +1,13 @@
 const translations = {
   "en": {
     "skip": "Skip to content",
+    "heroLabel": "Engineering intelligence.",
+    "impactLabel": "Selected outcomes",
+    "impactIntro": "From research to real-world systems.",
+    "impactProducts": "AI products led",
+    "impactDocs": "Documents connected",
+    "impactLookup": "FAE lookup time",
+    "projectDetails": "Explore implementation",
     "menu": "Menu",
     "navExperience": "Experience",
     "navWork": "Work",
@@ -105,6 +112,14 @@ const translations = {
     "laptopDecision": "Exact hardware values come from structured facts; explanations use retrieved context."
   },
   "zh-TW": {
+    "heroLabel": "讓智慧，成為實際。",
+    "impactLabel": "精選成果",
+    "impactIntro": "從研究探索，到實際落地。",
+    "impactProducts": "主導 AI 產品",
+    "impactDocs": "串聯產品文件",
+    "impactLookup": "FAE 查詢時間",
+    "projectDetails": "探索實作細節",
+
     "skip": "跳至主要內容",
     "menu": "選單",
     "navExperience": "經歷",
