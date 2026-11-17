@@ -13,3 +13,7 @@ Based on the UI UX Pro Max design-system search for a sophisticated AI engineer 
 - Preserve English / Traditional Chinese translations, local agent search, source links, terminal commands, and modal keyboard behavior.
 
 Implementation lives in design.css and design.js, layered after the original styles and functionality. No framework, build step, or additional runtime dependency.
+
+## Project discovery revision
+
+The hero no longer displays Plan / Execute / Verify or an automatic execution walkthrough. The guide presents three independent topic cards with plain-language outcomes and descriptive icons. Clicking a topic searches the local project descriptions and shows linked excerpts immediately. No artificial stage delays or auto-run on page load. Custom keyword search and source matching details use progressive disclosure. Selected topics expose aria-pressed; the hero guide link focuses the first topic. Terminal remains a secondary view with its existing commands.
