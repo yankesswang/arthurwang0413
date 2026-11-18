@@ -1,6 +1,13 @@
 const translations = {
   "en": {
     "skip": "Skip to content",
+    "heroLabel": "Engineering intelligence.",
+    "impactLabel": "Selected outcomes",
+    "impactIntro": "From research to real-world systems.",
+    "impactProducts": "AI products led",
+    "impactDocs": "Documents connected",
+    "impactLookup": "FAE lookup time",
+    "projectDetails": "Explore implementation",
     "menu": "Menu",
     "navExperience": "Experience",
     "navWork": "Work",
@@ -105,6 +112,14 @@ const translations = {
     "laptopDecision": "Exact hardware values come from structured facts; explanations use retrieved context."
   },
   "zh-TW": {
+    "heroLabel": "讓智慧，成為實際。",
+    "impactLabel": "精選成果",
+    "impactIntro": "從研究探索，到實際落地。",
+    "impactProducts": "主導 AI 產品",
+    "impactDocs": "串聯產品文件",
+    "impactLookup": "FAE 查詢時間",
+    "projectDetails": "探索實作細節",
+
     "skip": "跳至主要內容",
     "menu": "選單",
     "navExperience": "經歷",
@@ -227,6 +242,10 @@ function setLanguage(language) {
     const value = translations[next][element.dataset.i18nAlt];
     if (value) element.setAttribute("alt", value);
   });
+  document.querySelectorAll("[data-i18n-title]").forEach((element) => {
+    const value = translations[next][element.dataset.i18nTitle];
+    if (value) element.setAttribute("title", value);
+  });
   root.lang = next === "zh-TW" ? "zh-Hant" : "en";
   languageButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.lang === next)));
   try { localStorage.setItem("resume-language", next); } catch { /* Storage may be unavailable. */ }
@@ -267,7 +286,7 @@ window.addEventListener("scroll", updateProgress, { passive: true });
 // Original interaction design: a small portfolio workspace, with no backend or runtime dependencies.
 const labCopy = {
   en: {
-    labLocal: "In your browser", labViews: "Workspace views", labAgent: "Agent", labProjects: "Projects",
+    labLocal: "Portfolio guide", labViews: "Portfolio views", labAgent: "Explore work", labProjects: "All projects", labTerminal: "Terminal",
     labAvatar: "Interactive agent. Drag and release, or use arrow keys. Escape resets.",
     labReady: "Ready to explore", labDragging: "A little outside the box", labReturning: "Finding my balance",
     labHint: "Drag a little. Let go. Watch it return.", labReset: "Reset ↺",
@@ -350,15 +369,6 @@ function selectLabProject(key) {
 workspace.querySelectorAll("[data-project]").forEach((button) => {
   button.addEventListener("click", () => selectLabProject(button.dataset.project));
 });
-
-const terminalForm = workspace.querySelector(".terminal-form");
-const terminalInput = workspace.querySelector("#terminal-command");
-const terminalOutput = workspace.querySelector(".terminal-output");
-const commandHistory = [];
-let historyPosition = 0;
-const commandRecords = [];
-
-let terminalReady = false;
 
 const stage = workspace.querySelector(".agent-stage");
 const avatar = workspace.querySelector(".elastic-agent");
@@ -469,7 +479,6 @@ function refreshLabLanguage() {
   document.querySelectorAll("[data-i18n-aria]").forEach((element) => element.setAttribute("aria-label", labText(element.dataset.i18nAria)));
   selectLabProject(selectedLabProject);
   setAgentStatus(agentStatusKey);
-  renderTerminal();
 }
 document.addEventListener("resume:language", refreshLabLanguage);
 workspace.classList.add("lab-enabled");
@@ -533,6 +542,181 @@ const sessionStop = portfolioSession.querySelector(".session-stop");
 const sessionState = portfolioSession.querySelector(".session-state");
 const sessionEvidence = portfolioSession.querySelector(".session-evidence-list");
 const sessionLog = portfolioSession.querySelector(".session-tool-log");
+// Visitor-facing project discovery: explain the destination, not internal execution steps.
+Object.assign(translations.en, {
+  askPortfolio: "Find a relevant project",
+  labLocal: "Portfolio guide", labAgent: "Explore work", labProjects: "All projects", labTerminal: "Terminal",
+  guideEyebrow: "A CLOSER LOOK AT MY WORK", sessionTitle: "What are you curious about?",
+  guideIntro: "Pick a topic to see relevant projects and what I built.",
+  sessionExamples: "Explore work by topic", sessionAgents: "AI agents that get things done",
+  guideAgentsDesc: "Local models, desktop tools, and reliable execution.",
+  sessionMemory: "Finding the right knowledge", guideMemoryDesc: "Search, conversational memory, and traceable answers.",
+  sessionEvaluation: "Making AI answers dependable", guideEvaluationDesc: "Structured data, test sets, and answer-quality checks.",
+  guideCustom: "Have a specific skill in mind?", sessionQueryLabel: "Search skills or project keywords",
+  sessionRun: "Search ↗", sessionReady: "Explore", sessionRunning: "Searching", sessionComplete: "Found",
+  sessionWelcome: "Choose a topic above to discover a project.", sessionEvidence: "RELATED PROJECTS",
+  sessionResults: "Projects to explore", sessionTrace: "How these results were found",
+  sessionDisclosure: "Matches topics to this résumé. Every result links to the full project.",
+  labFooter: "Explore the work. See the details."
+});
+Object.assign(translations["zh-TW"], {
+  askPortfolio: "找適合你的專案",
+  labLocal: "作品導覽", labAgent: "依興趣探索", labProjects: "所有專案", labTerminal: "指令模式",
+  guideEyebrow: "從你感興趣的主題開始", sessionTitle: "你想了解哪一面？",
+  guideIntro: "選一個主題，看看我做過的專案與實作內容。",
+  sessionExamples: "依主題探索作品", sessionAgents: "能實際執行任務的 AI Agent",
+  guideAgentsDesc: "本機模型、桌面工具，以及可靠的任務執行。",
+  sessionMemory: "找到知識，也記住對話", guideMemoryDesc: "知識檢索、長期記憶與可追溯的回答。",
+  sessionEvaluation: "讓 AI 的答案更可靠", guideEvaluationDesc: "結構化資料、測試集與回答品質評估。",
+  guideCustom: "想找特定技能或技術？", sessionQueryLabel: "搜尋技能或專案關鍵字",
+  sessionRun: "搜尋 ↗", sessionReady: "探索", sessionRunning: "搜尋中", sessionComplete: "已找到",
+  sessionWelcome: "點選上方主題，找到你感興趣的專案。", sessionEvidence: "相關專案",
+  sessionResults: "推薦閱讀的專案", sessionTrace: "這些結果是如何找到的？",
+  sessionDisclosure: "依主題比對這份履歷，每筆結果都能連到完整專案介紹。",
+  labFooter: "從興趣出發，看見實作。"
+});
+
+// Process summaries grounded in the supplied GRACE-Mem manuscript.
+const memoryWorkflowCopy = {
+  "en": {
+    "memoryWorkflowTitle": "How GRACE-Mem builds an answer",
+    "memoryPrinciple": "Keep the path back to the original conversation.",
+    "memoryPrincipleText": "Graph and compressed records locate candidates. Successful evidence curation rebuilds the answer context from provenance-linked raw dialogue.",
+    "memoryRetrieval": "Retrieval and answering",
+    "memoryIngestion": "Memory ingestion and updates",
+    "memoryGuards": "Evidence validation and fallback",
+    "memoryQueryTitle": "Analyze the question",
+    "memoryQueryText": "Extract keywords and embed the full question and individual keywords for complementary retrieval signals.",
+    "memoryDiscoverTitle": "Find and expand graph candidates",
+    "memoryDiscoverText": "Combine dense and BM25 entity search with keyword-level relation retrieval. Expand connected evidence with query-conditioned spreading activation.",
+    "memoryMergeTitle": "Rerank the graph and merge records",
+    "memoryMergeText": "Rank entity and relation candidates independently. Merge their linked compressed records with direct compressed-record retrieval, then deduplicate IDs.",
+    "memorySeedTitle": "Select the compressed-record seeds",
+    "memorySeedText": "Rerank the merged pool and retain the top-K records with provenance IDs. These records guide the corpus search.",
+    "memoryCurateTitle": "Inspect the original dialogue",
+    "memoryCurateText": "Use GREP for lexical search, READ for local dialogue, and VEC for semantic search. FINAL submits the selected provenance IDs within a bounded call budget.",
+    "memoryRebuildTitle": "Validate, reconstruct, and answer",
+    "memoryRebuildText": "Check submitted IDs against the search trajectory. Eligible coverage checks may restore omitted seeds; rebuild the selected raw spans as context for the answer model.",
+    "memoryRawTitle": "Preserve the dialogue and its origin",
+    "memoryRawText": "Keep the raw text, dialogue timestamp, session ID, and message ID so selected records can be traced back to their source.",
+    "memoryViewsTitle": "Build complementary memory views",
+    "memoryViewsText": "Compress each dialogue unit with LLMLingua-2 and extract its entities. Resolve entity candidates through lexical and semantic matching with ADD or UPDATE decisions.",
+    "memoryRelationsTitle": "Link relations to reconciled entities",
+    "memoryRelationsText": "Extract entities before relations. Before writing a relation, replace its endpoints with resolved entity IDs.",
+    "memoryStoreTitle": "Write the graph and vector indexes",
+    "memoryStoreText": "Store entities, relations, compressed records, and provenance. Maintain separate entity, relation, and compressed-record vector indexes alongside the memory graph.",
+    "memoryVerifyTitle": "Only admit verified additions",
+    "memoryVerifyText": "Seeds can be kept directly. A new provenance ID is accepted only if a corpus-access tool observed it during the current search trajectory.",
+    "memoryCoverageTitle": "Restore omitted seeds when eligible",
+    "memoryCoverageText": "For configured question categories, and only when capacity remains, an answer-blind check may add back useful omitted seeds. It does not remove retained evidence or launch a new open-ended search.",
+    "memoryFallbackTitle": "Preserve the complete seed context on failure",
+    "memoryFallbackText": "If FINAL is missing, invalid, or empty, or ID validation leaves nothing, return the upstream compressed seed context unchanged. At the call cap, request FINAL without further corpus access.",
+    "memoryDefaults": "Reported defaults · 2 graph hops · top-16 seeds · 10 evidence-access calls · up to 16 final IDs",
+    "memorySource": "Research manuscript: §3.1–3.4, Figures 1–2, Algorithm 1; defaults from Table 9 (p. 14).",
+    "memoryProofModel": "Reported with OSS-120B",
+    "paperRead": "Read full paper ↗",
+    "paperCode": "GitHub repository ↗",
+    "paperFileInfo": "Original manuscript · PDF · 22 pages · 1.3 MB",
+    "paperPreview": "Read the paper on this page",
+    "paperReaderHint": "You can also open the PDF in a new tab using the link above.",
+    "paperFrameTitle": "GRACE-Mem original research manuscript",
+    "labMapMemory": "Hybrid graph search → Two-stage reranking → Evidence curation → Raw dialogue context",
+    "graceDetail1": "Separated graph discovery, compressed-record reranking, and provenance-linked raw-dialogue reconstruction; failed curation preserves the complete compressed seed context.",
+    "figuresTitle": "Inside the research",
+    "figuresIntro": "Original figures from the manuscript. Open a figure to inspect the details.",
+    "figure1Title": "Figure 1 · System architecture",
+    "figure1Text": "The full path from dialogue ingestion and graph/vector memory to hybrid retrieval, reranking, evidence curation, and answering.",
+    "figure2Title": "Figure 2 · Evidence Curation Agent",
+    "figure2Text": "A worked example of GREP / READ / VEC search, provenance validation, and reconstruction of the final raw-evidence context.",
+    "figure3Title": "Figure 3 · LongMemEval results",
+    "figure3Text": "All three primary answer backbones improve across the plotted evidence-layer configurations; OSS-120B rises from 76.0% to 80.2%.",
+    "figure4Title": "Figure 4 · LoCoMo results",
+    "figure4Text": "The effect depends on the backbone: OSS-120B’s 87.3% baseline exceeds its 86.9% curated configuration. Curation is not uniformly beneficial.",
+    "figure1Alt": "GRACE-Mem architecture: dialogue ingestion, compressed/entity/relation indexes, graph expansion, two-stage reranking, evidence curation, and answer generation.",
+    "figure2Alt": "Evidence Curation Agent example tracing GREP, READ, VEC and FINAL, coverage validation, selected source turns, and a grounded age calculation.",
+    "figure3Alt": "LongMemEval accuracy, baseline/filter-fetch/validation: OSS-20B 76.2/77.2/77.6; OSS-120B 76.0/79.0/80.2; GPT-4o-mini 69.2/71.8/73.2 percent.",
+    "figure4Alt": "LoCoMo accuracy, baseline/filter-fetch/validation: OSS-20B 84.0/82.3/84.6; OSS-120B 87.3/86.1/86.9; GPT-4o-mini 84.2/83.6/85.3 percent.",
+    "figureOpen": "View larger ↗",
+    "figurePdf": "View original PDF page ↗",
+    "figureResults": "Compare the evaluation figures",
+    "figureClose": "Close ✕",
+    "figureZoom": "Original size",
+    "figureFit": "Fit to window",
+    "figurePrev": "← Previous",
+    "figureNext": "Next →",
+    "figureViewer": "Research figure viewer"
+  },
+  "zh-TW": {
+    "memoryWorkflowTitle": "GRACE-Mem 如何找到回答依據",
+    "memoryPrinciple": "保留通往原始對話的路徑。",
+    "memoryPrincipleText": "圖與壓縮紀錄用來定位候選內容；證據策展成功後，依來源 ID 取回原始對話，重建回答上下文。",
+    "memoryRetrieval": "檢索與回答流程",
+    "memoryIngestion": "記憶寫入與更新",
+    "memoryGuards": "證據驗證與失敗回退",
+    "memoryQueryTitle": "解析使用者問題",
+    "memoryQueryText": "抽取關鍵字，分別建立完整問題與個別關鍵字的向量，提供互補的檢索訊號。",
+    "memoryDiscoverTitle": "找出並擴展圖候選",
+    "memoryDiscoverText": "整合 dense 與 BM25 實體搜尋，以及關鍵字層級的關係檢索，再以問題條件式 spreading activation 找到相連的證據。",
+    "memoryMergeTitle": "圖層重排序，合併壓縮紀錄",
+    "memoryMergeText": "分別重排實體與關係候選，取回其連結的壓縮紀錄，再與直接檢索的壓縮紀錄合併，依 ID 去重。",
+    "memorySeedTitle": "選出壓縮紀錄種子",
+    "memorySeedText": "對合併候選進行第二階段重排序，保留 top-K 紀錄及來源 ID，作為後續原始語料搜尋的起點。",
+    "memoryCurateTitle": "查閱原始對話",
+    "memoryCurateText": "GREP 搜尋字詞與模式、READ 查閱局部對話、VEC 執行語意檢索；在工具呼叫預算內，以 FINAL 提交選定的來源 ID。",
+    "memoryRebuildTitle": "驗證來源，重建上下文並回答",
+    "memoryRebuildText": "依本次搜尋軌跡驗證 ID；符合條件時補回遺漏種子，再取回選定的原始對話片段，交給回答模型。",
+    "memoryRawTitle": "保留對話與來源位置",
+    "memoryRawText": "保存原始文字、對話時間戳、session ID 與 message ID，讓候選紀錄能追溯回原始對話。",
+    "memoryViewsTitle": "建立互補的記憶表示",
+    "memoryViewsText": "以 LLMLingua-2 壓縮對話並抽取實體；透過字面與語意匹配對齊既有候選，決定 ADD 或 UPDATE。",
+    "memoryRelationsTitle": "以對齊後的 ID 連結關係",
+    "memoryRelationsText": "先抽取實體，再抽取以這些實體為端點的關係；寫入前將端點改成對齊後的實體 ID。",
+    "memoryStoreTitle": "寫入圖與向量索引",
+    "memoryStoreText": "保存實體、關係、壓縮紀錄與來源映射；在記憶圖之外，分別維護實體、關係及壓縮紀錄的向量索引。",
+    "memoryVerifyTitle": "新增證據必須經過實際查閱",
+    "memoryVerifyText": "原有種子可直接保留；新增來源 ID 則必須在本次搜尋中，確實由語料存取工具觀察到，才會被接受。",
+    "memoryCoverageTitle": "符合條件時補回遺漏種子",
+    "memoryCoverageText": "僅對設定的問題類別、且仍有容量時，進行不查看答案的覆蓋檢查，補回有用的遺漏種子；不刪除已保留證據，也不另開無界搜尋。",
+    "memoryFallbackTitle": "策展失敗，保留完整 seed context",
+    "memoryFallbackText": "FINAL 缺失、無效、為空，或 ID 驗證後沒有證據時，原封不動回傳上游壓縮種子上下文。呼叫預算用完後，只要求 FINAL，不再存取語料。",
+    "memoryDefaults": "稿件預設配置 · 圖擴展 2 hops · top-16 種子 · 10 次證據存取呼叫 · 最多 16 個最終 ID",
+    "memorySource": "依研究稿 §3.1–3.4、圖 1–2、Algorithm 1 整理；預設值見表 9（第 14 頁）。",
+    "memoryProofModel": "OSS-120B 配置結果",
+    "paperRead": "閱讀論文原文 ↗",
+    "paperCode": "GitHub 原始碼 ↗",
+    "paperFileInfo": "原始研究稿 · PDF · 22 頁 · 1.3 MB",
+    "paperPreview": "在頁面閱讀論文",
+    "paperReaderHint": "也可以點選上方連結，在新分頁開啟 PDF 原文。",
+    "paperFrameTitle": "GRACE-Mem 論文原文",
+    "labMapMemory": "混合圖檢索 → 兩階段重排序 → 證據策展 → 原始對話上下文",
+    "graceDetail1": "分離圖候選探索、壓縮紀錄重排序與來源連結的原始對話重建；策展失敗時保留完整壓縮種子上下文。",
+    "figuresTitle": "論文中的關鍵圖表",
+    "figuresIntro": "直接擷取論文原圖，點選圖片可放大查看細節。",
+    "figure1Title": "圖 1 · 系統整體架構",
+    "figure1Text": "從對話寫入、圖與向量記憶，到混合檢索、重排序、證據策展與回答生成的完整路徑。",
+    "figure2Title": "圖 2 · Evidence Curation Agent",
+    "figure2Text": "以實際範例呈現 GREP／READ／VEC 搜尋、來源驗證，以及最終原始證據上下文的重建。",
+    "figure3Title": "圖 3 · LongMemEval 結果",
+    "figure3Text": "圖中的三個主要回答模型，隨證據處理配置逐步改善；OSS-120B 從 76.0% 提升至 80.2%。",
+    "figure4Title": "圖 4 · LoCoMo 結果",
+    "figure4Text": "效果依模型而異：OSS-120B 的 baseline 為 87.3%，高於策展配置的 86.9%，顯示策展並非在所有條件下都更好。",
+    "figure1Alt": "GRACE-Mem 整體架構：對話寫入、壓縮紀錄／實體／關係索引、圖擴展、兩階段重排序、證據策展與回答生成。",
+    "figure2Alt": "Evidence Curation Agent 範例：追蹤 GREP、READ、VEC 與 FINAL，驗證覆蓋範圍、選取原始對話，並據此計算年齡。",
+    "figure3Alt": "LongMemEval 準確率，依 baseline／filter-fetch／validation：OSS-20B 76.2／77.2／77.6；OSS-120B 76.0／79.0／80.2；GPT-4o-mini 69.2／71.8／73.2%。",
+    "figure4Alt": "LoCoMo 準確率，依 baseline／filter-fetch／validation：OSS-20B 84.0／82.3／84.6；OSS-120B 87.3／86.1／86.9；GPT-4o-mini 84.2／83.6／85.3%。",
+    "figureOpen": "點擊放大 ↗",
+    "figurePdf": "查看 PDF 原始頁面 ↗",
+    "figureResults": "比較實驗結果圖",
+    "figureClose": "關閉 ✕",
+    "figureZoom": "原始尺寸",
+    "figureFit": "適合視窗",
+    "figurePrev": "← 上一張",
+    "figureNext": "下一張 →",
+    "figureViewer": "論文圖表檢視器"
+  }
+};
+Object.entries(memoryWorkflowCopy).forEach(([language, values]) => Object.assign(translations[language], values));
+
 const sessionAliases = {
   gimate: ["agent", "agents", "tool", "tools", "execution", "planning", "orchestration", "repair", "recovery", "local", "desktop", "electron", "sqlite", "代理", "工具", "執行", "規劃", "恢復", "桌面", "本機"],
   grace: ["memory", "conversational", "retrieval", "graph", "reranking", "provenance", "curation", "agent", "evaluation", "記憶", "檢索", "溯源", "重排序", "圖譜", "評估"],
@@ -541,7 +725,6 @@ const sessionAliases = {
 };
 const sessionPresets = { agents: "sessionGoalAgents", memory: "sessionGoalMemory", evaluation: "sessionGoalEvaluation" };
 const sessionModel = { runId: 0, status: "idle", phase: -1, query: "", calls: [], results: [], matchCount: 0, controller: null, preset: null };
-const sessionSteps = ["plan", "search", "read", "brief"];
 const keywordPresent = (text, term) => /[^\x00-\x7F]/.test(term)
   ? text.includes(term)
   : new RegExp(`\\b${term}\\b`, "i").test(text);
@@ -582,17 +765,13 @@ function sessionNode(tag, className, text) {
 
 function renderPortfolioSession() {
   const running = sessionModel.status === "running";
+  portfolioSession.dataset.status = sessionModel.status;
+  portfolioSession.querySelectorAll("[data-intent]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.intent === sessionModel.preset)));
   const statusKeys = { idle: "sessionReady", running: "sessionRunning", complete: "sessionComplete", stopped: "sessionStopped", empty: "sessionNoMatch", error: "sessionError" };
   sessionState.textContent = labText(statusKeys[sessionModel.status]);
   sessionState.dataset.state = sessionModel.status;
   sessionStop.hidden = !running;
   portfolioSession.querySelector(".session-run-body").setAttribute("aria-busy", String(running));
-  portfolioSession.querySelectorAll("[data-step]").forEach((step, index) => {
-    const done = sessionModel.status === "complete" || sessionModel.status === "empty" || index < sessionModel.phase;
-    step.dataset.state = done ? "done" : index === sessionModel.phase ? (running ? "active" : "paused") : "waiting";
-    if (index === sessionModel.phase && running) step.setAttribute("aria-current", "step");
-    else step.removeAttribute("aria-current");
-  });
   portfolioSession.querySelector(".session-tool-count").textContent = `${sessionModel.calls.length} ${labText("sessionCalls")}`;
   portfolioSession.querySelector(".session-source-count").textContent = sessionModel.results.length ? `${sessionModel.results.length} ${labText("sessionSources")}` : "";
   const title = portfolioSession.querySelector("#session-result-title");
@@ -630,55 +809,32 @@ function renderPortfolioSession() {
   document.dispatchEvent(new CustomEvent("portfolio:session"));
 }
 
-function sessionPause(signal) {
-  if (signal.aborted) return Promise.reject(new DOMException("Aborted", "AbortError"));
-  // Pace the presentation only; tool results and counts come from actual local reads.
-  if (reducedMotion.matches) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const abort = () => { window.clearTimeout(timer); reject(new DOMException("Aborted", "AbortError")); };
-    const timer = window.setTimeout(() => { signal.removeEventListener("abort", abort); resolve(); }, 280);
-    signal.addEventListener("abort", abort, { once: true });
-  });
-}
-
 async function runPortfolioTask(query, preset = null) {
   const goal = query.trim().slice(0, 180);
   if (!goal) return;
   if (sessionModel.controller) sessionModel.controller.abort();
   const controller = new AbortController();
   sessionModel.runId += 1;
-  Object.assign(sessionModel, { status: "running", phase: 0, query: goal, calls: [], results: [], matchCount: 0, controller, preset });
+  Object.assign(sessionModel, { status: "running", phase: 1, query: goal, calls: [], results: [], matchCount: 0, controller, preset });
   sessionInput.value = goal;
   renderPortfolioSession();
   try {
-    await sessionPause(controller.signal);
+    // Yield once for input feedback; results come directly from the local résumé.
+    await new Promise(resolve => window.requestAnimationFrame(resolve));
     if (controller.signal.aborted) return;
-    sessionModel.phase = 1;
     const hits = portfolioSearch(goal);
     sessionModel.matchCount = hits.length;
     sessionModel.calls.push({ name: "portfolio.search", argument: goal, count: hits.length });
-    renderPortfolioSession();
-    await sessionPause(controller.signal);
-    if (controller.signal.aborted) return;
-    sessionModel.phase = 2;
-    // Keep the brief focused; all matching cases remain available in the Projects view.
     for (const hit of hits.slice(0, 2)) {
-      const evidence = portfolioRead(hit);
-      sessionModel.results.push(evidence);
+      sessionModel.results.push(portfolioRead(hit));
       sessionModel.calls.push({ name: "portfolio.read", argument: projectSources[hit.key].name });
     }
-    renderPortfolioSession();
-    await sessionPause(controller.signal);
-    if (controller.signal.aborted) return;
     sessionModel.phase = 3;
-    renderPortfolioSession();
-    await sessionPause(controller.signal);
-    if (controller.signal.aborted) return;
     sessionModel.status = hits.length ? "complete" : "empty";
     sessionModel.controller = null;
     renderPortfolioSession();
   } catch (error) {
-    if (error.name === "AbortError" || sessionModel.controller !== controller) return;
+    if (error.name === "AbortError" || controller.signal.aborted) return;
     sessionModel.status = "error";
     sessionModel.controller = null;
     renderPortfolioSession();
@@ -696,253 +852,27 @@ function stopPortfolioTask() {
 }
 sessionStop.addEventListener("click", () => { stopPortfolioTask(); sessionInput.focus(); });
 portfolioSession.querySelectorAll("[data-intent]").forEach((button) => {
-  button.addEventListener("click", () => runPortfolioTask(labText(sessionPresets[button.dataset.intent]), button.dataset.intent));
+  button.addEventListener("click", async () => {
+    const intent = button.dataset.intent;
+    await runPortfolioTask(labText(sessionPresets[intent]), intent);
+    if (sessionModel.preset !== intent || sessionModel.status !== "complete") return;
+    const result = portfolioSession.querySelector(".session-result");
+    const heading = result.querySelector("h3");
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    result.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "nearest" });
+  });
 });
 document.querySelector('a[href="#portfolio-agent-session"]').addEventListener("click", () => {
   showLabView("agent");
-  window.requestAnimationFrame(() => sessionInput.focus({ preventScroll: true }));
+  window.requestAnimationFrame(() => portfolioSession.querySelector("[data-intent]").focus({ preventScroll: true }));
 });
 document.addEventListener("resume:language", () => {
   if (sessionModel.preset && [translations.en[sessionPresets[sessionModel.preset]], translations["zh-TW"][sessionPresets[sessionModel.preset]]].includes(sessionInput.value)) {
     sessionInput.value = labText(sessionPresets[sessionModel.preset]);
   }
-  sessionInput.placeholder = labText("sessionGoalAgents");
+  sessionInput.placeholder = labLanguage() === "zh-TW" ? "試試 RAG、Electron 或評估" : "Try RAG, Electron, or evaluation";
   renderPortfolioSession();
 });
 setLanguage(labLanguage());
 renderPortfolioSession();
-runPortfolioTask(labText("sessionGoalAgents"), "agents");
-
-// Portfolio tool console. Commands act on page content and local UI only.
-const terminalCopy = {
-  en: { termExpand:"Expand ↗", termClose:"Close ↙", termQuick:"Quick commands", termSuggestions:"Command suggestions", termComplete:"complete", termHistory:"history", termFocus:"focus", termNote:"Portfolio tools run locally. Matrix is a visual effect; no shell or AI service is connected.", termEmpty:"Start with help, or run an agent task.", termUnknown:"Unknown command. Try help or use Tab to complete a command.", termUsage:"Usage", termSource:"Read source ↗", termNoTask:"No task is running.", termStopped:"Task stopped.", termNoHits:"No matching project evidence. Try agent, memory, retrieval, or evaluation.", termExported:"Downloaded", termMatrix:"Visual study / glyph field", termPause:"Pause effect", termResume:"Resume effect", termPaused:"Visual effects paused.", termDone:"Command completed", termAvailable:"available commands", termIndex:"Portfolio index", termArchitecture:"Conceptual architecture from the project description", termNoArchitecture:"This project has no published architecture overview. Use cat to read its description.", termTrace:"Latest session activity", termTheme:"Terminal accent", termLocal:"Local portfolio tools", termGoal:"Goal", termExplore:"Explore", termOperate:"Operate", termDiscover:"Discover" },
-  "zh-TW": { termExpand:"展開 ↗", termClose:"收合 ↙", termQuick:"快捷指令", termSuggestions:"指令建議", termComplete:"補全", termHistory:"紀錄", termFocus:"聚焦", termNote:"指令操作本機履歷內容；Matrix 是視覺效果，沒有連接系統 Shell 或 AI 服務。", termEmpty:"輸入 help，或執行一個 Agent 任務。", termUnknown:"找不到這個指令。輸入 help，或用 Tab 補全指令。", termUsage:"用法", termSource:"閱讀來源 ↗", termNoTask:"目前沒有執行中的任務。", termStopped:"任務已中止。", termNoHits:"沒有對應的專案證據。試試 agent、memory、檢索或評估。", termExported:"已下載", termMatrix:"視覺實驗／字元矩陣", termPause:"暫停效果", termResume:"繼續效果", termPaused:"視覺效果已暫停。", termDone:"指令已完成", termAvailable:"個可用指令", termIndex:"作品索引", termArchitecture:"依專案介紹呈現的概念架構", termNoArchitecture:"這個專案尚未刊載架構概覽，可用 cat 閱讀介紹。", termTrace:"最近一次任務紀錄", termTheme:"Terminal 強調色", termLocal:"本機作品工具", termGoal:"目標", termExplore:"探索", termOperate:"操作", termDiscover:"發現" }
-};
-Object.keys(terminalCopy).forEach((lang)=>Object.assign(translations[lang],terminalCopy[lang]));
-const consoleView = document.querySelector("#view-terminal");
-const consoleDialog = document.querySelector(".terminal-dialog");
-const consolePortal = consoleDialog.querySelector(".terminal-portal");
-const consoleSuggestions = consoleView.querySelector(".terminal-suggestions");
-const consoleAnnouncer = consoleView.querySelector(".terminal-announcer");
-const consoleProjects = {...projectSources, stock:{id:"stockradar",name:"StockRadar",summary:"stockSummary",index:"05"}};
-const consoleCommands = [
-  ["help","help","Explore","Command directory","查看指令目錄"],
-  ["whoami","whoami","Explore","Identity & focus","個人定位與專長"],
-  ["projects","projects","Explore","Browse five projects","瀏覽五個專案"],
-  ["cat","cat gimate","Explore","Read a project","閱讀完整專案介紹"],
-  ["search","search memory","Explore","Find source evidence","搜尋專案證據"],
-  ["architecture","architecture gimate","Explore","Inspect system flows","查看系統架構流程"],
-  ["run","run agents","Operate","Execute an agent task","執行 Agent 任務"],
-  ["trace","trace","Operate","Inspect actual tool calls","檢視實際工具呼叫"],
-  ["stop","stop","Operate","Cancel the current task","中止目前任務"],
-  ["open","open gimate","Operate","Navigate to a source","跳到專案來源"],
-  ["export","export md","Operate","Download a portfolio brief","下載作品摘要"],
-  ["theme","theme mint","Operate","Switch console accents","切換終端強調色"],
-  ["skills","skills","Discover","Read the technical stack","查看技術能力"],
-  ["paper","paper","Discover","Read publication details","查看論文資訊"],
-  ["contact","contact","Discover","Show contact links","查看聯絡方式"],
-  ["resume","resume","Discover","Open the résumé PDF","開啟 PDF 履歷"],
-  ["tree","tree","Discover","Explore the portfolio index","探索作品索引樹"],
-  ["status","status","Discover","Inspect this local session","查看本機任務狀態"],
-  ["history","history","Discover","Review command history","查看指令紀錄"],
-  ["matrix","matrix","Discover","Play a bounded glyph effect","播放字元矩陣效果"],
-  ["clear","clear","Discover","Clear console output","清空終端輸出"]
-].map(([name,example,group,en,zh])=>({name,example,group,en,zh}));
-const consolePalette={ice:"#9bc6e1",mint:"#a3ccb7",amber:"#e5c59a"};
-let consoleAccent="ice";
-let consoleEntryId=0;
-let consoleReturnFocus=null;
-const consoleText=(en,zh)=>labLanguage()==="zh-TW"?zh:en;
-const consoleNode=sessionNode;
-const consoleSnapshot=()=>({runId:sessionModel.runId,status:sessionModel.status,phase:sessionModel.phase,query:sessionModel.query,calls:sessionModel.calls.map(c=>({...c})),results:sessionModel.results.map(r=>({...r}))});
-const consoleStatusText=(state)=>labText({idle:"sessionReady",running:"sessionRunning",complete:"sessionComplete",empty:"sessionNoMatch",stopped:"sessionStopped",error:"sessionError"}[state]);
-function consoleLink(parent,text,href){const link=consoleNode("a","",text);link.href=href;parent.appendChild(link);return link;}
-function consoleButton(parent,text,command){const b=consoleNode("button","console-action",text);b.type="button";b.dataset.command=command;parent.appendChild(b);return b;}
-function consoleProjectKey(value){const name=value.trim().replace(/^['"]|['"]$/g,"").toLowerCase();return Object.keys(consoleProjects).find(key=>key===name||consoleProjects[key].name.toLowerCase()===name)||({"grace-mem":"grace","gimate-agent":"gimate","stockradar":"stock","fae":"enterprise","nb":"laptop"})[name];}
-function consoleUsage(parent,usage){parent.appendChild(consoleNode("p","console-error",`${labText("termUsage")}: ${usage}`));}
-function consoleProject(parent,key,full=false){
-  const project=consoleProjects[key];
-  const article=document.getElementById(project.id);
-  const card=consoleNode("article","console-project");
-  consoleLink(card,`${project.index} / ${project.name}`,`#${project.id}`);
-  card.appendChild(consoleNode("p","",labText(project.summary)));
-  if(full){const list=consoleNode("ul","");article.querySelectorAll(".project-details li, :scope > ul > li").forEach(li=>list.appendChild(consoleNode("li","",li.textContent)));card.appendChild(list);}
-  const actions=consoleNode("div","console-inline-actions");
-  consoleButton(actions,`cat ${key}`,`cat ${key}`);
-  if(key!=="stock")consoleButton(actions,`architecture ${key}`,`architecture ${key}`);
-  card.appendChild(actions);parent.appendChild(card);
-}
-function consoleTrace(parent,snapshot){
-  const list=consoleNode("ol","console-trace");
-  snapshot.calls.forEach(call=>{const li=consoleNode("li","");li.appendChild(consoleNode("code","",call.name));li.appendChild(consoleNode("span","",call.argument));li.appendChild(consoleNode("strong","",call.name==="portfolio.search"?`${call.count} ${labText("sessionMatches")}`:"✓"));list.appendChild(li);});
-  parent.appendChild(list);
-}
-function consoleEvidence(parent,results){
-  results.forEach((item,i)=>{const p=consoleProjects[item.key];const card=consoleNode("article","console-evidence");consoleLink(card,`[${i+1}] ${p.name}`,`#${p.id}`);card.appendChild(consoleNode("p","",labText(item.excerptKey)));parent.appendChild(card);});
-}
-function consoleSearch(query){
-  const results=portfolioSearch(query).map(portfolioRead);
-  const terms=[...new Set([...(query.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(term=>term.length>2&&!['find','show','project','projects','the','and','with','for'].includes(term)),...['股票','金融','估值'].filter(term=>query.includes(term))])];
-  const stock=document.getElementById('stockradar');
-  const details=[...stock.querySelectorAll('[data-i18n^="stockDetail"]')];
-  const ranked=details.map(item=>({excerptKey:item.dataset.i18n,score:terms.filter(term=>keywordPresent(item.textContent.toLowerCase(),term)).length})).sort((a,b)=>b.score-a.score);
-  if(ranked[0].score||['stock','stockradar','股票','金融','估值'].some(term=>keywordPresent(query.toLowerCase(),term)))results.push({key:'stock',excerptKey:ranked[0].excerptKey});
-  return results;
-}
-function consoleRun(parent,snapshot){
-  if(!snapshot)return;
-  const state=consoleNode("div","console-run-state");state.dataset.state=snapshot.status;
-  state.appendChild(consoleNode("span","",`${labText("termGoal")}: ${snapshot.query}`));
-  state.appendChild(consoleNode("strong","",consoleStatusText(snapshot.status)));parent.appendChild(state);
-  const phases=consoleNode("div","console-run-phases");
-  ["sessionPlan","sessionSearch","sessionRead","sessionBrief"].forEach((key,i)=>{const item=consoleNode("span","",`${String(i+1).padStart(2,"0")} ${labText(key)}`);item.dataset.state=snapshot.status==="complete"||snapshot.status==="empty"||i<snapshot.phase?"done":snapshot.status==="running"&&i===snapshot.phase?"active":"waiting";phases.appendChild(item);});parent.appendChild(phases);
-  consoleTrace(parent,snapshot);consoleEvidence(parent,snapshot.results);
-  if(snapshot.status==="running")consoleButton(parent,`■ ${labText("sessionStop")}`,"stop");
-  else if(snapshot.status==="empty")parent.appendChild(consoleNode("p","console-error",labText("termNoHits")));
-}
-function consoleHelp(parent){
-  parent.appendChild(consoleNode("p","console-help-heading",`${consoleCommands.length} ${labText("termAvailable")} / Tab · ↑↓ · Ctrl K`));
-  ["Explore","Operate","Discover"].forEach(group=>{const section=consoleNode("section","console-command-group");section.appendChild(consoleNode("h4","",labText(`term${group}`)));const grid=consoleNode("div","console-command-grid");consoleCommands.filter(c=>c.group===group).forEach(c=>{const button=consoleNode("button","console-command-card");button.type="button";button.dataset.fill=c.example;button.appendChild(consoleNode("code","",c.name));button.appendChild(consoleNode("span","",labLanguage()==="zh-TW"?c.zh:c.en));grid.appendChild(button);});section.appendChild(grid);parent.appendChild(section);});
-}
-function consoleArchitecture(parent,key){
-  const keys=key?[key]:Object.keys(projectSources);
-  keys.forEach(k=>{const p=consoleProjects[k];const map=document.getElementById(p.id).querySelector(".architecture-strip");if(!map){parent.appendChild(consoleNode("p","console-error",labText("termNoArchitecture")));return;}const figure=consoleNode("figure","console-architecture");figure.appendChild(consoleNode("figcaption","",p.name));const nodes=consoleNode("ol","console-flow");map.querySelector("p").textContent.split("→").forEach((text,i)=>{const node=consoleNode("li","");node.appendChild(consoleNode("span","",String(i+1).padStart(2,"0")));node.appendChild(consoleNode("strong","",text.trim()));nodes.appendChild(node);});figure.appendChild(nodes);figure.appendChild(consoleNode("p","",labText("termArchitecture")));parent.appendChild(figure);});
-}
-function renderTerminalRecord(record,result){
-  const {command,args}=record;
-  if(record.error){consoleUsage(result,record.error);return;}
-  if(command==="help")consoleHelp(result);
-  else if(command==="whoami"){
-    const identity=consoleNode("div","console-identity");identity.appendChild(consoleNode("pre","console-monogram","    /\\      /\\ /\\\n   /__\\    /  V  \\\n  /    \\  /       \\"));
-    const info=consoleNode("div","");info.appendChild(consoleNode("h4","","Arthur Wang"));info.appendChild(consoleNode("p","",document.querySelector('[data-i18n="portraitRole"]').textContent));info.appendChild(consoleNode("p","",labText("heroLead")));identity.appendChild(info);result.appendChild(identity);
-  }else if(command==="projects")Object.keys(consoleProjects).forEach(key=>consoleProject(result,key));
-  else if(command==="cat")consoleProject(result,record.project,true);
-  else if(command==="search"){
-    result.appendChild(consoleNode("p","console-match-count",`${record.results.length} ${labText("sessionMatches")} / ${args}`));
-    if(record.results.length)consoleEvidence(result,record.results);else result.appendChild(consoleNode("p","console-error",labText("termNoHits")));
-  }else if(command==="architecture")consoleArchitecture(result,record.project);
-  else if(command==="run")consoleRun(result,record.snapshot);
-  else if(command==="trace"){result.appendChild(consoleNode("p","",labText("termTrace")));consoleRun(result,record.snapshot);}
-  else if(command==="stop")result.appendChild(consoleNode("p","",labText(record.stopped?"termStopped":"termNoTask")));
-  else if(command==="open")consoleLink(result,labText("termSource"),`#${record.target}`);
-  else if(command==="export")result.appendChild(consoleNode("p","",`${labText("termExported")}: ${record.filename}`));
-  else if(command==="theme"){
-    result.appendChild(consoleNode("p","",`${labText("termTheme")}: ${record.accent}`));const choices=consoleNode("div","console-inline-actions");Object.keys(consolePalette).forEach(accent=>consoleButton(choices,`◈ ${accent}`,`theme ${accent}`));result.appendChild(choices);
-  }else if(command==="skills"){
-    document.querySelectorAll('.skill-groups article').forEach(article=>{const card=consoleNode("section","console-stack");card.appendChild(consoleNode("h4","",article.querySelector("h3").textContent));card.appendChild(consoleNode("p","",article.querySelector("p").textContent));result.appendChild(card);});
-  }else if(command==="paper"){
-    result.appendChild(consoleNode("h4","",document.querySelector("#publication-title").textContent));result.appendChild(consoleNode("p","",document.querySelector(".publication-meta").textContent));consoleLink(result,labText("labPaperLink"),"#research");
-  }else if(command==="contact"){
-    consoleLink(result,"yankesswang@gmail.com ↗","mailto:yankesswang@gmail.com");consoleLink(result,"LinkedIn ↗","https://linkedin.com/in/arthur-wang0413");consoleLink(result,"GitHub ↗","https://github.com/yankesswang");
-  }else if(command==="resume")consoleLink(result,labText("downloadResume"),"arthurwang_cv.pdf");
-  else if(command==="tree"){
-    result.appendChild(consoleNode("p","",`${labText("termIndex")} /`));const tree=consoleNode("div","console-tree");Object.entries(consoleProjects).forEach(([key,p])=>consoleLink(tree,`├─ ${key} / ${p.name}`,`#${p.id}`));consoleLink(tree,"└─ research / GRACE-Mem","#research");result.appendChild(tree);
-  }else if(command==="status"){
-    const list=consoleNode("dl","console-status-grid");[["scope",labText("termLocal")],["index",`${Object.keys(projectSources).length} core + 1 side project`],["session",consoleStatusText(sessionModel.status)],["tools",String(sessionModel.calls.length)],["language",root.lang],["motion",reducedMotion.matches?"reduced":"standard"]].forEach(([k,v])=>{list.appendChild(consoleNode("dt","",k));list.appendChild(consoleNode("dd","",v));});result.appendChild(list);
-  }else if(command==="history"){
-    const history=consoleNode("ol","console-history");record.history.forEach(text=>history.appendChild(consoleNode("li","",text)));result.appendChild(history);
-  }else if(command==="matrix"){
-    if(record.off){result.appendChild(consoleNode("p","",labText("termPaused")));return;}
-    const head=consoleNode("div","console-matrix-heading");head.appendChild(consoleNode("span","",labText("termMatrix")));const pause=consoleNode("button","console-action",labText(record.paused?"termResume":"termPause"));pause.type="button";pause.dataset.effect=String(record.id);head.appendChild(pause);result.appendChild(head);
-    const field=consoleNode("div","console-matrix");field.classList.toggle("is-paused",record.paused);field.setAttribute("aria-hidden","true");record.glyphs.forEach((glyphs,i)=>{const column=consoleNode("pre","console-glyph-column",glyphs);column.style.setProperty("--column-delay",`${(i%7)*-.35}s`);field.appendChild(column);});result.appendChild(field);
-  }else result.appendChild(consoleNode("p","console-error",labText("termUnknown")));
-}
-function renderTerminal(){
-  if(!terminalReady)return;
-  const oldTop=terminalOutput.scrollTop;
-  const follow=terminalOutput.scrollHeight-oldTop-terminalOutput.clientHeight<60;
-  const fragment=document.createDocumentFragment();
-  if(!commandRecords.length)fragment.appendChild(consoleNode("p","console-empty",labText("termEmpty")));
-  commandRecords.forEach(record=>{const entry=consoleNode("article","terminal-entry");entry.dataset.entry=String(record.id);const prompt=consoleNode("div","terminal-prompt");prompt.appendChild(consoleNode("span","console-prompt-mark","❯"));prompt.appendChild(consoleNode("code","",record.input));entry.appendChild(prompt);const result=consoleNode("div","terminal-result");renderTerminalRecord(record,result);entry.appendChild(result);fragment.appendChild(entry);});
-  terminalOutput.replaceChildren(fragment);
-  terminalOutput.scrollTop=follow?terminalOutput.scrollHeight:oldTop;
-  const state=consoleView.querySelector(".console-state");state.textContent=sessionModel.status==="running"?"RUNNING":"LOCAL";state.dataset.state=sessionModel.status;
-}
-function consoleSetAccent(accent){consoleAccent=accent;consoleView.style.setProperty("--console-accent",consolePalette[accent]);try{localStorage.setItem("portfolio-console-accent",accent);}catch{ /* Preferences are optional. */ }}
-function consoleExport(format){
-  const data={name:"Arthur Wang",projects:Object.values(consoleProjects).map(p=>({name:p.name,summary:labText(p.summary),source:`https://yankesswang.github.io/arthurwang0413/#${p.id}`})),session:consoleSnapshot()};
-  data.session.evidence=data.session.results.map(item=>({name:projectSources[item.key].name,excerpt:labText(item.excerptKey),source:`https://yankesswang.github.io/arthurwang0413/#${projectSources[item.key].id}`}));
-  const content=format==="json"?JSON.stringify(data,null,2):`# Arthur Wang — Portfolio\n\n${data.projects.map(p=>`## ${p.name}\n\n${p.summary}\n\nSource: ${p.source}`).join("\n\n")}\n\n## Local portfolio session\n\nGoal: ${data.session.query}\nStatus: ${data.session.status}\n\n${data.session.evidence.map(item=>`### ${item.name}\n\n${item.excerpt}\n\nSource: ${item.source}`).join("\n\n")}\n`;
-  const filename=`Arthur_Wang_portfolio.${format}`;
-  const url=URL.createObjectURL(new Blob([content],{type:format==="json"?"application/json":"text/markdown;charset=utf-8"}));
-  const link=document.createElement("a");link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();window.setTimeout(()=>URL.revokeObjectURL(url),1000);return filename;
-}
-function executeTerminal(input){
-  const raw=input.trim().slice(0,180);if(!raw)return;
-  const [head,...tail]=raw.split(/\s+/);const aliases={ls:"projects",neofetch:"whoami",cls:"clear",man:"help"};const command=aliases[head.toLowerCase()]||head.toLowerCase();const args=tail.join(" ");
-  commandHistory.push(raw);if(commandHistory.length>50)commandHistory.shift();historyPosition=commandHistory.length;
-  terminalInput.value="";consoleSuggestions.hidden=true;
-  if(command==="clear"){commandRecords.length=0;renderTerminal();return;}
-  const record={id:++consoleEntryId,input:raw,command,args};
-  if(["cat","open","architecture"].includes(command)){
-    record.project=consoleProjectKey(args);
-    if(command==="cat"&&!record.project)record.error="cat <gimate|grace|enterprise|laptop|stock>";
-    if(command==="architecture"&&args&&!record.project)record.error="architecture [gimate|grace|enterprise|laptop]";
-    if(command==="open"){record.target=record.project?consoleProjects[record.project].id:({projects:"work",skills:"skills",paper:"research",contact:"contact",agent:"portfolio-agent-session"})[args.toLowerCase()];if(!record.target)record.error="open <project|projects|skills|paper|contact|agent>";}
-  }
-  if(command==="search"){if(!args)record.error="search <topic>";else record.results=consoleSearch(args);}
-  if(command==="run"&&!args)record.error="run <agents|memory|evaluation|your goal>";
-  if(command==="trace")record.snapshot=consoleSnapshot();
-  if(command==="stop")record.stopped=stopPortfolioTask();
-  if(command==="theme"){const accent=args.toLowerCase()||consoleAccent;if(!consolePalette[accent])record.error="theme <ice|mint|amber>";else{consoleSetAccent(accent);record.accent=accent;}}
-  if(command==="export"){const format=args.toLowerCase()||"md";if(!["md","json"].includes(format))record.error="export [md|json]";else record.filename=consoleExport(format);}
-  if(command==="history")record.history=commandHistory.slice();
-  if(command==="matrix"){
-    if(args&&args!=="off")record.error="matrix [off]";
-    else if(args==="off"){record.off=true;commandRecords.filter(r=>r.command==="matrix").forEach(r=>r.paused=true);}
-    else{record.paused=false;const glyphs="AGENT01░▒▓<>/計画記憶工具";record.glyphs=Array.from({length:18},()=>Array.from({length:13},()=>glyphs[Math.floor(Math.random()*glyphs.length)]).join("\n"));}
-  }
-  commandRecords.push(record);if(commandRecords.length>20)commandRecords.shift();
-  if(command==="run"&&!record.error){const key=({agents:"agents",agent:"agents",memory:"memory",evaluation:"evaluation",data:"evaluation"})[args.toLowerCase()];runPortfolioTask(key?labText(sessionPresets[key]):args,key||null);record.runId=sessionModel.runId;record.snapshot=consoleSnapshot();}
-  renderTerminal();terminalOutput.scrollTop=terminalOutput.scrollHeight;
-  consoleAnnouncer.textContent=record.error?`${labText("termUsage")}: ${record.error}`:!consoleCommands.some(c=>c.name===command)?labText("termUnknown"):`${raw} — ${command==="run"?consoleStatusText(sessionModel.status):labText("termDone")}`;
-  if(command==="open"&&!record.error){if(consoleDialog.open)consoleDialog.close();if(record.target==="portfolio-agent-session")showLabView("agent");window.location.hash=record.target;document.getElementById(record.target).scrollIntoView({behavior:reducedMotion.matches?"auto":"smooth",block:"start"});}
-}
-function consoleCandidates(){
-  const value=terminalInput.value.toLowerCase();const match=value.match(/^(cat|open|architecture)\s+(.*)$/);
-  if(match)return Object.keys(consoleProjects).filter(k=>k.startsWith(match[2])).map(k=>`${match[1]} ${k}`);
-  if(value.startsWith("theme "))return Object.keys(consolePalette).filter(k=>k.startsWith(value.slice(6))).map(k=>`theme ${k}`);
-  if(value.startsWith("run "))return ["agents","memory","evaluation"].filter(k=>k.startsWith(value.slice(4))).map(k=>`run ${k}`);
-  return consoleCommands.filter(c=>c.name.startsWith(value)).map(c=>c.name);
-}
-function consoleUpdateSuggestions(){
-  const candidates=consoleCandidates().slice(0,6);consoleSuggestions.replaceChildren();consoleSuggestions.hidden=!terminalInput.value||!candidates.length;
-  candidates.forEach(text=>{const b=consoleNode("button","",text);b.type="button";b.dataset.fill=text;consoleSuggestions.appendChild(b);});
-}
-terminalForm.addEventListener("submit",event=>{event.preventDefault();executeTerminal(terminalInput.value);});
-terminalInput.addEventListener("input",consoleUpdateSuggestions);
-terminalInput.addEventListener("keydown",event=>{
-  if(event.key==="Tab"){const candidates=consoleCandidates();if(terminalInput.value&&candidates.length===1){event.preventDefault();terminalInput.value=candidates[0]+" ";consoleUpdateSuggestions();}return;}
-  if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="l"){event.preventDefault();executeTerminal("clear");return;}
-  if(event.ctrlKey&&event.key.toLowerCase()==="c"&&terminalInput.selectionStart===terminalInput.selectionEnd&&sessionModel.status==="running"){event.preventDefault();executeTerminal("stop");return;}
-  if(!["ArrowUp","ArrowDown"].includes(event.key))return;event.preventDefault();historyPosition=Math.max(0,Math.min(commandHistory.length,historyPosition+(event.key==="ArrowUp"?-1:1)));terminalInput.value=commandHistory[historyPosition]||"";consoleUpdateSuggestions();
-});
-consoleView.addEventListener("click",event=>{
-  const command=event.target.closest("[data-command]");const fill=event.target.closest("[data-fill]");const effect=event.target.closest("[data-effect]");
-  if(command){executeTerminal(command.dataset.command);terminalInput.focus();}
-  else if(fill){terminalInput.value=fill.dataset.fill;terminalInput.focus();consoleUpdateSuggestions();}
-  else if(effect){const record=commandRecords.find(r=>r.id===Number(effect.dataset.effect));if(record){record.paused=!record.paused;renderTerminal();consoleView.querySelector(`[data-effect="${record.id}"]`).focus({preventScroll:true});}}
-  if(event.target.closest('a[href^="#"]')&&consoleDialog.open)consoleDialog.close();
-});
-function toggleConsoleDialog(){
-  if(consoleDialog.open){consoleDialog.close();return;}
-  consoleReturnFocus=document.activeElement;consolePortal.appendChild(consoleView);consoleView.hidden=false;consoleDialog.showModal();consoleView.querySelector(".terminal-expand").textContent=labText("termClose");terminalInput.focus();
-}
-consoleView.querySelector(".terminal-expand").addEventListener("click",toggleConsoleDialog);
-consoleDialog.addEventListener("close",()=>{workspace.insertBefore(consoleView,workspace.querySelector(".workspace-footer"));showLabView("terminal");consoleView.querySelector(".terminal-expand").textContent=labText("termExpand");if(consoleReturnFocus&&consoleReturnFocus.isConnected)consoleReturnFocus.focus({preventScroll:true});});
-document.addEventListener("keydown",event=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="k"){event.preventDefault();if(!consoleDialog.open)showLabView("terminal");terminalInput.focus();}});
-document.addEventListener("portfolio:session",()=>{
-  if(!terminalReady)return;
-  commandRecords.filter(r=>r.command==="run"&&r.runId).forEach(record=>{if(record.runId===sessionModel.runId)record.snapshot=consoleSnapshot();else if(record.snapshot.status==="running")record.snapshot.status="stopped";});
-  renderTerminal();
-  if(sessionModel.status!=="running")consoleAnnouncer.textContent=consoleStatusText(sessionModel.status);
-});
-document.addEventListener("resume:language",()=>{if(!terminalReady)return;renderTerminal();consoleView.querySelector(".terminal-expand").textContent=labText(consoleDialog.open?"termClose":"termExpand");consoleDialog.setAttribute("aria-label",consoleText("Expanded portfolio terminal","展開的作品終端"));});
-document.addEventListener("visibilitychange",()=>{if(document.hidden){commandRecords.filter(r=>r.command==="matrix").forEach(r=>r.paused=true);renderTerminal();}});
-document.querySelector('[data-view="terminal"]').addEventListener("click",()=>{terminalInput.focus();});
-try{const saved=localStorage.getItem("portfolio-console-accent");if(consolePalette[saved])consoleAccent=saved;}catch{ /* Optional preference. */ }
-consoleSetAccent(consoleAccent);
-terminalReady=true;
-commandRecords.push({id:++consoleEntryId,input:"help",command:"help",args:""});
-setLanguage(labLanguage());
-renderTerminal();
