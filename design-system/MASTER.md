@@ -46,3 +46,7 @@ Raise body type to 14–17px, operational titles to 26–30px, and report numera
 ## Product imagery
 
 Use authentic product photography as context, paired with model names and useful explanatory copy. Preserve complete silhouettes with object-fit:contain; retain manufacturer links and label family-level imagery. Product photos change with the selected model. Pair notebook imagery with a compact snapshot summary and use restrained vector diagrams to explain support checks/evidence relationships. Keep the enterprise neutral palette; the photographs supply visual character without decorative stock backgrounds. Explicit image dimensions reserve space, portfolio previews lazy-load images, and local WebP assets avoid hotlink dependency.
+
+## E-Support input-first workflow
+
+Opening state: one natural-language/model input, no default model, no product dropdown and no prefilled answer. Identify product/category after submission; clarify only when ambiguous. Show separate specification and FAE answers with linked reference IDs. The right inspector keeps raw reference data, processing/decision summary and FAE correction in separate tabs while retaining the answer. Never imply a live model's private reasoning or runtime retrieval scores: processing summaries describe actual local matches, category scopes, records read and missing-evidence decisions. Product photos appear with resolved products. Preserve SKU/revision boundaries and show unknown/missing-field states explicitly.
