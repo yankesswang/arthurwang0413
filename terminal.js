@@ -71,7 +71,7 @@
   const scripts = [
     { match: /grace|evidence|grounded|memory|hallucinat|provenance|證據|記憶|來源/i, passages: [["graceSummary", "#grace-mem", "GRACE-Mem"], ["graceDetail1", "#grace-mem", "GRACE-Mem"], ["graceDetail5", "#grace-mem", "GRACE-Mem"]] },
     { match: /on-?device|vram|4 ?gb|offline|local|llama|gimate|edge|端側|裝置|離線|本地/i, passages: [["gigabyte2", "#experience", "GIGABYTE"], ["gimateDetail3", "#gimate-agent", "GiMATE Agent"], ["gimateSummary", "#gimate-agent", "GiMATE Agent"]] },
-    { match: /fae|30 ?s|lookup|enterprise|neo4j|graphrag|knowledge|chatbot|查詢|知識|企業/i, passages: [["faeDetail5", "#enterprise-knowledge-assistant", "Enterprise Knowledge Assistant"], ["gigabyte3", "#experience", "GIGABYTE"], ["capRetrievalText", "#work", "Core expertise"]] }
+    { match: /fae|30 ?s|lookup|enterprise|neo4j|falkordb|graphrag|knowledge|chatbot|查詢|知識|企業/i, passages: [["faeDetail5", "#enterprise-knowledge-assistant", "Enterprise Knowledge Assistant"], ["gigabyte3", "#experience", "GIGABYTE"], ["capRetrievalText", "#work", "Core expertise"]] }
   ];
   const narrow = window.matchMedia("(max-width: 600px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
