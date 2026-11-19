@@ -138,19 +138,27 @@
   };
 
   /* ── State and rendering ────────────────────────────────── */
-  const state = { task: null, phase: "home", typed: 0, step: -1, logs: 0, decision: null, decided: -1, shown: 0, tab: "overview", run: 0, started: 0, elapsed: 0 };
+  const state = { task: null, phase: "home", typed: 0, step: -1, logs: 0, decision: null, decisions: {}, shown: 0, tab: "overview", run: 0, started: 0, elapsed: 0,
+    view: "chat", draft: "", mode: "standard", history: [], approvals: [], skills: { files: true, writer: true, slides: true, python: true, mail: true, calendar: true } };
+  const SKILLS = () => [["files", "file", T("Local files", "本機檔案"), T("Read files you point to", "讀取你指定的檔案")], ["writer", "doc", T("Writer", "文件撰寫"), T("Briefs, notes and summaries", "摘要、筆記與重點整理")], ["slides", "slides", T("Slides", "簡報"), T("Build short decks", "製作短簡報")], ["python", "code", T("Python sandbox", "Python 沙盒"), T("Local analysis and charts", "本機分析與圖表")], ["mail", "mail", T("Mail drafts", "郵件草稿"), T("Draft replies, send only with approval", "草擬回覆，核准後才寄出")], ["calendar", "cal", T("Calendar", "行事曆"), T("Read today's schedule", "讀取今日行程")]];
+  const NEEDS = { summary: ["files", "writer", "slides"], data: ["python", "files"], plan: ["files", "calendar"], reply: ["mail"] };
+  const clock = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  // Free-text prompts map to the closest sample task.
+  const route = text => /sheet|excel|csv|sales|data|trend|chart|analy|試算|銷售|資料|趨勢|分析/i.test(text) ? "data" : /plan|day|today|schedule|calendar|規劃|今天|行程|排程/i.test(text) ? "plan" : /mail|email|reply|send|郵件|回覆|寄/i.test(text) ? "reply" : "summary";
   const seen = new Set();
   const fresh = key => { if (seen.has(key)) return ""; seen.add(key); return " is-new"; };
   let timer = null;
+  const promptText = () => state.custom || TASKS[state.task].prompt();
   const replyText = () => TASKS[state.task].reply() + (state.decision === "deny" ? ` ${T("You denied the external action, so it stayed a draft.", "你拒絕了對外動作，因此維持草稿。")}` : "");
 
   function sidebar() {
-    const nav = [["clock", T("History", "對話記錄")], ["spark", T("Skills", "技能")], ["shield", T("Approvals", "權限與核准")], ["chip", T("Local models", "本機模型")]];
+    const nav = [["history", "clock", T("History", "對話記錄"), state.history.length], ["skills", "spark", T("Skills", "技能"), Object.values(state.skills).filter(Boolean).length], ["approvals", "shield", T("Approvals", "權限與核准"), state.approvals.length], ["models", "chip", T("Local models", "本機模型"), 0]];
+    const recent = state.history.slice(-3).reverse();
     return `<nav class="gx-side" aria-label="${T("Concept navigation", "示意導覽")}">
       <button type="button" class="gx-new" data-gx="home">${icon("plus")}<span>${T("New task", "新任務")}</span><kbd>Ctrl N</kbd></button>
-      <ul class="gx-nav">${nav.map(([i, l]) => `<li><span>${icon(i)}${esc(l)}</span></li>`).join("")}</ul>
-      <p class="gx-group">${T("Projects", "專案")}</p>
-      <ul class="gx-nav"><li><span>${icon("folder")}${T("Sample workspace", "範例工作區")}</span></li><li><span>${icon("folder")}${T("Personal", "個人")}</span></li></ul>
+      <ul class="gx-nav">${nav.map(([v, i, l, n]) => `<li><button type="button" class="${state.view === v ? "is-current" : ""}" data-gx="view:${v}" ${state.view === v ? 'aria-current="page"' : ""}>${icon(i)}<span>${esc(l)}</span>${n ? `<b>${n}</b>` : ""}</button></li>`).join("")}</ul>
+      <p class="gx-group">${T("Recent", "最近項目")}</p>
+      <ul class="gx-nav">${recent.length ? recent.map(h => `<li><button type="button" data-gx="start:${h.key}">${icon(TASKS[h.key].icon)}<span>${esc(TASKS[h.key].title())}</span></button></li>`).join("") : `<li><span class="gx-muted">${T("Run an example to see it here", "執行範例後會顯示在這裡")}</span></li>`}</ul>
       <div class="gx-account"><span class="gx-avatar" aria-hidden="true">A</span><span>${T("Sample user", "範例使用者")}</span></div>
     </nav>`;
   }
@@ -158,13 +166,13 @@
     const task = state.task && TASKS[state.task];
     const typing = state.phase === "typing";
     const busy = !["home", "done", "typing"].includes(state.phase);
-    const full = typing && state.typed >= task.prompt().length;
+    const full = typing && state.typed >= promptText().length;
     return `<div class="gx-composer ${typing ? "is-typing" : ""}">
-      <div class="gx-input">${typing ? `<span>${esc(task.prompt().slice(0, state.typed))}</span><i class="gx-caret"></i>` : `<span class="gx-ph">${state.phase === "home" ? T("What would you like to get done?", "想聊什麼或想完成什麼？") : T("Add direction… (concept)", "補充方向…（示意）")}</span>`}</div>
+      <div class="gx-input">${typing ? `<span>${esc(promptText().slice(0, state.typed))}</span><i class="gx-caret"></i>` : (!busy ? `<label class="sr-only" for="gx-prompt">${T("Describe a task", "描述任務")}</label><textarea id="gx-prompt" rows="1" maxlength="200" placeholder="${T("Describe a task, e.g. analyze my sales sheet — Enter to run", "描述任務，例如：分析我的銷售表 — 按 Enter 執行")}">${esc(state.draft)}</textarea>` : `<span class="gx-ph">${T("The agent is working… (concept)", "Agent 執行中…（示意）")}</span>`)}</div>
       <div class="gx-tools"><span class="gx-chip">${icon("plus")}${T("Attach", "附件")}</span><span class="gx-chip">${icon("at")}${T("Apps", "應用")}</span>
         <span class="gx-spacer"></span><span class="gx-chip gx-model">${icon("chip")}${T("Local model", "本機模型")}<b>${T("on-device", "裝置端")}</b></span>
-        <span class="gx-send ${busy ? "is-busy" : ""} ${full ? "is-press" : ""}" aria-hidden="true">${busy ? "<i></i>" : icon("send")}</span></div>
-      <p class="gx-mode">${icon("shield")}${T("Standard: reads run automatically, actions ask first", "標準自動化：讀取與分析自動執行，其餘先詢問")}</p>
+        ${!busy && !typing ? `<button type="button" class="gx-send" data-gx="send" aria-label="${T("Run task", "執行任務")}">${icon("send")}</button>` : `<span class="gx-send ${busy ? "is-busy" : ""} ${full ? "is-press" : ""}" aria-hidden="true">${busy ? "<i></i>" : icon("send")}</span>`}</div>
+      <p class="gx-mode">${icon("shield")}${state.mode === "ask" ? T("Ask every time: reads, writes and sends all ask first", "每次詢問：讀取、寫入與寄出都先詢問") : T("Standard: reads run automatically, actions ask first", "標準自動化：讀取與分析自動執行，其餘先詢問")}</p>
     </div>`;
   }
   function home() {
@@ -172,9 +180,11 @@
       <div class="gx-starters">${Object.entries(TASKS).map(([key, task]) => `<button type="button" class="gx-starter" data-gx="start:${key}"><span class="gx-starter-icon">${icon(task.icon)}</span><strong>${esc(task.title())}</strong><span>${esc(task.hint())}</span></button>`).join("")}</div>
       ${composer()}</div>`;
   }
+  // In "ask every time" mode, steps that read local data also stop at a gate.
+  const gateFor = s => s.approve || (state.mode === "ask" && ["file", "mail", "code"].includes(s.icon) ? { files: [[s.detail, T("read", "讀取")]], risk: T("Low · read only", "低 · 僅讀取"), level: "low" } : null);
   const LABEL = () => ({ done: T("Done", "完成"), running: T("Running", "執行中"), approval: T("Needs approval", "等待核准"), skipped: T("Skipped by you", "你已略過") });
   function stepStatus(i) {
-    if (i === state.decided) return state.decision === "deny" ? "skipped" : "done";
+    if (i in state.decisions && !(i === state.step && state.phase === "approval")) return state.decisions[i] === "deny" ? "skipped" : "done";
     if (i < state.step) return "done";
     if (i === state.step) return state.phase === "approval" ? "approval" : state.phase === "running" ? "running" : "done";
     return "waiting";
@@ -182,8 +192,9 @@
   function stepCard(s, i) {
     const st = stepStatus(i), labels = LABEL();
     const logs = st === "running" ? s.logs.slice(0, state.logs) : s.logs;
-    const gate = st === "approval" ? `<div class="gx-gate"><div class="gx-gate-head"><span>${icon("shield")}${T("Approval required", "需要核准")}</span>${tag(s.approve.risk, s.approve.level === "medium" ? "warn" : "ok")}</div>
-      <ul class="gx-diff">${s.approve.files.map(([n, size]) => `<li><b>+</b><span>${esc(n)}</span><em>${esc(size)}</em></li>`).join("")}</ul>
+    const g = gateFor(s);
+    const gate = st === "approval" ? `<div class="gx-gate"><div class="gx-gate-head"><span>${icon("shield")}${T("Approval required", "需要核准")}</span>${tag(g.risk, g.level === "medium" ? "warn" : "ok")}</div>
+      <ul class="gx-diff">${g.files.map(([n, size]) => `<li><b>+</b><span>${esc(n)}</span><em>${esc(size)}</em></li>`).join("")}</ul>
       <div class="gx-gate-actions"><button type="button" class="gx-btn gx-btn-primary" data-gx="approve">${T("Approve", "核准")}</button><button type="button" class="gx-btn" data-gx="deny">${T("Deny", "拒絕")}</button><span>${T("The agent pauses until you decide.", "在你決定前，Agent 會暫停。")}</span></div></div>` : "";
     return `<li class="gx-step is-${st}${fresh(`step-${state.run}-${i}`)}"><div class="gx-step-row"><span class="gx-step-icon">${st === "running" ? "<i></i>" : icon(st === "done" ? "check" : s.icon)}</span><div><strong>${esc(s.title)}</strong><span>${esc(s.detail)}</span></div><em>${labels[st]}${st === "done" ? ` · ${s.dur}` : ""}</em></div>
       ${st === "running" ? `<span class="gx-progress"><i style="--d:${Math.round(parseFloat(s.dur) * 900)}ms"></i></span>` : ""}
@@ -193,6 +204,24 @@
     return `<div class="gx-result${fresh(`result-${state.run}`)}"><div class="gx-result-head">${icon("spark")}<b>${T("Outputs ready", "產出完成")}</b><span>${task.artifacts().length} ${task.artifacts().length === 1 ? T("file · open in workbench", "個檔案 · 在右側開啟") : T("files · open in workbench", "個檔案 · 在右側開啟")}</span></div>
       <div class="gx-thumbs">${task.artifacts().map((a, i) => `<button type="button" class="gx-thumb ${String(i) === state.tab ? "is-open" : ""}" data-gx="tab:${i}"><span class="gx-thumb-art is-${a.kind}" aria-hidden="true"><i></i><i></i><i></i></span><strong>${esc(a.name)}</strong><span>${esc(a.meta)}</span></button>`).join("")}</div></div>`;
   }
+  function another() {
+    return `<div class="gx-another${fresh(`another-${state.run}`)}"><span>${T("Try another example", "換一個範例")}</span><div>${Object.entries(TASKS).filter(([k]) => k !== state.task).map(([k, t]) => `<button type="button" class="gx-pill" data-gx="start:${k}">${icon(t.icon)}${esc(t.title())}</button>`).join("")}<button type="button" class="gx-pill gx-pill-ghost" data-gx="home">${icon("plus")}${T("Back to start", "回到首頁")}</button></div></div>`;
+  }
+  function page() {
+    const head = (title, sub) => `<header class="gx-page-head"><h4>${title}</h4><p>${sub}</p></header>`;
+    if (state.view === "history") return `<div class="gx-page">${head(T("History", "對話記錄"), T("Tasks you ran in this session. Run one again to replay it.", "這次瀏覽中執行過的任務，可再次執行重播。"))}
+      ${state.history.length ? `<ul class="gx-list">${state.history.slice().reverse().map(h => `<li><span class="gx-list-icon">${icon(TASKS[h.key].icon)}</span><div><strong>${esc(TASKS[h.key].title())}</strong><span>${h.time} · ${TASKS[h.key].artifacts().length} ${T("outputs", "個產出")}${h.decision ? ` · ${h.decision === "deny" ? T("action denied", "已拒絕動作") : T("action approved", "已核准動作")}` : ""}</span></div><button type="button" class="gx-btn" data-gx="start:${h.key}">${T("Run again", "再執行一次")}</button></li>`).join("")}</ul>` : `<div class="gx-blank"><p>${T("No tasks yet.", "還沒有任務。")}</p><button type="button" class="gx-btn gx-btn-primary" data-gx="home">${T("Start a task", "開始一個任務")}</button></div>`}</div>`;
+    if (state.view === "approvals") return `<div class="gx-page">${head(T("Approvals", "權限與核准"), T("Choose how often the agent asks, and review every decision.", "選擇 Agent 詢問的頻率，並檢視每次的決定。"))}
+      <div class="gx-modes" role="radiogroup" aria-label="${T("Permission mode", "權限模式")}">${[["standard", T("Standard", "標準自動化"), T("Reads run automatically; actions that change something ask first.", "讀取自動執行；會改變內容的動作先詢問。")], ["ask", T("Ask every time", "每次詢問"), T("Reading your files or mail also asks first, not just writing or sending.", "連讀取檔案或郵件也會先詢問，不只寫入或寄出。")]].map(([v, l, d]) => `<button type="button" role="radio" aria-checked="${state.mode === v}" class="gx-mode-card ${state.mode === v ? "is-on" : ""}" data-gx="mode:${v}"><strong>${l}</strong><span>${d}</span></button>`).join("")}</div>
+      <p class="gx-section">${T("Decision log", "核准紀錄")} <b>${state.approvals.length}</b></p>
+      ${state.approvals.length ? `<ul class="gx-list">${state.approvals.slice().reverse().map(a => `<li><span class="gx-list-icon ${a.decision === "approve" ? "is-ok" : "is-warn"}">${icon(a.decision === "approve" ? "check" : "shield")}</span><div><strong>${esc(a.action)}</strong><span>${a.time} · ${esc(TASKS[a.key].title())}</span></div>${tag(a.decision === "approve" ? T("Approved", "已核准") : T("Denied", "已拒絕"), a.decision === "approve" ? "ok" : "warn")}</li>`).join("")}</ul>` : `<p class="gx-empty">${T("Decisions appear here after a task reaches an approval gate.", "任務遇到核准閘門後，決定會記錄在這裡。")}</p>`}</div>`;
+    if (state.view === "skills") return `<div class="gx-page">${head(T("Skills", "技能"), T("Turn skills on or off. Examples that need a disabled skill will ask you to enable it.", "開啟或關閉技能。需要已關閉技能的範例會提示你啟用。"))}
+      <ul class="gx-skill-grid">${SKILLS().map(([k, i, l, d]) => `<li><span class="gx-list-icon">${icon(i)}</span><div><strong>${l}</strong><span>${d}</span></div><button type="button" role="switch" aria-checked="${state.skills[k]}" aria-label="${l}" class="gx-switch" data-gx="skill:${k}"><i></i></button></li>`).join("")}</ul></div>`;
+    return `<div class="gx-page">${head(T("Local models", "本機模型"), T("Models run on this device; nothing is sent to a server.", "模型在這台裝置上執行，不會傳到伺服器。"))}
+      <ul class="gx-list"><li><span class="gx-list-icon is-ok">${icon("chip")}</span><div><strong>${T("Local model", "本機模型")}</strong><span>${T("On-device · quantized · active for chat", "裝置端 · 量化 · 用於對話")}</span></div>${tag(T("Active", "使用中"), "ok")}</li>
+      <li><span class="gx-list-icon">${icon("chip")}</span><div><strong>${T("Larger local model", "較大的本機模型")}</strong><span>${T("Better quality, needs more memory", "品質較好，需要更多記憶體")}</span></div>${tag(T("Optional", "選用"))}</li></ul>
+      <p class="gx-empty">${T("Concept only: model names and sizes are intentionally omitted.", "僅為示意：刻意不列出模型名稱與大小。")}</p></div>`;
+  }
   function conversation() {
     const task = TASKS[state.task], steps = task.steps();
     if (state.phase === "typing") return `<div class="gx-thread"></div>${composer()}`;
@@ -200,7 +229,7 @@
     const thinking = state.phase === "thinking" ? `<p class="gx-thinking">${T("Planning the task…", "正在規劃任務…")}</p>` : "";
     const reply = ["streaming", "done"].includes(state.phase) ? `<p class="gx-reply"><span data-gx-reply>${esc(state.phase === "done" ? replyText() : replyText().slice(0, state.shown))}</span>${state.phase === "streaming" ? '<i class="gx-caret"></i>' : ""}</p>` : "";
     const skeleton = state.phase === "building" ? `<div class="gx-result is-loading"><div class="gx-result-head">${icon("spark")}<b>${T("Rendering outputs…", "正在產生成果…")}</b></div><div class="gx-thumbs">${task.artifacts().map(() => '<span class="gx-thumb gx-skel"></span>').join("")}</div></div>` : "";
-    return `<div class="gx-thread"><p class="gx-user${fresh(`user-${state.run}`)}">${esc(task.prompt())}</p>${thinking}<ol class="gx-steps" aria-live="polite">${visible.map(stepCard).join("")}</ol>${skeleton}${reply}${state.phase === "done" ? resultCard(task) : ""}</div>${composer()}`;
+    return `<div class="gx-thread"><p class="gx-user${fresh(`user-${state.run}`)}">${esc(promptText())}</p>${state.custom ? `<p class="gx-mapped">${icon("spark")}${T("Concept demo: mapped to the closest sample —", "示意版：已對應到最接近的範例 —")} <b>${esc(task.title())}</b></p>` : ""}${thinking}<ol class="gx-steps" aria-live="polite">${visible.map(stepCard).join("")}</ol>${skeleton}${reply}${state.phase === "done" ? resultCard(task) + another() : ""}</div>${composer()}`;
   }
   function ring(done, total) {
     const c = 2 * Math.PI * 15, p = total ? done / total : 0;
@@ -211,7 +240,7 @@
     if (!state.task || state.phase === "typing") return `<div role="region" class="gx-bench" aria-label="${label}"><div class="gx-tabs"><span class="gx-tab is-active">${icon("panel")}Overview</span></div><div class="gx-empty-art" aria-hidden="true"><i></i><i></i><i></i></div><p class="gx-empty">${T("Execution units and outputs appear here while a task runs.", "任務執行時，執行單元與產出會出現在這裡。")}</p></div>`;
     const task = TASKS[state.task], steps = task.steps(), labels = LABEL();
     const artifacts = state.phase === "done" ? task.artifacts() : [];
-    const openIndex = state.tab === "overview" ? -1 : Number(state.tab);
+    const openIndex = state.tab === "overview" || state.view !== "chat" ? -1 : Number(state.tab);
     const open = artifacts[openIndex];
     const tabs = `<div class="gx-tabs" role="tablist"><button type="button" role="tab" aria-selected="${!open}" class="gx-tab ${open ? "" : "is-active"}" data-gx="tab:overview">${icon("panel")}Overview</button>${artifacts.map((a, i) => `<button type="button" role="tab" aria-selected="${i === openIndex}" class="gx-tab ${i === openIndex ? "is-active" : ""}" data-gx="tab:${i}">${icon(a.icon)}<span>${esc(a.name)}</span></button>`).join("")}</div>`;
     if (open) return `<div role="region" class="gx-bench" aria-label="${label}">${tabs}<div class="gx-viewer${fresh(`view-${state.run}-${openIndex}`)}"><header>${icon(open.icon)}<div><strong>${esc(open.name)}</strong><span>${esc(open.meta)} · v1</span></div>${tag(T("sample", "範例"))}</header><div class="gx-out">${OUT[open.kind]()}</div></div></div>`;
@@ -225,11 +254,15 @@
     </div>`;
   }
   function render(focusSel) {
-    const crumb = state.task ? TASKS[state.task].title() : T("New task", "新任務");
-    const viewing = state.phase === "done" && state.tab !== "overview";
+    const views = { history: T("History", "對話記錄"), skills: T("Skills", "技能"), approvals: T("Approvals", "權限與核准"), models: T("Local models", "本機模型") };
+    const crumb = state.view !== "chat" ? views[state.view] : state.task ? TASKS[state.task].title() : T("New task", "新任務");
+    const viewing = state.view === "chat" && state.phase === "done" && state.tab !== "overview";
+    const mobilebar = `<div class="gx-mobilebar"><button type="button" class="gx-pill" data-gx="home">${icon("plus")}${T("New task", "新任務")}</button><button type="button" class="gx-pill ${state.view === "history" ? "is-on" : ""}" data-gx="view:history">${icon("clock")}${T("History", "記錄")}</button><button type="button" class="gx-pill ${state.view === "approvals" ? "is-on" : ""}" data-gx="view:approvals">${icon("shield")}${T("Approvals", "核准")}</button><button type="button" class="gx-pill ${state.view === "skills" ? "is-on" : ""}" data-gx="view:skills">${icon("spark")}${T("Skills", "技能")}</button></div>`;
+    const main = state.view !== "chat" ? page() : state.phase === "home" ? home() : conversation();
     root.innerHTML = `<div class="gx-window">
       <header class="gx-chrome"><span class="gx-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="gx-title">GiMATE Agent <span>· ${T("interface concept", "介面示意")}</span></span><span class="gx-badge">${T("Illustrative · sample data", "示意 · 範例資料")}</span></header>
-      <div class="gx-body ${viewing ? "is-viewing" : ""}">${sidebar()}<section class="gx-main" aria-label="${T("Conversation", "對話")}"><p class="gx-crumb">GiMATE Agent <span>›</span> <b>${esc(crumb)}</b></p>${state.phase === "home" ? home() : conversation()}</section>${workbench()}</div>
+      <div class="gx-body ${viewing ? "is-viewing" : ""}">${sidebar()}<section class="gx-main" aria-label="${T("Conversation", "對話")}">${mobilebar}<p class="gx-crumb"><button type="button" data-gx="home">GiMATE Agent</button> <span>›</span> <b>${esc(crumb)}</b></p>${main}</section>${workbench()}</div>
+      <p class="sr-only gx-sr" aria-live="polite"></p>
       <footer class="gx-foot">${T("Concept recreation of the interaction model: plan → steps → approval gate → outputs. Not the shipping interface; all tasks, files, numbers and results are fictional.", "依互動模式重新繪製的示意：計畫 → 步驟 → 核准閘門 → 產出。非正式產品介面；任務、檔案、數字與結果皆為虛構範例。")}</footer>
     </div>`;
     const thread = root.querySelector(".gx-thread"); if (thread) thread.scrollTop = thread.scrollHeight;
@@ -238,16 +271,20 @@
 
   /* ── Run loop (presentation only) ───────────────────────── */
   const live = id => id === state.run;
+  const announce = msg => { const el = root.querySelector(".gx-sr"); if (el) el.textContent = msg; };
   function startTimer() {
     clearInterval(timer); state.started = performance.now();
     timer = setInterval(() => { state.elapsed = performance.now() - state.started; const el = root.querySelector(".gx-elapsed"); if (el) el.textContent = `${(state.elapsed / 1000).toFixed(1)}s`; }, 100);
   }
   const stopTimer = () => { clearInterval(timer); state.elapsed = performance.now() - state.started; };
-  async function run(key) {
+  async function run(key, custom = "") {
+    state.view = "chat"; state.draft = ""; state.custom = custom;
+    const missing = NEEDS[key].filter(k => !state.skills[k]);
+    if (missing.length) { state.run += 1; clearInterval(timer); Object.assign(state, { task: null, phase: "home", tab: "overview", view: "skills" }); render(`[data-gx="skill:${missing[0]}"]`); announce(T("Enable the required skill to run this example.", "請先啟用此範例需要的技能。")); return; }
     const id = ++state.run; seen.clear(); clearInterval(timer);
-    Object.assign(state, { task: key, phase: "typing", typed: 0, step: -1, logs: 0, decision: null, decided: -1, shown: 0, tab: "overview", elapsed: 0 });
-    const prompt = TASKS[key].prompt();
-    if (reduced.matches) state.typed = prompt.length;
+    Object.assign(state, { task: key, phase: "typing", typed: 0, step: -1, logs: 0, decision: null, decisions: {}, shown: 0, tab: "overview", elapsed: 0 });
+    const prompt = promptText();
+    if (reduced.matches || custom) state.typed = prompt.length;
     while (state.typed < prompt.length) { state.typed = Math.min(prompt.length, state.typed + 3); render(); await wait(16); if (!live(id)) return; }
     render(); await wait(280); if (!live(id)) return;
     state.phase = "thinking"; startTimer(); render(); await wait(800); if (!live(id)) return;
@@ -258,7 +295,7 @@
     while (state.step < steps.length - 1) {
       state.step += 1; state.logs = 0; state.phase = "running"; render();
       const s = steps[state.step];
-      if (s.approve) { await wait(380); if (!live(id)) return; state.phase = "approval"; render('[data-gx="approve"]'); return; }
+      if (gateFor(s) && !(state.step in state.decisions)) { await wait(380); if (!live(id)) return; state.phase = "approval"; render('[data-gx="approve"]'); return; }
       for (let j = 0; j < s.logs.length; j += 1) { await wait(Math.max(240, parseFloat(s.dur) * 900 / (s.logs.length + 1))); if (!live(id)) return; state.logs = j + 1; render(); }
       await wait(280); if (!live(id)) return;
     }
@@ -273,6 +310,7 @@
       const el = root.querySelector("[data-gx-reply]"); if (el) el.textContent = reply.slice(0, state.shown);
       await wait(18); if (!live(id)) return;
     }
+    state.history.push({ key: state.task, time: clock(), decision: state.decision });
     state.phase = "done"; render(); await wait(450); if (!live(id)) return;
     state.tab = "0"; render(); // open the primary output in the widened workbench
   }
@@ -280,13 +318,32 @@
   root.addEventListener("click", event => {
     const el = event.target.closest("[data-gx]"); if (!el) return;
     const [action, value] = el.dataset.gx.split(/:(.*)/s);
-    if (action === "home") { state.run += 1; clearInterval(timer); Object.assign(state, { task: null, phase: "home", step: -1, tab: "overview" }); render('[data-gx^="start"]'); return; }
+    if (action === "home") { state.run += 1; clearInterval(timer); Object.assign(state, { task: null, phase: "home", step: -1, tab: "overview", view: "chat" }); render("#gx-prompt"); return; }
+    if (action === "view") {
+      if (["typing", "thinking", "running", "approval", "building", "streaming"].includes(state.phase)) { state.run += 1; clearInterval(timer); Object.assign(state, { task: null, phase: "home", step: -1, tab: "overview" }); }
+      state.view = value; render(`[data-gx="view:${value}"]`); return;
+    }
+    if (action === "send") { submitDraft(); return; }
+    if (action === "mode") { state.mode = value; render(`[data-gx="mode:${value}"]`); announce(value === "ask" ? T("Ask every time is on.", "已切換為每次詢問。") : T("Standard mode is on.", "已切換為標準自動化。")); return; }
+    if (action === "skill") { state.skills[value] = !state.skills[value]; render(`[data-gx="skill:${value}"]`); return; }
     if (action === "start") { run(value); return; }
     if ((action === "approve" || action === "deny") && state.phase === "approval") {
-      state.decision = action; state.decided = state.step; state.phase = "running"; render();
+      const gate = TASKS[state.task].steps()[state.step];
+      state.approvals.push({ key: state.task, action: gate.title, decision: action, time: clock() });
+      state.decisions[state.step] = action; if (gate.approve) state.decision = action;
+      state.phase = "running"; render();
       const id = state.run; wait(320).then(() => { if (live(id)) continueSteps(id); }); return;
     }
     if (action === "tab" && state.phase === "done") { state.tab = value; render(`[data-gx="tab:${value}"]`); }
+  });
+  function submitDraft() {
+    const field = root.querySelector("#gx-prompt"); const text = (field?.value || state.draft).trim();
+    if (!text) { field?.focus(); announce(T("Type a task first, or pick an example.", "請先輸入任務，或選擇範例。")); return; }
+    run(route(text), text.slice(0, 200));
+  }
+  root.addEventListener("input", event => { if (event.target.id === "gx-prompt") state.draft = event.target.value; });
+  root.addEventListener("keydown", event => {
+    if (event.target.id === "gx-prompt" && event.key === "Enter" && !event.shiftKey && !event.isComposing) { event.preventDefault(); submitDraft(); }
   });
   root.addEventListener("pointermove", event => {
     const card = event.target.closest(".gx-starter"); if (!card) return;
