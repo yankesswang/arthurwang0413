@@ -863,7 +863,7 @@ portfolioSession.querySelectorAll("[data-intent]").forEach((button) => {
     result.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth", block: "nearest" });
   });
 });
-document.querySelector('a[href="#portfolio-agent-session"]').addEventListener("click", () => {
+document.querySelector('a[href="#portfolio-agent-session"]')?.addEventListener("click", () => {
   showLabView("agent");
   window.requestAnimationFrame(() => portfolioSession.querySelector("[data-intent]").focus({ preventScroll: true }));
 });
