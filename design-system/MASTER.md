@@ -138,3 +138,12 @@ The product is unreleased, so the case study shows a concept recreation of its i
 User-selected after a live side-by-side preview against Inter and IBM Plex. Supersedes Outfit / DM Mono.
 - `--sans: "Geist", "Noto Sans TC"`; `--mono: "Geist Mono"`. The Google Fonts request loads Geist 400–700, Geist Mono 400/500 and Noto Sans TC (index.html and workspace.html). Hardcoded fallbacks in workspace-polish, terminal and portfolio-polish were updated.
 - Geist is wider than Outfit, so tracking is relaxed: hero h1 −.055em at 600 weight, section h2 −.045em, project titles −.035em, footer h2 −.05em; Chinese headings −.02em. Proof numbers use tabular figures.
+
+## E-Support and NB Spec: processing runs and richer outputs
+
+Same treatment as the GiMATE concept, applied on top of the existing identification and data logic (product matching, aliases, revision checks, confirmation flow are unchanged).
+- Processing run (presentation only, about 420 ms per step, instant under reduced motion). E-Support walks its real decision steps: read input → identify product (method + names) → resolve category → read records (IDs) → constrain answer. NB Spec: parse question → scope to model → hybrid retrieval → structured fact lookup → verify and compose. Each step's detail is computed from the actual query result; there is a progress bar and pulsing active node.
+- Results open with a summary strip (✓ 5 steps · match method · records read · 0 values inferred · Details). E-Support adds a side-by-side comparison table with differing fields highlighted, cited answer values ([1]) and a collapsible full specification snapshot with the asked field marked. NB Spec adds a same-field-across-models table with the selected model highlighted.
+- Navigation: E-Support offers "Try another question" (other examples + Start over); NB Spec gains a "New chat" button with a welcome state and all suggested questions. Free text and typo confirmation still run through the original logic.
+- NB Spec evaluation: three chart cards (accuracy by category bars, STRICT/LENIENT/FAIL donut with pass rate, guardrail checks) that animate on entering the view.
+- Implementation: workspace-motion.css plus additions to support-workspace.js and project-workspaces.js. Works in the embedded previews and the dedicated workspace.html pages.
