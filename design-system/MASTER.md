@@ -115,3 +115,9 @@ Problem (measured): proof first appeared at 1,873px, experience started at 12,78
 - Order: hero → glance → work → experience → research → core expertise → skills → interactive lab (the former portfolio-guide panel and terminal, renamed "Prefer to explore? Try the lab.", with a Lab nav item) → contact. The separate impact strip was merged into the hero.
 - Project cards show only the scan layer: type/date, title, subtitle, one-sentence summary, role, results column, tags and paper links. Architecture, implementation bullets, figures, workflows, design notes and interactive demos fold into one "Full case study · architecture, implementation, demo" disclosure per project. StockRadar's real interface folds under "Real interface · 6 screens". Deep links and printing open the folded case study.
 - Result: page height 15,494 → 7,750px on desktop (experience at 3,586px) and 21,016 → about 11,300px on phones; axe 0 violations.
+
+## Keyword emphasis
+
+- Outcomes and core claims are bold; method names are italic. Applied by portfolio-polish.js after every language switch (setLanguage rewrites textContent), by wrapping text nodes, never innerHTML.
+- Metrics (percentages, points, time savings, 1,000+ documents, 6+, 4GB VRAM) get `strong.kw-metric`: bold with a pale orange marker underline for scanning. Core claims (e.g. "evidence-first memory system", "company-wide internal chatbot", "agent reliability") get `strong.kw`. Method names (Plan-and-Execute, hybrid retrieval, provenance-linked…) get `em.kw`. 中文 uses a thin underline instead of synthetic CJK italics.
+- Budget: at most 3 bold and 1 italic per paragraph, metrics first. Scope: hero lead, project summaries and implementation bullets, StockRadar notes, experience bullets, core expertise, paper authors. EN/中文 phrase lists live in the same script.

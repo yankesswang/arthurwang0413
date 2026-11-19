@@ -147,3 +147,65 @@
   window.addEventListener("beforeprint", () => document.querySelectorAll(".case-more").forEach(d => { d.open = true; }));
   setLanguage(labLanguage());
 })();
+
+/* Keyword emphasis: bold outcomes and core claims, italicise method names.
+   Runs after every language switch (setLanguage rewrites textContent). Text-node based, never innerHTML.
+   At most 3 bold and 1 italic per paragraph so emphasis stays meaningful. */
+(() => {
+  const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const words = list => list.map(esc).join("|");
+  const rules = {
+    en: {
+      metric: /(?:<\s?)?\d[\d,]*(?:\.\d+)?\s?%|\b\d+(?:\.\d+)?\s?points?\b|\b\d+[–-]\d+ minutes\b|under 30 seconds|\b\d+ (?:hours|minutes)\b|\b1,000\+ (?:product )?documents\b|\b(?:6|60)\+(?= )|\b4GB VRAM\b/g,
+      strong: new RegExp(words(["on-device agents", "long-term memory systems", "production retrieval infrastructure", "traceable evidence", "plan, use tools, and recover", "evidence-first memory system", "standalone Windows exe", "standalone packaging", "company-wide internal chatbot", "structured knowledge base", "LLM-as-a-Judge", "agent reliability", "first author", "on-device and enterprise AI products", "offline LLM systems", "tool-enabled research agents", "specification-to-answer pipeline"]), "gi"),
+      em: new RegExp(words(["Plan-and-Execute", "progressive skill discovery", "recoverable execution", "hybrid retrieval", "hierarchical reranking", "bounded agentic curation", "provenance-linked", "graph-based retrieval", "reverse DCF", "spreading activation", "structured fact-query path", "deterministic tool execution", "adversarial review"]), "gi")
+    },
+    zh: {
+      metric: /\d[\d,]*(?:\.\d+)?\s?%|\+?\d+(?:\.\d+)?\s?點|\d+[–-]\d+\s?分鐘|30 秒內|\d+\s?(?:小時|分鐘)|1,000 份以上(?:產品)?文件|6 項以上|60\+|4GB VRAM/g,
+      strong: new RegExp(words(["裝置端代理", "長期記憶系統", "檢索基礎設施", "可追溯的證據", "規劃、使用工具與恢復執行", "證據優先的記憶系統", "獨立 Windows exe", "獨立封裝", "全公司內部聊天助理", "結構化知識庫", "LLM-as-a-Judge", "代理可靠度", "第一作者", "裝置端與企業 AI 產品", "離線 LLM 系統", "工具型研究代理", "從筆電規格到回答的完整流程"]), "g"),
+      em: new RegExp(words(["Plan-and-Execute", "漸進式技能探索", "可復原執行", "混合檢索", "分層重排序", "有界的代理式證據策展", "可追溯原始對話重建", "來源連結的原始對話重建", "圖檢索", "反向 DCF", "擴散啟動", "結構化事實查詢", "確定性工具執行", "對抗式審查"]), "g")
+    }
+  };
+  const targets = [
+    ".hero-lead", "#work .project-main > p:not(.project-type):not(.project-subtitle):not(.project-role)",
+    "#work .project-details li", "#work .side-project > p:not(.project-subtitle)", "#work .side-project .case-more-body > ul li",
+    "#experience li", ".capability p", "#research .authors"
+  ].join(", ");
+  const SKIP = "strong, em, a, code, mark, button, kbd, .tags";
+  function clear(root) {
+    root.querySelectorAll("strong.kw, em.kw").forEach(el => el.replaceWith(document.createTextNode(el.textContent)));
+    root.normalize();
+  }
+  function wrap(el, regex, tag, className, limit) {
+    let count = 0;
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement.closest(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const textNode of nodes) {
+      if (count >= limit) break;
+      const text = textNode.nodeValue; regex.lastIndex = 0;
+      const pieces = []; let last = 0, match;
+      while ((match = regex.exec(text)) && count < limit) {
+        if (!match[0].trim()) { regex.lastIndex += 1; continue; }
+        pieces.push(document.createTextNode(text.slice(last, match.index)));
+        const mark = document.createElement(tag); mark.className = className; mark.textContent = match[0]; pieces.push(mark);
+        last = match.index + match[0].length; count += 1;
+      }
+      if (!pieces.length) continue;
+      pieces.push(document.createTextNode(text.slice(last)));
+      textNode.replaceWith(...pieces);
+    }
+    return count;
+  }
+  function emphasize() {
+    const lang = document.documentElement.lang === "zh-Hant" ? "zh" : "en";
+    const r = rules[lang];
+    document.querySelectorAll(targets).forEach(el => {
+      clear(el);
+      const used = wrap(el, r.metric, "strong", "kw kw-metric", 3);
+      if (used < 3) wrap(el, r.strong, "strong", "kw", 3 - used);
+      wrap(el, r.em, "em", "kw", 1);
+    });
+  }
+  document.addEventListener("resume:language", emphasize);
+  emphasize();
+})();
