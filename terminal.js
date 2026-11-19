@@ -42,7 +42,7 @@
       cliBootCorpusText: "5 個專案 · 2 段經歷 · 1 篇論文", cliBootRetrieveText: "BM25 + 向量混合檢索",
       cliBootRerankText: "證據優先，保留來源", cliBootGroundText: "每個回答都連回來源",
       cliDemoTag: "示意",
-      cliTry: "試著問問", cliEx1: "GRACE-Mem 如何確保回答有證據？", cliEx2: "4GB VRAM 限制下在裝置端跑什麼？", cliEx3: "FAE 查詢時間如何縮短到 30 秒內？",
+      cliTry: "試著問問", cliEx1: "GRACE-Mem 如何確保回答有證據？", cliEx2: "4GB VRAM 限制下在 Edge 跑什麼？", cliEx3: "FAE 查詢時間如何縮短到 30 秒內？",
       cliStageParse: "parse", cliStageRetrieve: "retrieve", cliStageRerank: "rerank", cliStageGround: "ground", cliStageAnswer: "answer",
       cliStageParseText: "意圖與關鍵字", cliStageRetrieveText: "BM25 + 向量", cliStageRerankText: "證據優先", cliStageGroundText: "附上來源", cliStageAnswerText: "組成回答",
       cliTopPassage: "回答", cliAlso: "佐證",
@@ -69,9 +69,9 @@
   const examples = ["cliEx1", "cliEx2", "cliEx3"];
   // Scripted answers: each passage is a résumé translation key plus the section it comes from.
   const scripts = [
-    { match: /grace|evidence|grounded|memory|hallucinat|provenance|證據|記憶|來源/i, passages: [["graceSummary", "#grace-mem", "GRACE-Mem"], ["graceDetail1", "#grace-mem", "GRACE-Mem"], ["graceDetail5", "#grace-mem", "GRACE-Mem"]] },
-    { match: /on-?device|vram|4 ?gb|offline|local|llama|gimate|edge|端側|裝置|離線|本地/i, passages: [["gigabyte2", "#experience", "GIGABYTE"], ["gimateDetail3", "#gimate-agent", "GiMATE Agent"], ["gimateSummary", "#gimate-agent", "GiMATE Agent"]] },
-    { match: /fae|30 ?s|lookup|enterprise|neo4j|falkordb|graphrag|knowledge|chatbot|查詢|知識|企業/i, passages: [["faeDetail5", "#enterprise-knowledge-assistant", "Enterprise Knowledge Assistant"], ["gigabyte3", "#experience", "GIGABYTE"], ["capRetrievalText", "#work", "Core expertise"]] }
+    { match: /grace|evidence|grounded|memory|hallucinat|provenance|證據|記憶|來源/i, passages: [["graceSummary", "#grace-mem", "GRACE-Mem"], ["graceFeat2c", "#grace-mem", "GRACE-Mem"], ["graceFeat4a", "#grace-mem", "GRACE-Mem"]] },
+    { match: /on-?device|vram|4 ?gb|offline|local|llama|gimate|edge|端側|裝置|離線|本地/i, passages: [["gigabyte2", "#experience", "GIGABYTE"], ["gimateNote4", "#gimate-agent", "GiMATE Agent"], ["gimateSummary", "#gimate-agent", "GiMATE Agent"]] },
+    { match: /fae|30 ?s|lookup|enterprise|neo4j|falkordb|graphrag|knowledge|chatbot|查詢|知識|企業/i, passages: [["faeFeat1c", "#enterprise-knowledge-assistant", "Enterprise Knowledge Assistant"], ["gigabyte3", "#experience", "GIGABYTE"], ["capRetrievalText", "#work", "Core expertise"]] }
   ];
   const narrow = window.matchMedia("(max-width: 600px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");

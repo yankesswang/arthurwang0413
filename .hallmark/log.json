@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2026-11-19",
+    "macrostructure": "Workbench (dense console)",
+    "theme": "custom",
+    "theme_axes": "light+night / grotesk-sans / cool",
+    "vibe": "enterprise knowledge console, layered, instrument-like",
+    "enrichment": "product photography (sources)",
+    "brief": "E-Support console enterprise polish layer"
+  },
+  {
+    "date": "2026-11-19",
+    "macrostructure": "Workbench (dense console)",
+    "theme": "custom",
+    "theme_axes": "light / grotesk-sans / cool",
+    "vibe": "internal support console, quiet, instrument-like",
+    "enrichment": "none",
+    "brief": "E-Support FAE console re-skin (embedded production frontend)"
+  }
+]

@@ -34,8 +34,6 @@
 .gx-starters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .55rem; }
 .gx-starter { --mx: 50%; --my: 50%; position: relative; display: grid; align-content: start; gap: .3rem; min-height: 116px; padding: .8rem; overflow: hidden; border: 1px solid var(--gx-line-2); border-radius: .75rem; background: linear-gradient(160deg, var(--gx-raised), var(--gx-panel)); color: var(--gx-ink); text-align: left; cursor: pointer; transition: border-color 200ms var(--gx-ease), transform 200ms var(--gx-ease), box-shadow 200ms var(--gx-ease); }
 .gx-starter::before { content: ""; position: absolute; inset: 0; background: radial-gradient(180px circle at var(--mx) var(--my), rgb(255 138 76 / 22%), transparent 60%); opacity: 0; transition: opacity 200ms ease; }
-.gx-starter::after { content: ""; position: absolute; right: -26px; bottom: -26px; width: 88px; height: 88px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgb(255 138 76 / 38%), transparent 65%); animation: gx-float 6s ease-in-out infinite; }
-.gx-starter:nth-child(2)::after { animation-delay: -1.5s; } .gx-starter:nth-child(3)::after { animation-delay: -3s; } .gx-starter:nth-child(4)::after { animation-delay: -4.5s; }
 .gx-starter:hover, .gx-starter:focus-visible { border-color: var(--gx-accent); transform: translateY(-3px); box-shadow: 0 16px 32px -20px rgb(255 138 76 / 55%); }
 .gx-starter:hover::before { opacity: 1; }
 .gx-starter > * { position: relative; z-index: 1; }

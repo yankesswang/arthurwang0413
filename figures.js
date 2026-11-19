@@ -14,7 +14,6 @@
     dialog.querySelector("h2").textContent = figure.querySelector("h5").textContent;
     dialog.querySelector(".figure-dialog-caption").textContent = figure.querySelector("figcaption p").textContent;
     dialog.querySelector(".figure-counter").textContent = `${current + 1} / ${figures.length}`;
-    dialog.querySelector(".figure-dialog-source").href = figure.querySelector(".figure-pdf-source").href;
     dialog.querySelector(".figure-zoom").textContent = text(zoomed ? "figureFit" : "figureZoom");
     dialog.querySelector(".figure-zoom").setAttribute("aria-pressed", String(zoomed));
     viewport.classList.toggle("is-zoomed", zoomed);

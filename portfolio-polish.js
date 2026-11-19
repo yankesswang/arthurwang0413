@@ -105,31 +105,31 @@
 /* Interviewer-first layout: hero proof points, at-a-glance facts, folded case studies, lab section. */
 (() => {
   Object.assign(translations.en, {
-    heroRoleTitle: "AI Algorithm Deputy Manager / Technical Lead", heroRoleSince: "since 2024", emailMe: "Email me",
+    heroRoleTitle: "AI Algorithm Section Manager / Technical Lead", heroRoleSince: "since 2024", emailMe: "Email me",
     heroProofLabel: "Key results",
-    heroProof1: "LoCoMo accuracy · first-author paper, EMNLP 2026 AKBC Runner-Up",
-    heroProof2: "FAE spec lookup, down from 5–10 minutes",
-    heroProof3: "On-device and enterprise AI products led",
+    heroProof1: "LoCoMo accuracy · GRACE-Mem, first author",
+    heroProof2: "enterprise RAG spec lookup, down from 5–10 minutes",
+    heroProof3: "on-device and enterprise AI products",
     glanceTitle: "At a glance",
-    glanceNowLabel: "Now", glanceNow: "Technical lead for on-device & enterprise AI at GIGABYTE", glanceNowMeta: "Jun. 2024 — Present · New Taipei",
+    glanceNowLabel: "Now", glanceNow: "GIGABYTE · AI technical lead", glanceNowMeta: "On-device & enterprise AI · Jun. 2024 — Present",
     glanceFocusLabel: "Focus", glanceFocus: "Agents · RAG & memory · LLM evaluation", glanceFocusMeta: "llama.cpp · vLLM · LangChain · FastAPI",
     glanceResearchLabel: "Research", glanceResearch: "GRACE-Mem, first author", glanceResearchMeta: "EMNLP 2026 · AKBC Runner-Up Award",
-    glanceEduLabel: "Education", glanceEdu: "B.S. Computer Science, NCTU", glanceEduMeta: "2017–2021 · Mandarin · English",
+    glanceEduLabel: "Products", glanceEdu: "GiMATE Agent · Enterprise Knowledge", glanceEduMeta: "Edge AI assistant · company-wide product RAG",
     caseMore: "Full case study · architecture, implementation, demo", caseMoreStock: "Real interface · 6 screens and feature notes",
     navLab: "Lab", labKicker: "Interactive lab", labSectionTitle: "Prefer to explore? Try the lab.",
     labSectionText: "Topic search, a project index, and a terminal walkthrough of how I build grounded retrieval."
   });
   Object.assign(translations["zh-TW"], {
-    heroRoleTitle: "AI 演算法副理／技術負責人", heroRoleSince: "2024 年至今", emailMe: "寄信給我",
+    heroRoleTitle: "AI 演算法課長／技術負責人", heroRoleSince: "2024 年至今", emailMe: "寄信給我",
     heroProofLabel: "關鍵成果",
-    heroProof1: "LoCoMo 準確率 · 第一作者論文，EMNLP 2026 AKBC Runner-Up",
-    heroProof2: "FAE 規格查詢時間，從 5–10 分鐘縮短",
-    heroProof3: "主導的裝置端與企業 AI 產品",
+    heroProof1: "LoCoMo 準確率 · GRACE-Mem 第一作者",
+    heroProof2: "企業 RAG 規格查詢時間，原本 5–10 分鐘",
+    heroProof3: "Edge 與企業 AI 產品",
     glanceTitle: "一眼看懂",
-    glanceNowLabel: "現職", glanceNow: "技嘉科技 裝置端與企業 AI 技術負責人", glanceNowMeta: "2024.06 — 至今 · 台灣新北",
+    glanceNowLabel: "現職", glanceNow: "技嘉科技 · AI 技術負責人", glanceNowMeta: "Edge 與企業 AI · 2024.06 至今",
     glanceFocusLabel: "專長", glanceFocus: "Agent · RAG 與記憶 · LLM 評估", glanceFocusMeta: "llama.cpp · vLLM · LangChain · FastAPI",
     glanceResearchLabel: "研究", glanceResearch: "GRACE-Mem，第一作者", glanceResearchMeta: "EMNLP 2026 · AKBC Runner-Up Award",
-    glanceEduLabel: "學歷", glanceEdu: "國立交通大學 資訊工程學士", glanceEduMeta: "2017–2021 · 中文 · 英文",
+    glanceEduLabel: "代表產品", glanceEdu: "GiMATE Agent · 企業知識助理", glanceEduMeta: "Edge AI 助理 · 全公司產品知識 RAG",
     caseMore: "完整案例：架構、實作與互動示範", caseMoreStock: "真實介面：6 個畫面與功能說明",
     navLab: "實驗室", labKicker: "互動實驗室", labSectionTitle: "想自己探索？試試實驗室。",
     labSectionText: "主題搜尋、專案索引，以及示範我如何打造有證據檢索的 Terminal。"
@@ -162,7 +162,7 @@
     },
     zh: {
       metric: /\d[\d,]*(?:\.\d+)?\s?%|\+?\d+(?:\.\d+)?\s?點|\d+[–-]\d+\s?分鐘|30 秒內|\d+\s?(?:小時|分鐘)|1,000 份以上(?:產品)?文件|6 項以上|60\+|4GB VRAM/g,
-      strong: new RegExp(words(["裝置端代理", "長期記憶系統", "檢索基礎設施", "可追溯的證據", "規劃、使用工具與恢復執行", "證據優先的記憶系統", "獨立 Windows exe", "獨立封裝", "全公司內部聊天助理", "結構化知識庫", "LLM-as-a-Judge", "代理可靠度", "第一作者", "裝置端與企業 AI 產品", "離線 LLM 系統", "工具型研究代理", "從筆電規格到回答的完整流程"]), "g"),
+      strong: new RegExp(words(["Edge 代理", "長期記憶系統", "檢索基礎設施", "可追溯的證據", "規劃、使用工具與恢復執行", "證據優先的記憶系統", "獨立 Windows exe", "獨立封裝", "全公司內部聊天助理", "結構化知識庫", "LLM-as-a-Judge", "代理可靠度", "第一作者", "Edge 與企業 AI 產品", "離線 LLM 系統", "工具型研究代理", "從筆電規格到回答的完整流程"]), "g"),
       em: new RegExp(words(["Plan-and-Execute", "漸進式技能探索", "可復原執行", "混合檢索", "分層重排序", "有界的代理式證據策展", "可追溯原始對話重建", "來源連結的原始對話重建", "圖檢索", "反向 DCF", "擴散啟動", "結構化事實查詢", "確定性工具執行", "對抗式審查"]), "g")
     }
   };

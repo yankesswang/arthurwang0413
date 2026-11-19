@@ -1,4 +1,4 @@
-/* System architecture diagrams for E-Support and NB Spec, drawn as interactive SVG flows.
+/* System architecture diagrams for GiMATE Agent, E-Support and NB Spec, drawn as interactive SVG flows.
    Reconstructed from the project source (E-Support integration + KG branches, NB Spec raw_spec);
    parameters are the code defaults. Short labels in the diagram; one-sentence detail on selection. */
 (() => {
@@ -7,6 +7,29 @@
 
   // node: [id, x, y, w, kind, label, sub, detail]   kind: io | step | key | store | model
   const ARCH = {
+    gimate: () => ({
+      title: T("One sentence in: pick skills, plan the steps, check them, then execute.", "一句話進來：先選技能、再規劃步驟，檢查後才執行。"),
+      width: 1320, height: 470,
+      bands: [[16, 420, T("1 · UNDERSTAND", "1 · 理解與選擇"), T("guard · memory · skill selection", "檢查 · 記憶 · 選技能")], [452, 430, T("2 · PLAN & CHECK", "2 · 規劃與檢查"), T("small model, validated by code", "小模型規劃，程式把關")], [898, 406, T("3 · EXECUTE & REPLY", "3 · 執行與回覆"), T("skills · MCP · approval", "技能 · MCP · 使用者確認")]],
+      nodes: [
+        ["in", 32, 110, 190, "io", T("Request", "使用者請求"), T("desktop · avatar · Telegram", "桌面 · Avatar · Telegram"), T("All three entry points call the same single-turn pipeline; only the reply format differs.", "三個入口都進入同一條單輪對話流程，只有回覆的呈現方式不同。")],
+        ["guard", 32, 220, 190, "step", T("Safety check", "敏感內容檢查"), T("reject on hit", "命中直接拒絕"), T("Every turn is screened for sensitive or confidential content before any skill runs.", "每一輪在執行任何技能前，先檢查是否含敏感或機密內容。")],
+        ["mem", 32, 330, 190, "store", T("Memory", "記憶與上下文"), "SQLite · Chroma", T("Recent turns, the session window, and up to three semantically related past turns are pulled in automatically.", "自動帶入最近對話、對話視窗，以及最多三則語意相關的舊對話。")],
+        ["sel", 246, 220, 186, "model", T("Pick skills", "選擇技能"), T("LLM pass 1", "第一輪 LLM"), T("Sees only each skill's name and description, so a 4B model classifies quickly; GiMATE feature names route by keyword first.", "只看各技能的名稱與說明，讓 4B 模型快速分類；GiMATE 功能名稱先用關鍵字直接導向。")],
+        ["load", 468, 110, 190, "step", T("Load tools", "載入工具"), T("selected skills only", "只載入選中技能"), T("Tools are lazy-loaded for the chosen skills, keeping the planner's context small.", "只為選中的技能載入工具，讓規劃階段的上下文保持精簡。")],
+        ["fast", 676, 110, 190, "step", T("Fast path", "免規劃捷徑"), T("common requests", "常見請求"), T("Frequent requests map straight to a plan without a second LLM call.", "常見請求直接對應到既有步驟，省下一次 LLM 呼叫。")],
+        ["plan", 468, 220, 190, "key", T("Plan steps", "規劃步驟"), T("LLM pass 2 · JSON", "第二輪 LLM · JSON"), T("Produces a multi-step JSON plan; later steps reference earlier results with placeholders, so 'look up, then compute' chains work.", "產出多步驟 JSON 計畫；後面的步驟可用佔位符引用前一步結果，讓「先查再算」能串起來。")],
+        ["val", 676, 220, 190, "step", T("Validate & repair", "驗證與修補"), T("args · references", "參數 · 跨步驟參照"), T("Code checks every step's tool and arguments and repairs what it can before anything runs.", "執行前由程式檢查每一步的工具與參數，能修的先修好。")],
+        ["gate", 914, 110, 180, "step", T("Approval", "使用者確認"), T("risky actions", "風險操作"), T("Dangerous steps such as closing apps or deleting files wait for the user to tick what to apply; channels without a confirm UI refuse them.", "關閉程式、刪除檔案等風險步驟會等使用者勾選確認；沒有確認介面的入口直接拒絕執行。")],
+        ["exec", 914, 220, 180, "model", T("Run tools", "執行工具"), T("skills · MCP", "技能 · MCP 服務"), T("Runs skill tools step by step, including local MCP servers for code, images, and hardware control; progress persists so tasks can resume.", "逐步執行技能工具，包含寫程式、生圖與硬體控制的本機 MCP 服務；進度會保存，中斷可恢復。")],
+        ["out", 1112, 220, 176, "io", T("Reply", "回覆與卡片"), T("charts · cards", "圖表 · 簡報 · 任務卡"), T("Long tool output is compacted before the final answer, which cites its sources and renders as cards in the app.", "過長的工具結果先壓縮再寫最終回答，附上來源，並在 App 中以卡片呈現。")],
+        ["save", 1112, 330, 176, "store", T("Save turn", "寫回記憶"), T("history · vectors", "對話紀錄 · 向量索引"), T("Each finished turn is stored in SQLite and the vector index so later conversations can recall it.", "每輪結束後寫入 SQLite 與向量索引，之後的對話就能找回來。")]
+      ],
+      edges: [["in", "guard", "down"], ["guard", "sel"], ["mem", "sel"], ["sel", "load"], ["load", "plan", "down"], ["load", "fast"], ["fast", "val", "down"], ["plan", "val"], ["val", "gate"], ["val", "exec"], ["gate", "exec", "down"], ["exec", "out"], ["out", "save", "down"]],
+      loopFrom: "exec", loopTo: "plan",
+      loop: T("Step fails or result is off → bounded repair and replanning", "步驟失敗或結果不對 → 有限次數的修復與重新規劃"),
+      decisions: [T("Two small LLM passes: choose, then plan", "兩輪小模型：先選技能，再規劃"), T("Code validates; tools execute deterministically", "程式驗證參數，工具確定性執行"), T("Risky actions always wait for approval", "風險操作一律等使用者確認")]
+    }),
     knowledge: () => ({
       title: T("Identify the product first. Answer only from that product's data.", "先辨識產品，再只用該產品的資料回答。"),
       width: 1240, height: 380,

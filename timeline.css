@@ -1,0 +1,44 @@
+/* Experience timeline: vertical rail with a node per role. */
+.experience-list.timeline { --tl-x: .5rem; --tl-pad: clamp(2.3rem, 5vw, 4rem); position: relative; }
+.timeline .experience-item { position: relative; padding-left: 2.6rem; }
+
+/* Rail segment per item; first starts at its node, last ends at its node. */
+.timeline .experience-item::before {
+  content: ""; position: absolute; left: var(--tl-x); top: 0; bottom: 0; width: 2px;
+  transform: translateX(-50%); background: var(--line-strong);
+}
+.timeline .experience-item:first-child::before { top: calc(var(--tl-pad) + .6rem); }
+.timeline .experience-item:last-child::before { bottom: auto; height: calc(var(--tl-pad) + .6rem); }
+.timeline .experience-item:only-child::before { display: none; }
+.timeline .experience-item.is-current::before { background: linear-gradient(to bottom, var(--accent), var(--line-strong) 70%); }
+
+.tl-node {
+  position: absolute; left: var(--tl-x); top: calc(var(--tl-pad) + .6rem); z-index: 1;
+  width: 13px; height: 13px; border-radius: 50%; transform: translate(-50%, -50%);
+  background: var(--surface); border: 2px solid var(--line-strong);
+  transition: border-color .3s, transform .3s;
+}
+.timeline .experience-item:hover .tl-node { border-color: var(--accent); transform: translate(-50%, -50%) scale(1.15); }
+.is-current .tl-node { background: var(--accent); border-color: var(--accent); }
+.is-current .tl-node::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid var(--accent); opacity: 0; animation: tl-pulse 2.4s ease-out infinite;
+}
+@keyframes tl-pulse { 0% { transform: scale(.55); opacity: .55; } 100% { transform: scale(1.5); opacity: 0; } }
+
+.is-current .experience-meta time { color: var(--accent); font-weight: 600; }
+.tl-duration {
+  align-self: flex-start; margin-top: .35rem; padding: .15rem .55rem; border: 1px solid var(--line);
+  border-radius: 99px; background: var(--surface-soft); color: var(--muted); font-size: .68rem; white-space: nowrap;
+}
+.tl-duration:empty { display: none; }
+.is-current .tl-duration { border-color: transparent; background: var(--accent-soft); color: var(--blue); }
+
+@media (max-width: 600px) {
+  .experience-list.timeline { --tl-x: .35rem; }
+  .timeline .experience-item { padding-left: 1.9rem; }
+  .tl-duration { margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-current .tl-node::after { animation: none; opacity: .35; transform: scale(1.1); }
+}

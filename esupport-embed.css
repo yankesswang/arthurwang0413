@@ -1,0 +1,16 @@
+/* E-Support: the real production frontend, embedded with a plain caption bar (no drawn browser chrome) */
+.esupport-embed { margin: 1.4rem 0; }
+.esupport-bar {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .55rem .9rem; border: 1px solid var(--line); border-bottom: 0;
+  border-radius: 8px 8px 0 0; background: var(--surface);
+}
+.esupport-bar strong { flex: 1; min-width: 0; overflow: hidden; color: var(--ink); font-size: .82rem; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.esupport-open { flex: none; color: var(--blue); font-size: .78rem; text-decoration: none; }
+.esupport-open:hover { text-decoration: underline; }
+.esupport-frame {
+  display: block; width: 100%; height: min(760px, 82vh);
+  border: 1px solid var(--line); border-radius: 0 0 8px 8px; background: #f6f8fb;
+}
+.esupport-note { margin: .6rem 0 0; color: var(--muted); font-size: .8rem; line-height: 1.7; }
+@media (max-width: 720px) { .esupport-frame { height: 620px; } }

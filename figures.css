@@ -46,3 +46,8 @@
  .figure-dialog > footer { gap: .5rem; }
 }
 @media print { .figure-dialog, .figure-open-label { display: none !important; } .paper-figure { break-inside: avoid; } }
+/* GRACE-Mem: paper figures placed next to the content they illustrate */
+.grace-inline-figure { margin: 0 0 1.2rem; }
+.memory-panel .grace-inline-figure { margin: .4rem 0 1.4rem; }
+.grace-result-figures { margin: 0 0 1.4rem; }
+@media (max-width: 720px) { .grace-result-figures { grid-template-columns: 1fr; } }

@@ -170,7 +170,7 @@
     return `<div class="gx-composer ${typing ? "is-typing" : ""}">
       <div class="gx-input">${typing ? `<span>${esc(promptText().slice(0, state.typed))}</span><i class="gx-caret"></i>` : (!busy ? `<label class="sr-only" for="gx-prompt">${T("Describe a task", "描述任務")}</label><textarea id="gx-prompt" rows="1" maxlength="200" placeholder="${T("Describe a task, e.g. analyze my sales sheet — Enter to run", "描述任務，例如：分析我的銷售表 — 按 Enter 執行")}">${esc(state.draft)}</textarea>` : `<span class="gx-ph">${T("The agent is working… (concept)", "Agent 執行中…（示意）")}</span>`)}</div>
       <div class="gx-tools"><span class="gx-chip">${icon("plus")}${T("Attach", "附件")}</span><span class="gx-chip">${icon("at")}${T("Apps", "應用")}</span>
-        <span class="gx-spacer"></span><span class="gx-chip gx-model">${icon("chip")}${T("Local model", "本機模型")}<b>${T("on-device", "裝置端")}</b></span>
+        <span class="gx-spacer"></span><span class="gx-chip gx-model">${icon("chip")}${T("Local model", "本機模型")}<b>${T("on-device", "Edge")}</b></span>
         ${!busy && !typing ? `<button type="button" class="gx-send" data-gx="send" aria-label="${T("Run task", "執行任務")}">${icon("send")}</button>` : `<span class="gx-send ${busy ? "is-busy" : ""} ${full ? "is-press" : ""}" aria-hidden="true">${busy ? "<i></i>" : icon("send")}</span>`}</div>
       <p class="gx-mode">${icon("shield")}${state.mode === "ask" ? T("Ask every time: reads, writes and sends all ask first", "每次詢問：讀取、寫入與寄出都先詢問") : T("Standard: reads run automatically, actions ask first", "標準自動化：讀取與分析自動執行，其餘先詢問")}</p>
     </div>`;
@@ -218,7 +218,7 @@
     if (state.view === "skills") return `<div class="gx-page">${head(T("Skills", "技能"), T("Turn skills on or off. Examples that need a disabled skill will ask you to enable it.", "開啟或關閉技能。需要已關閉技能的範例會提示你啟用。"))}
       <ul class="gx-skill-grid">${SKILLS().map(([k, i, l, d]) => `<li><span class="gx-list-icon">${icon(i)}</span><div><strong>${l}</strong><span>${d}</span></div><button type="button" role="switch" aria-checked="${state.skills[k]}" aria-label="${l}" class="gx-switch" data-gx="skill:${k}"><i></i></button></li>`).join("")}</ul></div>`;
     return `<div class="gx-page">${head(T("Local models", "本機模型"), T("Models run on this device; nothing is sent to a server.", "模型在這台裝置上執行，不會傳到伺服器。"))}
-      <ul class="gx-list"><li><span class="gx-list-icon is-ok">${icon("chip")}</span><div><strong>${T("Local model", "本機模型")}</strong><span>${T("On-device · quantized · active for chat", "裝置端 · 量化 · 用於對話")}</span></div>${tag(T("Active", "使用中"), "ok")}</li>
+      <ul class="gx-list"><li><span class="gx-list-icon is-ok">${icon("chip")}</span><div><strong>${T("Local model", "本機模型")}</strong><span>${T("On-device · quantized · active for chat", "Edge · 量化 · 用於對話")}</span></div>${tag(T("Active", "使用中"), "ok")}</li>
       <li><span class="gx-list-icon">${icon("chip")}</span><div><strong>${T("Larger local model", "較大的本機模型")}</strong><span>${T("Better quality, needs more memory", "品質較好，需要更多記憶體")}</span></div>${tag(T("Optional", "選用"))}</li></ul>
       <p class="gx-empty">${T("Concept only: model names and sizes are intentionally omitted.", "僅為示意：刻意不列出模型名稱與大小。")}</p></div>`;
   }

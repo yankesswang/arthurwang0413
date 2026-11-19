@@ -9,8 +9,8 @@ Product photographs are sourced from GIGABYTE's public product pages/CDN. The im
 | b550.webp | B550M AORUS PRO AX, rev. 1.0 | https://www.gigabyte.com/Motherboard/B550M-AORUS-PRO-AX-rev-10 |
 | x870.webp | X870E AORUS MASTER | https://www.gigabyte.com/Motherboard/X870E-AORUS-MASTER |
 | z790.webp | Z790 AORUS ELITE AX, rev. 1.0 | https://www.gigabyte.com/Motherboard/Z790-AORUS-ELITE-AX-rev-10 |
-| elite.webp | AORUS ELITE 16 product-family image | https://www.gigabyte.com/Laptop/AORUS-ELITE-16-AE6H |
-| master.webp | AORUS MASTER 16 product-family image | https://www.gigabyte.com/Laptop/AORUS-MASTER-16-AM6H |
+| elite.webp | AORUS ELITE 16 product-family image (1000 px source, re-fetched 2026-11-19) | https://www.gigabyte.com/Laptop/AORUS-ELITE-16-AE6H |
+| master.webp | AORUS MASTER 16 product-family image (1000 px source, re-fetched 2026-11-19) | https://www.gigabyte.com/Laptop/AORUS-MASTER-16-AM6H |
 
 Notebook pictures are family-level imagery, not evidence of an installed SKU configuration. The notebook specification values remain the dated source snapshot already documented in `docs/project-workspace-sources.md`.
 

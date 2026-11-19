@@ -406,3 +406,5 @@ a, button, summary { transition: color 180ms ease, background-color 180ms ease, 
   .project-deep-dive > .project-details { display: block !important; }
   .project-deep-dive::details-content { content-visibility: visible; }
 }
+/* Header avatar photo in place of the monogram */
+.brand img.brand-avatar { display: block; padding: 0; object-fit: cover; background: var(--surface); }

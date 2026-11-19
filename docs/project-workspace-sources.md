@@ -59,3 +59,57 @@ The evaluation questions, generated answers and verdicts are authored demonstrat
 ## Query-first acceptance checks
 
 Browser checks covered: zero opening selects/references, model-only input, motherboard/laptop category routing, explicit specification questions, follow-up context, unknown products after another product, ambiguous names, unmatched SKU suffixes, explicit revision mismatch, missing specification fields, two-product comparison, raw reference JSON, FAE review validation and session-only save, processing-summary inspection, language switching and responsive layouts. The frontend remains a local demonstration; production FlashText, embedding/Hybrid retrieval, MongoDB and LLM services are not connected.
+
+## E-Support — embedded production frontend (2026-11-19)
+
+The E-Support case study now embeds the deployed system's own React frontend (`esupport-demo/`) instead of the redesigned workspace.
+
+- Source: `gitlab/e-support/webui/react-chatbot` at `e8f73d5`, built from a scratch copy with `vite build --base ./`; the source repository was not modified.
+- Changes to the copy only: brand strings neutralised (`GIGABYTE` → `Product Support`, footer badge → `Portfolio demo · sample responses`), the specs endpoint path renamed to `/api/specs`, suggested questions replaced with questions about the five public catalog products.
+- `esupport-demo/mock-api.js` answers the frontend's `/api/*` calls in the browser (start/terminate session, input, langid, translate, autocomplete, specs) using the public snapshots from `support-catalog.js` plus socket / form factor / DIMM count for the three motherboards. Replies are templated, not model output; no company service is contacted.
+- Embed adapter (also in the copy): a small inline style makes the app fill the iframe and scroll inside its panels, and `scrollIntoView` is limited to the app's own scroll container so the host page never jumps.
+- The previous redesigned workspace (`support-workspace.js`) is still used by `workspace.html` but is no longer mounted on the main page.
+
+### Console re-skin (Hallmark redesign, 2026-11-19)
+
+The embedded frontend was re-skinned so it reads as an internal tool rather than a generated chat UI. Structure and behaviour are unchanged; only the visual layer and a few strings moved.
+
+- `src/console-theme.css` (kept here as `docs/esupport-console-theme.css`) is imported last from `main.jsx` and maps the app's own CSS variables onto one token set: cool near-white paper, one cobalt accent (send button, links, focus), Inter for UI and JetBrains Mono for model names, graph names and context.
+- Removed: radial background glows, every teal→blue gradient, Fraunces display serif, tracked-uppercase labels, the floating rounded chat card, pill suggestion chips, colour-coded context cards and the model-tag flash animation.
+- JSX edits in the copy: Sparkles / Bot icons replaced by a mono `FAE` mark; welcome tile removed; header and welcome copy made specific ("Product Q&A", "Ask about a product").
+- `mock-api.js` now fills `citations` with the product URLs so the real "Sources (n)" counter shows the number of products used.
+- The portfolio frame lost its drawn traffic-light dots; it is a plain caption bar above the iframe.
+
+### Showcase questions (2026-11-19)
+
+The four suggested questions now each demonstrate one behaviour of the pipeline, with authored answers in `mock-api.js` (`SCENARIOS`) built only from the catalog snapshots plus socket / form factor:
+
+1. B550M → X870E upgrade: platform reasoning (DDR4→DDR5, AM4→AM5, Micro ATX→E-ATX case check).
+2. `elite16 跟 master16`: shorthand resolution, a Chinese answer, and a use-case recommendation with the SKU caveat.
+3. "AORUS MASTER": ambiguity across categories, answered per product and followed by a clarifying question.
+4. Z890 AORUS ELITE WIFI7: not indexed, so the answer refuses to guess and explains why the Z790 values do not transfer (LGA1851 vs LGA1700).
+
+Free-typed questions still fall through to the templated per-product answer.
+
+### Enterprise polish layer (2026-11-19)
+
+Second pass on the embedded console, so it is no longer "the deployed frontend unchanged": the portfolio caption now says it is redesigned on top of the deployed React frontend (same components and data contract, new visual layer).
+
+- Night sidebar with a "Spec index · 5 products" status line; the active chat carries a cobalt inset rule.
+- Welcome: the four showcase questions are cards labelled with the behaviour they demonstrate (Upgrade check, Compare · 中文, Ambiguous name, Not in the index) and send on click; a strip below states the index size.
+- Answers render through a small `RichText` component in `Message.jsx`: blank-line blocks become paragraphs, `• ` lines become a ruled list with bold labels, and the first block of a multi-block answer is the lead.
+- Sources: `mock-api.js` adds an `image` field to each KG context (`../assets/products/*.webp`, the public product photos already in the portfolio), shown as a thumbnail beside the model name.
+- Loading row states what is happening ("Identifying products, then reading their spec records…").
+
+### Agent trace and full-resolution laptop photos (2026-11-19)
+
+- Each answer now carries a `trace` array from `mock-api.js`, rendered above the answer as an open "Agent trace" panel: detect language → identify products (with how each matched: exact name / alias / partial, plus the product photo) → route to the category graph → retrieve spec sections → scenario checks (platform diff, ambiguity rule, grounding rule) → compose. Steps are marked ok / warn / stop. The trace lists pipeline steps and rules that the real system implements; it is authored for the demo and is not hidden model reasoning.
+- While a request is pending, the five pipeline stages tick through in place of the typing dots; the demo response delay is 2.3 s so the stages are readable.
+- Laptop photos re-fetched from the same GIGABYTE CDN entries at 1000 px (previously the 300 px variant), trimmed and saved at 800 px; `assets/products/sources.json` and its README record the new URLs, sizes and checksums. Motherboard photos were already full resolution.
+
+### Spec drawer (2026-11-19)
+
+- "Identified models" chips and the product names in the KG source rows are buttons; they open `SpecDrawer` (new component, kept here as `docs/esupport-SpecDrawer.jsx` / `.css`), a right-hand slide-over inside the console.
+- Product view: the photo on a soft stage, model name, category, snapshot date and product-page link, four highlight tiles per category (motherboard: Chipset / Socket / Memory / Form Factor; laptop: Video Graphics / Display / CPU / Battery), then every field with multi-line values split into lines.
+- Compare tab (two or more identified products): photos side by side, a "N fields differ · M identical" summary, differing rows first with a cobalt rule, identical rows muted.
+- Data comes from the same `/api/specs` call the Specifications tab uses; `mock-api.js` now also returns the product photo and model name there. Esc or the scrim closes the drawer.

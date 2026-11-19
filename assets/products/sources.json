@@ -54,38 +54,40 @@
       "display_sha256": "ba1cb25f69e08c50faa2d676932103e8275ee97d479fd1397074bbaa3f8edf26"
     },
     "elite": {
-      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/96c38efc38e619f8182b1d387631339b/Product/44195/png/300",
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/96c38efc38e619f8182b1d387631339b/Product/44195/png/1000",
       "source_page": "https://www.gigabyte.com/Laptop/AORUS-ELITE-16-AE6H",
       "file": "elite.webp",
-      "bytes": 51960,
+      "bytes": 410209,
       "dimensions": [
-        300,
-        300
+        1000,
+        1000
       ],
-      "sha256": "d28803fe766830df8eb80826fa617c3895819a6bfa399dfd7526c8a991384dae",
+      "sha256": "182ea31fca9eb652ebe2bffa4e82cff306a09f782cae291eedd481beacc367ec",
       "display_dimensions": [
-        300,
-        300
+        800,
+        683
       ],
-      "display_bytes": 8064,
-      "display_sha256": "6bfe290d320b3572edb0846e835afdbe919362fc54fb16b8111fe367e07a7eaa"
+      "display_bytes": 42226,
+      "display_sha256": "07c15142e51d61263f1e52a07842a2af9f75e3264339b7874329aaa2ab45fc94",
+      "retrieved": "2026-11-19"
     },
     "master": {
-      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/2b02867819f7ee747c808a22564e7f53/Product/44021/png/300",
+      "image_url": "https://static.gigabyte.com/StaticFile/Image/Global/2b02867819f7ee747c808a22564e7f53/Product/44021/png/1000",
       "source_page": "https://www.gigabyte.com/Laptop/AORUS-MASTER-16-AM6H",
       "file": "master.webp",
-      "bytes": 57261,
+      "bytes": 516230,
       "dimensions": [
-        300,
-        300
+        1000,
+        1000
       ],
-      "sha256": "f8e4cb0aedb6018085f7f2864969916b86a809f1e689b865e5a7d41a8b13a69e",
+      "sha256": "9eb74df6e3ed929e81230ce63ccdbd03c9eca1cd33000f5b75d96a2094fdea1c",
       "display_dimensions": [
-        300,
-        300
+        800,
+        731
       ],
-      "display_bytes": 8440,
-      "display_sha256": "e11c2ece1f557f4176d552c734c6003223fd7c4f6c5a843afb20102c0cd809b6"
+      "display_bytes": 47544,
+      "display_sha256": "4e76f55f3f52d7b800cc6d1ea5ef41e40c74d1ec4784e55ec58f8d4fb971bdf7",
+      "retrieved": "2026-11-19"
     }
   }
 }
