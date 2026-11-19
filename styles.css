@@ -18,9 +18,9 @@
   --red: #d0abaa;
   --max: 1180px;
   --gutter: clamp(1.2rem, 4vw, 3.5rem);
-  --sans: "Outfit", "Noto Sans TC", sans-serif;
+  --sans: "Geist", "Noto Sans TC", system-ui, sans-serif;
   --serif: "Newsreader", "Noto Serif TC", serif;
-  --mono: "DM Mono", ui-monospace, monospace;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
   --ease-reveal: cubic-bezier(.25, .1, .25, 1);
 }

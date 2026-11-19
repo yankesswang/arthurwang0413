@@ -9,7 +9,7 @@
   border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
   color: var(--body); font-size: .85rem; font-weight: 500; text-decoration: none; white-space: nowrap;
 }
-.project-jump a span { font: 500 .7rem/1 var(--mono, "DM Mono", monospace); color: var(--muted); letter-spacing: .04em; }
+.project-jump a span { font: 500 .7rem/1 var(--mono, "Geist Mono", monospace); color: var(--muted); letter-spacing: .04em; }
 .project-jump a:hover { border-color: var(--line-strong); color: var(--ink); }
 .project-jump a[aria-current] { border-color: var(--ink); background: var(--ink); color: var(--canvas); }
 .project-jump a[aria-current] span { color: #f9dac8; }
@@ -209,3 +209,16 @@ strong.kw-metric { padding: 0 .12em; border-radius: .2em; background: linear-gra
 em.kw { color: var(--ink); font-style: italic; }
 html[lang="zh-Hant"] em.kw { font-style: normal; text-decoration: underline; text-decoration-color: var(--line-strong); text-decoration-thickness: 1px; text-underline-offset: .28em; }
 @media print { strong.kw-metric { background: none; } }
+
+/* ── Typography: Geist + Geist Mono ───────────────────────
+   Geist is wider than the previous display face, so tracking is relaxed a little at each size. */
+body { font-feature-settings: "ss01" 0, "cv11" 1; }
+.hero h1 { letter-spacing: -.055em; font-weight: 600; }
+.section-heading h2, .explore-intro h2 { letter-spacing: -.045em; }
+.footer h2 { letter-spacing: -.05em; }
+.publication h2 { letter-spacing: -.035em; }
+#work .project h3, .side-project-heading h3 { letter-spacing: -.035em; }
+.capability h3 { letter-spacing: -.02em; }
+.hero-proof strong, .project-proof strong, .glance-item strong { font-feature-settings: "tnum" 1; }
+.hero-proof strong { letter-spacing: -.045em; font-weight: 500; }
+html[lang="zh-Hant"] .hero h1, html[lang="zh-Hant"] .section-heading h2 { letter-spacing: -.02em; }

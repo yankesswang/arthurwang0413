@@ -3,7 +3,7 @@
 .product-workspace {
  --ws-ink:#202735; --ws-body:#485261; --ws-muted:#667180; --ws-line:#e1e5eb;
  --ws-accent:#29374a; --ws-active:#e9edf3; --ws-tint:#f7f8fa;
- font-family:var(--sans,"Outfit","Noto Sans TC",sans-serif); font-size:14px;
+ font-family:var(--sans,"Geist","Noto Sans TC",sans-serif); font-size:14px;
 }
 .product-workspace button, .product-workspace input, .product-workspace select, .product-workspace textarea { font-family:inherit; }
 .product-workspace .ws-button { font-size:13px; font-weight:500; }
@@ -150,7 +150,7 @@
 .nb-report-bottom { margin-top:26px; font-size:12px; }
 .nb-report-bottom small { font-size:11px; }
 /* Dedicated canvas: no nested portfolio navigation or modal chrome. */
-.workspace-page { --sans:"Outfit","Noto Sans TC",sans-serif; --mono:"DM Mono",monospace; margin:0; min-height:100dvh; background:#f7f8fa; color:#202735; -webkit-font-smoothing:antialiased; }
+.workspace-page { --sans:"Geist","Noto Sans TC",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,monospace; margin:0; min-height:100dvh; background:#f7f8fa; color:#202735; -webkit-font-smoothing:antialiased; }
 .workspace-page *, .workspace-page *::before, .workspace-page *::after { box-sizing:border-box; }
 .workspace-page svg { width:18px; height:18px; flex-shrink:0; }
 .workspace-page .product-workspace { min-height:100dvh; display:flex; flex-direction:column; }
