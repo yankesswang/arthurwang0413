@@ -1,44 +1,43 @@
-/* System architecture diagrams (E-Support, NB Spec). Portfolio palette. */
-.arch { display: grid; gap: 1.2rem; padding: 1.3rem 1.3rem 1.1rem; border: 1px solid var(--line); border-radius: 1rem; background: linear-gradient(180deg, var(--surface), var(--surface-soft)); }
-.arch-head { display: grid; gap: .4rem; max-width: 52rem; }
-.arch-kicker { color: var(--blue); font: 500 .68rem/1 var(--mono); letter-spacing: .12em; }
-.arch-head h4 { margin: 0; color: var(--ink); font-size: clamp(1.15rem, 1.8vw, 1.45rem); font-weight: 600; line-height: 1.3; letter-spacing: -.02em; }
-.arch-head p { margin: 0; color: var(--body); font-size: .92rem; line-height: 1.65; }
-
-.arch-flow { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .9rem; margin: 0; padding: 0; list-style: none; counter-reset: layer; }
-.arch-layer { position: relative; display: grid; align-content: start; gap: .55rem; min-width: 0; }
-.arch-layer:not(:last-child)::after { content: ""; position: absolute; top: .9rem; right: -.75rem; width: .6rem; height: .6rem; border-top: 2px solid var(--line-strong); border-right: 2px solid var(--line-strong); transform: rotate(45deg); }
-.arch-layer-head { display: flex; align-items: center; gap: .5rem; padding-bottom: .5rem; border-bottom: 2px solid var(--ink); }
-.arch-layer-head span { display: grid; place-items: center; min-width: 1.7rem; height: 1.7rem; border-radius: .45rem; background: var(--ink); color: var(--canvas); font: 500 .7rem/1 var(--mono); }
-.arch-layer-head h5 { margin: 0; color: var(--ink); font-size: .9rem; font-weight: 600; line-height: 1.25; }
-.arch-layer ul { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
-.arch-layer li { display: grid; gap: .2rem; padding: .6rem .65rem; border: 1px solid var(--line); border-radius: .6rem; background: var(--surface); }
-.arch-layer li b { color: var(--ink); font-size: .8rem; font-weight: 600; line-height: 1.35; }
-.arch-layer li span { color: var(--body); font-size: .74rem; line-height: 1.5; overflow-wrap: anywhere; }
-.arch-layer li.is-key { border-color: rgb(182 59 0 / 35%); background: var(--accent-soft); }
-.arch-layer li.is-key span { color: var(--blue); font-family: var(--mono); font-size: .72rem; }
-
-.arch-decisions { display: grid; gap: .7rem; padding-top: 1rem; border-top: 1px dashed var(--line-strong); }
-.arch-decisions h5 { margin: 0; color: var(--ink); font-size: .95rem; font-weight: 600; }
-.arch-decisions ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin: 0; padding: 0; list-style: none; }
-.arch-decisions li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .65rem; padding: .75rem .8rem; border: 1px solid var(--line); border-radius: .65rem; background: var(--surface); }
-.arch-decisions li > span { color: var(--blue); font: 500 .72rem/1.6 var(--mono); }
-.arch-decisions b { display: block; color: var(--ink); font-size: .86rem; font-weight: 600; }
-.arch-decisions p { margin: .2rem 0 0; color: var(--body); font-size: .8rem; line-height: 1.6; }
-.arch-source { margin: 0; color: var(--muted); font: .72rem/1.55 var(--mono); }
-
-.case-more[open] .arch-layer { animation: arch-in 380ms cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 70ms); }
-@keyframes arch-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-@media (max-width: 1100px) {
-  .arch-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 1.3rem; }
-  .arch-layer:nth-child(3)::after { display: none; }
-}
+/* System architecture diagrams — dark blueprint with animated data flow. */
+.arch { display: grid; gap: .9rem; padding: 1.2rem 1.2rem 1.1rem; border-radius: 1rem; background: radial-gradient(120% 90% at 50% 0%, rgb(255 138 76 / 10%), transparent 55%), #151412; color: #f1eee7; box-shadow: 0 30px 60px -40px rgb(20 19 15 / 80%), inset 0 1px 0 rgb(255 255 255 / 5%); }
+.arch-head { display: grid; gap: .35rem; }
+.arch-kicker { color: #ffb38c; font: 500 .66rem/1 var(--mono); letter-spacing: .14em; }
+.arch-head h4 { margin: 0; color: #f6f3ec; font-size: clamp(1.1rem, 1.9vw, 1.45rem); font-weight: 600; line-height: 1.3; letter-spacing: -.02em; }
+.arch-canvas { overflow-x: auto; border: 1px solid #2c2a25; border-radius: .8rem; background: #11100e; scrollbar-width: thin; scrollbar-color: #3b3832 transparent; }
+.arch-canvas > svg { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--sans); }
+.arch-dot { fill: #2b2924; }
+.arch-lane { fill: #8f897d; font: 600 11px var(--mono, monospace); letter-spacing: .12em; }
+.arch-edge { fill: none; stroke: #3d3a33; stroke-width: 2; transition: stroke 200ms ease; }
+.arch-edge.is-on { stroke: #7a5a43; }
+.arch-arrowhead { fill: #5a554b; }
+.arch-flow { fill: none; stroke: #ff8a4c; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 3 22; animation: arch-flow 1.6s linear infinite; animation-delay: calc(var(--i) * -0.18s); opacity: .85; }
+.arch-loop { fill: none; stroke: #5d584e; stroke-width: 1.5; stroke-dasharray: 5 6; }
+.arch-loop-label { fill: #b8b1a3; font: 500 12px var(--sans); }
+.arch-node { cursor: pointer; outline: none; }
+.arch-node rect { fill: #1d1b18; stroke: #3b3832; stroke-width: 1.5; transition: stroke 180ms ease, fill 180ms ease; }
+.arch-node .arch-icon { color: #b8b1a3; }
+.arch-label { fill: #f4f1ea; font-size: 15px; font-weight: 600; }
+.arch-sub { fill: #a8a296; font: 11.5px var(--mono, monospace); }
+.arch-node.is-key rect { stroke: #ff8a4c; fill: #241a13; }
+.arch-node.is-key .arch-icon, .arch-node.is-model .arch-icon { color: #ff9d66; }
+.arch-node.is-store .arch-icon { color: #7fd1a8; }
+.arch-node.is-model rect { stroke: #6a5341; }
+.arch-node.is-io rect { fill: #191816; stroke-dasharray: 4 4; }
+.arch-node:hover rect, .arch-node:focus-visible rect { stroke: #ffb38c; }
+.arch-node.is-selected rect { stroke: #ffb38c; stroke-width: 2.2; fill: #2a1d14; filter: drop-shadow(0 0 10px rgb(255 138 76 / 45%)); }
+.arch-node:focus-visible rect { stroke-width: 2.6; }
+.arch-detail { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .7rem; min-height: 2.6rem; padding: .7rem .9rem; border-left: 3px solid #ff8a4c; border-radius: .4rem; background: #1c1a17; animation: arch-in 260ms ease both; }
+.arch-detail b { color: #ffb38c; font-size: .9rem; font-weight: 600; }
+.arch-detail span { color: #d9d4c9; font-size: .88rem; line-height: 1.55; }
+.arch-decisions { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.arch-decisions li { display: inline-flex; align-items: center; gap: .45rem; padding: .4rem .75rem; border: 1px solid #3b3832; border-radius: 999px; background: #1c1a17; color: #f1eee7; font-size: .82rem; font-weight: 500; }
+.arch-decisions li::before { content: "✓"; color: #7fd1a8; font-weight: 700; }
+@keyframes arch-flow { to { stroke-dashoffset: -50; } }
+@keyframes arch-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 @media (max-width: 760px) {
-  .arch { padding: 1rem; }
-  .arch-flow { grid-template-columns: 1fr; gap: 1.4rem; }
-  .arch-layer:not(:last-child)::after { display: block; top: auto; bottom: -1.05rem; right: auto; left: 1rem; transform: rotate(135deg); }
-  .arch-decisions ul { grid-template-columns: 1fr; }
+  .arch { padding: .9rem; }
+  .arch-canvas::after { content: ""; }
+  .arch-head h4 { font-size: 1.05rem; }
 }
-@media (prefers-reduced-motion: reduce) { .case-more[open] .arch-layer { animation: none; } }
-@media print { .arch { break-inside: avoid; } }
+@media (prefers-reduced-motion: reduce) { .arch-flow { animation: none; opacity: 0; } .arch-detail { animation: none; } }
+@media print { .arch { break-inside: avoid; background: #fff; color: #000; } .arch-flow { display: none; } }
