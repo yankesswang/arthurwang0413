@@ -41,3 +41,12 @@
 }
 @media (prefers-reduced-motion: reduce) { .arch-flow { animation: none; opacity: 0; } .arch-detail { animation: none; } }
 @media print { .arch { break-inside: avoid; background: #fff; color: #000; } .arch-flow { display: none; } }
+
+/* Swimlane bands (pipeline diagrams) */
+.arch-band rect { fill: rgb(255 255 255 / 2.5%); stroke: #2c2a25; stroke-width: 1.2; }
+.arch-band:nth-of-type(1) rect { fill: rgb(127 209 168 / 4%); }
+.arch-band:nth-of-type(2) rect { fill: rgb(255 138 76 / 4%); }
+.arch-band:nth-of-type(3) rect { fill: rgb(142 164 200 / 5%); }
+.arch-band-label { fill: #f1eee7; font: 700 12px var(--mono, monospace); letter-spacing: .12em; }
+.arch-band-sub { fill: #8f897d; font: 11px var(--mono, monospace); }
+#work .project > .arch { grid-column: 1 / -1; margin-top: .4rem; }

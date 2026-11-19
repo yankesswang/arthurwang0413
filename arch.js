@@ -26,23 +26,30 @@
       decisions: [T("Identify before retrieving", "先辨識再檢索"), T("Exact match leads, hybrid fills", "精確優先，混合補充"), T("Fuse by rank, not score", "以排名融合，不相加分數")]
     }),
     laptop: () => ({
-      title: T("Numbers come from facts. Language models only explain.", "數字來自事實，語言模型只負責解釋。"),
-      width: 1320, height: 430,
-      lanes: [[630, T("FACT LANE · exact values", "事實路徑 · 精確數值")], [630, T("RAG LANE · explanations", "RAG 路徑 · 說明")]],
-      laneY: [52, 346],
+      title: T("Synthetic data → RAG → evaluation, run as one reproducible loop.", "合成資料 → RAG → 評估，串成一個可重現的迴圈。"),
+      width: 1320, height: 470,
+      bands: [[16, 460, T("1 · SYNTHETIC DATA", "1 · 合成資料"), T("EN + ZH · general + specific", "中英 · general + specific")], [492, 404, T("2 · RAG", "2 · RAG"), T("local · hybrid · fact-aware", "本機 · 混合檢索 · 事實優先")], [912, 392, T("3 · EVALUATION", "3 · 評估"), T("named experiments", "命名實驗")]],
       nodes: [
-        ["q", 20, 170, 130, "io", T("Question", "問題"), T("EN · ZH", "中 · 英"), T("Bilingual questions about a specific notebook model.", "針對特定筆電機型的中英文問題。")],
-        ["pl", 185, 170, 210, "step", T("Parser + memory", "解析 + 記憶"), T("intent · model · refs", "意圖 · 機型 · 指代"), T("Resolves field aliases, qualifiers and follow-ups such as “and its version?”. Memory rewrites the question but never adds facts.", "解析欄位別名、限定條件與「那它的版本呢？」這類追問；記憶只改寫問題，不會新增事實。")],
-        ["rt", 430, 170, 165, "key", T("Router", "路由"), T("authority plan", "來源權威計畫"), T("Sends exact hardware questions to the fact lane and descriptive ones to RAG, ranking sources as authoritative, supporting or verification-only.", "精確硬體問題走事實路徑，描述性問題走 RAG；來源分為 authoritative／supporting／verification-only。")],
-        ["fs", 630, 80, 210, "store", T("Fact store", "事實庫"), T("path · value · source", "欄位 · 值 · 來源"), T("Normalised spec facts built by the data pipeline: crawler → NocoDB → bilingual Q&A → golden specs.", "由資料管線建立的正規化規格事實：爬蟲 → NocoDB → 雙語 QA → 黃金規格。")],
-        ["ex", 880, 80, 190, "key", T("Spec executor", "規格執行器"), T("4 answer states", "4 種回答狀態"), T("Answers values, limits, counts, versions and comparisons as ANSWERABLE, NOT_SPECIFIED, AMBIGUOUS or OUT_OF_SCOPE.", "回答數值、上限、數量、版本與比較，結果為 ANSWERABLE、NOT_SPECIFIED、AMBIGUOUS 或 OUT_OF_SCOPE。")],
-        ["rg", 630, 260, 210, "store", T("Dense + BM25", "向量 + BM25"), "RRF k=60 · top 6/4", T("Chroma (gate 0.60 EN / 0.52 ZH) and BM25 top-8 each, fused with weighted RRF.", "Chroma（門檻 EN 0.60／ZH 0.52）與 BM25 各取 top-8，以加權 RRF 融合。")],
-        ["lm", 880, 260, 190, "model", "Qwen3.5-4B", T("LM Studio · local", "LM Studio · 本機"), T("Local generation through LM Studio, with a llama.cpp GGUF fallback.", "透過 LM Studio 本機生成，llama.cpp GGUF 作為備援。")],
-        ["ans", 1110, 170, 190, "io", T("Answer", "回答"), T("value + explanation", "數值 + 說明"), T("Exact values from facts, explanations from RAG. Generated text never overrides a fact.", "數值來自事實、說明來自 RAG；生成文字不會覆寫事實。")]
+        ["sp", 32, 110, 200, "store", T("Spec sheets", "規格表"), T("crawled · cleaned", "爬取 · 清理"), T("Product and spec pages are crawled with rate limiting, cleaned from HTML and stored as structured spec sheets.", "限速爬取產品與規格頁，清理 HTML 後存成結構化規格表。")],
+        ["sd", 32, 220, 200, "io", T("Seed questions", "種子題庫"), T("templates · EN/ZH", "範本 · 中英"), T("Cleaned question templates in two categories (general and specific), in both English and Chinese.", "兩類（general、specific）中英文問題範本，已先清理。")],
+        ["rq", 256, 110, 200, "model", T("Rephrase per model", "依機型改寫"), T("grounded in spec", "貼合規格的問題"), T("An LLM rewrites each seed question so it is accurate to one model's spec sheet, e.g. naming its real CPU or GPU.", "LLM 依每台機型的規格表改寫種子問題，例如帶入它實際的 CPU 或 GPU。")],
+        ["ra", 256, 220, 200, "model", T("Reference answers", "參考答案"), T("from the spec only", "只根據規格"), T("A second prompt answers each question strictly from the spec sheet, as JSON, with no outside knowledge.", "第二個 prompt 只根據規格表回答每一題，輸出 JSON，不使用外部知識。")],
+        ["vd", 32, 330, 200, "key", T("Judge validation", "評審驗證"), T("keep verified Q&A", "只保留驗證通過"), T("An LLM judge checks every generated Q&A against the spec; accuracy is recorded per product before the set is used.", "LLM 評審逐題比對規格驗證生成的問答，記錄每台機型的正確率後才採用。")],
+        ["gd", 256, 330, 200, "store", T("Golden set", "黃金資料集"), T("NocoDB · synced", "NocoDB · 同步"), T("Validated bilingual Q&A merged per language and synced to NocoDB, so every run starts from the same reviewed data.", "驗證後的雙語問答依語言合併並同步到 NocoDB，每次執行都從同一份資料開始。")],
+        ["ix", 508, 110, 180, "store", T("Index build", "建立索引"), "Chroma + BM25", T("Vector and BM25 indexes are rebuilt when stale, filtered by model and category.", "索引過期時重建向量與 BM25 索引，並依機型與類別過濾。")],
+        ["rt", 508, 220, 180, "key", T("Router", "路由"), T("facts vs. RAG", "事實 vs. RAG"), T("Exact hardware values go to the deterministic fact path; descriptive questions go to hybrid retrieval.", "精確硬體數值走確定性事實路徑；描述性問題走混合檢索。")],
+        ["hy", 708, 110, 172, "step", T("Hybrid retrieval", "混合檢索"), "RRF k=60", T("Dense (gate 0.60 EN / 0.52 ZH) and BM25 top-8 each, fused with weighted RRF.", "向量（門檻 EN 0.60／ZH 0.52）與 BM25 各取 top-8，以加權 RRF 融合。")],
+        ["lm", 708, 220, 172, "model", "Qwen3.5-4B", T("answers EN + ZH", "產生中英回答"), T("Local generation through LM Studio for every golden question, both languages.", "透過 LM Studio 在本機為每一題黃金問題產生中英回答。")],
+        ["jg", 928, 220, 180, "key", T("LLM judge", "LLM 評審"), "STRICT → LENIENT", T("gpt-oss-20b judges every answer strictly first and leniently only on failure; the two levels are reported separately.", "gpt-oss-20b 先嚴格評分，失敗才寬鬆評分；兩個層級分開呈現。")],
+        ["sw", 928, 110, 180, "step", T("Model swap", "切換模型"), T("Qwen → judge", "Qwen → 評審"), T("Generator and judge share one local GPU, so the pipeline unloads Qwen3.5-4B and loads gpt-oss-20b between stages.", "生成與評審模型共用同一張本機 GPU，因此流程在兩個階段之間卸載 Qwen3.5-4B、載入 gpt-oss-20b。")],
+
+        ["rp", 1124, 110, 168, "io", T("Reports", "報表"), T("Excel · CSV", "Excel · CSV"), T("Per-question Excel, a summary CSV and an error analysis for every named experiment.", "每個命名實驗都產出逐題 Excel、摘要 CSV 與錯誤分析。")],
+        ["ab", 1124, 220, 168, "step", T("Ablations", "消融實驗"), T("router · model", "路由 · 模型"), T("Flags switch off the router, alias expansion or RAG (fact-only), or swap the generator, all on the same golden set.", "可關閉路由、別名擴展或 RAG（只用事實），或替換生成模型，全部使用同一份黃金資料集。")]
       ],
-      edges: [["q", "pl"], ["pl", "rt"], ["rt", "fs"], ["rt", "rg"], ["fs", "ex"], ["rg", "lm"], ["ex", "ans"], ["lm", "ans"]],
-      loop: T("LLM judge · STRICT → LENIENT, reported separately", "LLM 評審 · 先 STRICT 再 LENIENT，分開呈現"),
-      decisions: [T("Facts are the authority for numbers", "數字以事實為準"), T("Limits ≠ installed hardware", "上限 ≠ 已安裝配置"), T("Strict, then lenient judging", "先嚴格、再寬鬆評審")]
+      edges: [["sp", "rq"], ["sd", "rq"], ["rq", "ra", "down"], ["ra", "vd", "down"], ["vd", "gd"], ["gd", "ix"], ["gd", "rt"], ["ix", "hy"], ["rt", "hy"], ["hy", "lm", "down"], ["lm", "sw"], ["sw", "jg", "down"], ["jg", "rp"], ["rp", "ab", "down"]],
+      loopFrom: "ab", loopTo: "vd",
+      loop: T("Error analysis → fix seeds, prompts or retrieval → rerun the same experiment", "錯誤分析 → 修正題庫、prompt 或檢索 → 重跑同一實驗"),
+      decisions: [T("Spec-grounded, judge-validated synthetic Q&A", "依規格生成、經評審驗證的合成問答"), T("One golden set drives RAG and scoring", "同一份黃金資料集驅動 RAG 與評分"), T("Every run is a named, comparable experiment", "每次執行都是可比較的命名實驗")]
     })
   };
 
@@ -52,7 +59,9 @@
     key: '<path d="M12 3 3 8l9 5 9-5-9-5Z M3 16l9 5 9-5"/>', store: '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',
     model: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4"/>'
   };
-  function edgePath(a, b) {
+  function edgePath(a, b, mode) {
+    if (mode === "down") { const x1 = a[1] + a[3] / 2, y1 = a[2] + H, x2 = b[1] + b[3] / 2, y2 = b[2]; return `M${x1},${y1} C${x1},${(y1 + y2) / 2} ${x2},${(y1 + y2) / 2} ${x2},${y2}`; }
+    if (mode === "left") { const x1 = a[1], y1 = a[2] + H / 2, x2 = b[1] + b[3], y2 = b[2] + H / 2, mx = (x1 + x2) / 2; return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`; }
     const x1 = a[1] + a[3], y1 = a[2] + H / 2, x2 = b[1], y2 = b[2] + H / 2, mx = (x1 + x2) / 2;
     return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
   }
@@ -60,11 +69,11 @@
     const key = el.dataset.arch, a = ARCH[key](), byId = Object.fromEntries(a.nodes.map(n => [n[0], n]));
     const selected = el.dataset.selected && byId[el.dataset.selected] ? el.dataset.selected : a.nodes.find(n => n[4] === "key")[0];
     const sel = byId[selected];
-    const first = a.nodes[0], last = a.nodes[a.nodes.length - 1], loopY = a.height - 22;
+    const first = byId[a.loopTo] || a.nodes[0], last = byId[a.loopFrom] || a.nodes[a.nodes.length - 1], loopY = a.height - 22;
     const loop = `M${last[1] + last[3] / 2},${last[2] + H} V${loopY} H${first[1] + first[3] / 2} V${first[2] + H}`;
-    const lanes = key === "laptop"
-      ? a.lanes.map(([x, label], i) => `<text class="arch-lane" x="${x}" y="${a.laneY[i]}">${esc(label)}</text>`).join("")
-      : a.lanes.map(([x, label]) => `<text class="arch-lane" x="${x}" y="40">${esc(label)}</text>`).join("");
+    const lanes = a.bands
+      ? a.bands.map(([x, w, label, sub], i) => `<g class="arch-band" style="--i:${i}"><rect x="${x}" y="16" width="${w}" height="${a.height - 64}" rx="16"/><text class="arch-band-label" x="${x + 16}" y="46">${esc(label)}</text><text class="arch-band-sub" x="${x + 16}" y="66">${esc(sub)}</text></g>`).join("")
+      : (a.lanes || []).map(([x, label]) => `<text class="arch-lane" x="${x}" y="40">${esc(label)}</text>`).join("");
     el.innerHTML = `<header class="arch-head"><span class="arch-kicker">${T("SYSTEM ARCHITECTURE", "系統架構")}</span><h4 id="arch-${key}">${esc(a.title)}</h4></header>
       <div class="arch-canvas"><svg viewBox="0 0 ${a.width} ${a.height}" role="group" aria-labelledby="arch-${key}">
         <defs><pattern id="arch-dots-${key}" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="arch-dot"/></pattern>
@@ -72,7 +81,7 @@
         <rect width="${a.width}" height="${a.height}" fill="url(#arch-dots-${key})"/>
         ${lanes}
         <path class="arch-loop" d="${loop}"/><text class="arch-loop-label" x="${(first[1] + last[1] + last[3]) / 2}" y="${loopY - 8}" text-anchor="middle">↺ ${esc(a.loop)}</text>
-        ${a.edges.map(([f, t], i) => { const d = edgePath(byId[f], byId[t]); const on = f === selected || t === selected; return `<path class="arch-edge ${on ? "is-on" : ""}" d="${d}" marker-end="url(#arch-arrow-${key})"/><path class="arch-flow" d="${d}" style="--i:${i}"/>`; }).join("")}
+        ${a.edges.map(([f, t, mode], i) => { const d = edgePath(byId[f], byId[t], mode); const on = f === selected || t === selected; return `<path class="arch-edge ${on ? "is-on" : ""}" d="${d}" marker-end="url(#arch-arrow-${key})"/><path class="arch-flow" d="${d}" style="--i:${i}"/>`; }).join("")}
         ${a.nodes.map(([id, x, y, w, kind, label, sub]) => `<g class="arch-node is-${kind} ${id === selected ? "is-selected" : ""}" data-node="${id}" tabindex="0" role="button" aria-pressed="${id === selected}" aria-label="${esc(label)}: ${esc(sub)}" transform="translate(${x},${y})">
           <rect width="${w}" height="${H}" rx="12"/><g class="arch-icon" transform="translate(12,${H / 2 - 10}) scale(.84)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON[kind]}</svg></g>
           <text class="arch-label" x="42" y="${H / 2 - 3}">${esc(label)}</text><text class="arch-sub" x="42" y="${H / 2 + 14}">${esc(sub)}</text></g>`).join("")}
